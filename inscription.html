@@ -48,36 +48,25 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="entreprise">Nom de l'entreprise / boutique (Optionnel)</label>
+          <input type="text" id="entreprise" class="form-control" placeholder="Ex: Dakar Commerce">
+        </div>
+        <div class="form-group">
           <label for="reg-email">E-mail</label>
           <input type="email" id="reg-email" class="form-control" placeholder="votre@email.com" required>
         </div>
         <div class="form-group">
-          <label for="telephone">Téléphone</label>
-          <input type="tel" id="telephone" class="form-control" placeholder="+221 XX XXX XX XX">
-        </div>
-        <div class="form-group">
           <label for="reg-password">Mot de passe</label>
-          <input type="password" id="reg-password" class="form-control" placeholder="Minimum 8 caractères" required minlength="8">
+          <input type="password" id="reg-password" class="form-control" placeholder="Minimum 6 caractères" required minlength="6">
         </div>
-        <div class="form-group">
-          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13px;">
-            <input type="checkbox" required style="margin-top:2px;">
-            J'accepte les <a href="#" style="color:var(--yellow);">conditions d'utilisation</a> et la <a href="#" style="color:var(--yellow);">politique de confidentialité</a>
-          </label>
-        </div>
-        <button type="submit" class="btn-primary auth-submit">Créer mon compte</button>
+        <button type="submit" class="btn-primary auth-submit" id="submit-btn">Créer mon compte Supabase</button>
       </form>
 
-      <div class="auth-divider"><span>Ou</span></div>
-      <div class="social-auth">
-        <button class="social-btn" title="Google">G</button>
-        <button class="social-btn" title="Facebook">f</button>
-        <button class="social-btn" title="Apple">🍎</button>
-      </div>
       <div class="auth-footer">Déjà un compte ? <a href="connexion.html">Se connecter</a></div>
     </div>
   </div>
 
+  <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
     let selectedRole = 'commercant';
@@ -88,12 +77,28 @@
       document.getElementById('role-fournisseur').style.borderColor = role === 'fournisseur' ? 'var(--yellow)' : 'var(--gray-border)';
       document.getElementById('role-fournisseur').style.background = role === 'fournisseur' ? 'var(--yellow-light)' : 'transparent';
     }
-    function handleRegister(e) {
+
+    async function handleRegister(e) {
       e.preventDefault();
-      const name = document.getElementById('prenom').value + ' ' + document.getElementById('nom').value;
-      setUser({ name, role: selectedRole });
-      showToast('✓ Compte créé avec succès ! Bienvenue sur AfriMark', 'success');
-      setTimeout(() => window.location.href = 'dashboard.html', 1500);
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Création du compte... ⏳';
+      btn.disabled = true;
+
+      const fullName = document.getElementById('prenom').value + ' ' + document.getElementById('nom').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const company = document.getElementById('entreprise').value;
+
+      const result = await registerUser(email, password, fullName, selectedRole, company);
+
+      if (result.error) {
+        showToast('❌ Erreur : ' + result.error, 'error');
+        btn.textContent = 'Créer mon compte Supabase';
+        btn.disabled = false;
+      } else {
+        showToast('✓ Compte enregistré dans Supabase !', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 1200);
+      }
     }
   </script>
 </body>
