@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fournisseurs vérifiés — AfriMark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-top">
+      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <div class="nav-actions">
+        <a href="panier.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+        <a href="dashboard.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html" class="active">Fournisseurs vérifiés</a>
+      <a href="vendre.html">Vendre sur AfriMark</a>
+      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="aide.html">Centre d'aide</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>Fournisseurs vérifiés</h1>
+    <p>Achetez en toute confiance auprès de nos partenaires certifiés par l'équipe AfriMark</p>
+  </div>
+
+  <section class="section" style="max-width: 1200px; margin: 0 auto;">
+    <div class="supplier-result-card" style="margin-bottom:24px;">
+      <div class="supplier-result-img" style="width:160px;height:140px;">
+        <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80" alt="Ryn's Home">
+      </div>
+      <div class="supplier-result-info">
+        <h2 style="font-size:22px;">Ryn's Home <span class="badge-verified">✓ Vérifié</span></h2>
+        <div class="category" style="font-size:15px;">Cosmétiques & Beauté, Textiles</div>
+        <div class="location" style="font-size:14px;margin-bottom:8px;">📍 Dakar, Sénégal</div>
+        <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Spécialiste de la vente en gros de produits cosmétiques naturels (beurre de karité) et tissus de qualité supérieure.</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="star-score" style="font-size:16px;">★ 4,8</span>
+          <span class="review-count">(45 avis vérifiés)</span>
+        </div>
+      </div>
+      <div>
+        <a href="profil-fournisseur.html" class="btn-primary">Voir le profil complet</a>
+      </div>
+    </div>
+
+    <div class="supplier-result-card" style="margin-bottom:24px;">
+      <div class="supplier-result-img" style="width:160px;height:140px;">
+        <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80" alt="Senac Peintures">
+      </div>
+      <div class="supplier-result-info">
+        <h2 style="font-size:22px;">Senac Peintures <span class="badge-verified">✓ Vérifié</span></h2>
+        <div class="category" style="font-size:15px;">Maison & Matériaux de construction</div>
+        <div class="location" style="font-size:14px;margin-bottom:8px;">📍 Dakar, Sénégal</div>
+        <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Fabricant et distributeur agréé de peintures intérieures et extérieures haute durabilité pour les professionnels.</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="star-score" style="font-size:16px;">★ 4,9</span>
+          <span class="review-count">(112 avis vérifiés)</span>
+        </div>
+      </div>
+      <div>
+        <a href="recherche.html?q=senac" class="btn-primary">Voir les offres</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

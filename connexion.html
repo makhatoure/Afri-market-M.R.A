@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — AfriMark</title>
+  <meta name="description" content="Connectez-vous à votre compte AfriMark pour accéder à vos commandes, devis et favoris.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-top">
+      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <div class="nav-actions">
+        <a href="inscription.html" class="btn-primary">s'inscrire</a>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
+      <a href="vendre.html">Vendre sur AfriMark</a>
+      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="aide.html">Centre d'aide</a>
+    </div>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>Connexion</h1>
+      <p class="auth-sub">Bienvenue de retour !</p>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="email">E-mail ou téléphone</label>
+          <input type="text" id="email" class="form-control" placeholder="Entrez votre e-mail ou numéro de téléphone" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" class="form-control" placeholder="Entrez votre mot de passe" required>
+        </div>
+        <div class="form-actions">
+          <label class="remember-label">
+            <input type="checkbox" id="remember"> Se souvenir de moi
+          </label>
+          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Se connecter</button>
+      </form>
+
+      <div class="auth-divider"><span>Ou</span></div>
+      <div class="social-auth">
+        <button class="social-btn" title="Google" onclick="socialLogin('Google')">G</button>
+        <button class="social-btn" title="Facebook" onclick="socialLogin('Facebook')">f</button>
+        <button class="social-btn" title="Apple" onclick="socialLogin('Apple')">🍎</button>
+      </div>
+
+      <div class="auth-footer">
+        Pas encore de compte ? <a href="inscription.html">S'inscrire</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      setUser({ name: 'Amy', email });
+      showToast('✓ Connexion réussie ! Bienvenue Amy', 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
+    }
+    function socialLogin(provider) {
+      setUser({ name: 'Amy', email: `amy@${provider.toLowerCase()}.com` });
+      showToast(`✓ Connexion via ${provider} réussie !`, 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 1200);
+    }
+  </script>
+</body>
+</html>

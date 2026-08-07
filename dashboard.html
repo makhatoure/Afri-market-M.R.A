@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon espace — AfriMark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-top">
+      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <div class="nav-actions">
+        <a href="panier.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+        <div class="user-menu-wrapper">
+          <button class="icon-btn" id="user-menu-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-dropdown-header">Bonjour, Aminata</div>
+            <a href="dashboard.html" class="active">Mes commandes</a>
+            <a href="dashboard.html">Mes notifications</a>
+            <a href="mes-devis.html">Mes devis</a>
+            <a href="dashboard.html">Mes favoris</a>
+            <a href="dashboard.html">Mon compte</a>
+            <div class="dropdown-divider"></div>
+            <a href="connexion.html" class="signout" onclick="logout()">Se déconnecter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
+      <a href="vendre.html">Vendre sur AfriMark</a>
+      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="aide.html">Centre d'aide</a>
+    </div>
+  </nav>
+
+  <div class="account-layout">
+    <!-- SIDEBAR -->
+    <aside class="account-sidebar">
+      <div class="user-avatar-wrap">
+        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&q=80" alt="Aminata Gueye" class="user-avatar">
+        <div style="font-weight:700;font-size:15px;">Aminata Gueye</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="active" id="nav-dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </a>
+        <a href="dashboard.html" id="nav-commandes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Mes commandes
+        </a>
+        <a href="dashboard.html" id="nav-notifs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Mes notifications
+        </a>
+        <a href="mes-devis.html" id="nav-devis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Mes devis
+        </a>
+        <a href="dashboard.html" id="nav-favoris">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Mes favoris
+        </a>
+        <a href="dashboard.html" id="nav-compte">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+          Paramètres du compte
+        </a>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="account-content">
+      <h1>Bonjour, Aminata Gueye</h1>
+      <p class="subtitle">Voici un aperçu de votre activité</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Commandes en cours</div>
+          <div class="stat-value">1</div>
+          <div class="stat-link">Voir détails</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Demandes de devis</div>
+          <div class="stat-value">1</div>
+          <div class="stat-link">Voir détails</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Fournisseurs favoris</div>
+          <div class="stat-value">6</div>
+          <div class="stat-link">Voir détails</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Dépenses réalisées</div>
+          <div class="stat-value" style="font-size:20px;">21 600 FCFA</div>
+          <div class="stat-link">Voir détails</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="recent-activity">
+          <h3>Activités récentes</h3>
+          <div class="activity-item">
+            <div>
+              <div class="act-title">Commande #CMD-000100</div>
+              <div class="act-time">Il y'a 1 heure</div>
+            </div>
+            <span class="badge-status badge-confirmed">Confirmée</span>
+          </div>
+          <div class="activity-item">
+            <div>
+              <div class="act-title">Devis reçu de Ryn's Home</div>
+              <div class="act-time">Il y'a 2 heures</div>
+            </div>
+            <span class="badge-status badge-accepted">Accepté</span>
+          </div>
+          <div class="activity-item">
+            <div>
+              <div class="act-title">Demande de devis envoyée à Ryn's Home</div>
+              <div class="act-time">Il y'a 2 heures</div>
+            </div>
+            <span class="badge-status badge-sent">Envoyée</span>
+          </div>
+        </div>
+
+        <div class="popular-suppliers">
+          <h3>Fournisseurs populaires</h3>
+          <div class="supplier-item">
+            <div class="supplier-thumb">
+              <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=100&q=80" alt="Ryn's Home">
+            </div>
+            <div class="supplier-item-info">
+              <div class="name">Ryn's Home</div>
+              <div class="cat">Cosmétiques et beauté</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--yellow);">★ 4,5</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', initUserDropdown);
+  </script>
+</body>
+</html>

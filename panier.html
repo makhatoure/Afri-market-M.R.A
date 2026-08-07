@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon panier — AfriMark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-top">
+      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <div class="nav-actions">
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <a href="panier.html" class="icon-btn" style="color:var(--yellow);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <a href="dashboard.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
+      <a href="vendre.html">Vendre sur AfriMark</a>
+      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="aide.html">Centre d'aide</a>
+    </div>
+  </nav>
+
+  <div class="cart-page">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:24px;">
+      <div>
+        <h1>Mon panier</h1>
+        <p class="cart-subtitle" id="cart-subtitle">3 article(s) chez 1 fournisseur(s)</p>
+      </div>
+      <button class="btn-outline" onclick="clearCartUI()">Vider le panier</button>
+    </div>
+
+    <div id="cart-content"></div>
+
+    <div id="cart-empty" style="display:none;text-align:center;padding:80px 0;">
+      <div style="font-size:64px;margin-bottom:16px;">🛒</div>
+      <h2 style="font-size:22px;margin-bottom:8px;">Votre panier est vide</h2>
+      <p style="color:var(--gray);margin-bottom:24px;">Ajoutez des produits pour commencer</p>
+      <a href="index.html" class="btn-primary">Parcourir les produits</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const DEFAULT_CART = [
+      { id: 8, name: "Beurre de karité brut 100% naturel", supplier: "Ryn's Home", qty: 20, price: 1000, unit: "FCFA / Kg", img: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=200&q=80" },
+      { id: 3, name: "Tissu Maylouss", supplier: "Ryn's Home", qty: 20, price: 2000, unit: "FCFA / Pièce", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=200&q=80" },
+      { id: 6, name: "Boucles d'oreilles (Bijoux)", supplier: "Ryn's Home", qty: 20, price: 500, unit: "FCFA / Pièce", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&q=80" },
+    ];
+
+    let cartItems = [...DEFAULT_CART];
+
+    function renderCart() {
+      const content = document.getElementById('cart-content');
+      const empty = document.getElementById('cart-empty');
+      const subtitle = document.getElementById('cart-subtitle');
+
+      if (cartItems.length === 0) {
+        content.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      subtitle.textContent = `${cartItems.length} article(s) chez 1 fournisseur(s)`;
+
+      const total = cartItems.reduce((s, i) => s + i.qty * i.price, 0);
+
+      content.innerHTML = `
+        <div class="cart-group">
+          <div class="cart-group-header">
+            <div class="cart-supplier-logo">
+              <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&q=80" alt="Ryn's Home">
+            </div>
+            <div class="cart-supplier-info">
+              <div class="supplier-name">Ryn's Home</div>
+              <div class="supplier-cat">Cosmétiques et beauté</div>
+            </div>
+            <span class="badge-verified">✓ Vérifié</span>
+            <div class="location-tag"><span>📍</span> Dakar, Sénégal</div>
+            <button class="btn-primary" onclick="showToast('Demande de devis envoyée !','success')">Demande de devis</button>
+          </div>
+          ${cartItems.map((item, i) => `
+            <div class="cart-item">
+              <div class="cart-item-img"><img src="${item.img}" alt="${item.name}"></div>
+              <div class="cart-item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-supplier">${item.supplier}</div>
+                <span class="remove-item" onclick="removeItem(${i})">Supprimer</span>
+              </div>
+              <div class="cart-qty-control">
+                <button class="cart-qty-btn" onclick="changeCartQty(${i}, -1)">−</button>
+                <span class="cart-qty-val">${item.qty}</span>
+                <button class="cart-qty-btn" onclick="changeCartQty(${i}, 1)">+</button>
+              </div>
+              <div>
+                <div class="item-price">${(item.qty * item.price).toLocaleString('fr-FR')} FCFA</div>
+                <div class="item-unit-price">${item.price.toLocaleString('fr-FR')} ${item.unit}</div>
+              </div>
+              <button class="cart-delete-btn" onclick="removeItem(${i})">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+          <div style="background:var(--white);border:1px solid var(--gray-border);border-radius:var(--radius);padding:24px;min-width:300px;">
+            <div style="font-size:18px;font-weight:700;margin-bottom:16px;">Récapitulatif</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;"><span>Sous-total</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:14px;color:var(--gray);"><span>Livraison</span><span>À définir</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid var(--gray-border);padding-top:12px;"><span>Total</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>
+            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px;" onclick="showToast('Demande de devis envoyée !','success')">Demande de devis</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function changeCartQty(index, delta) {
+      cartItems[index].qty = Math.max(1, cartItems[index].qty + delta);
+      renderCart();
+    }
+
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      renderCart();
+      showToast('Article retiré du panier');
+    }
+
+    function clearCartUI() {
+      if (confirm('Vider le panier ?')) { cartItems = []; renderCart(); }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats de recherche — AfriMark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-top">
+      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <div class="nav-search-bar">
+        <input type="text" id="nav-search-input" class="search-input" placeholder="Beurre de karité" style="min-width:340px;">
+        <button class="btn-primary" onclick="doSearch()" style="padding:10px 18px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+      <div class="nav-actions">
+        <a href="panier.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <button class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+        <a href="dashboard.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
+      <a href="vendre.html">Vendre sur AfriMark</a>
+      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="aide.html">Centre d'aide</a>
+    </div>
+  </nav>
+
+  <div class="search-page">
+    <!-- FILTERS -->
+    <aside class="filters-panel">
+      <div class="filter-card">
+        <h3>Catégorie</h3>
+        <label class="filter-option"><input type="checkbox" checked> Tous</label>
+        <label class="filter-option"><input type="checkbox"> Cosmétiques et beauté (22)</label>
+        <label class="filter-option"><input type="checkbox"> Textiles (15)</label>
+        <label class="filter-option"><input type="checkbox"> Alimentation (8)</label>
+        <label class="filter-option"><input type="checkbox"> Maison (6)</label>
+      </div>
+      <div class="filter-card">
+        <h3>Localisation</h3>
+        <label class="filter-option"><input type="checkbox" checked> Tous</label>
+        <label class="filter-option"><input type="checkbox"> Dakar</label>
+        <label class="filter-option"><input type="checkbox"> Thiès</label>
+        <label class="filter-option"><input type="checkbox"> Saint-Louis</label>
+        <label class="filter-option"><input type="checkbox"> Autres régions</label>
+      </div>
+      <div class="filter-card">
+        <h3>Prix (FCFA)</h3>
+        <div class="price-inputs">
+          <input type="number" class="price-input" placeholder="Min" id="price-min">
+          <span class="price-sep">+</span>
+          <input type="number" class="price-input" placeholder="Max" id="price-max">
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="applyFilters()">Appliquer</button>
+      </div>
+      <div class="filter-card">
+        <h3>Note minimale</h3>
+        <label class="filter-option"><input type="radio" name="rating"> Toutes</label>
+        <label class="filter-option"><input type="radio" name="rating"> ★ 4+ (23)</label>
+        <label class="filter-option"><input type="radio" name="rating"> ★ 3+ (35)</label>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <div class="results-area">
+      <div class="search-results-header">
+        <div>
+          <h1 id="results-title">Résultat pour "Beurre de karité"</h1>
+          <p>48 fournisseurs trouvés</p>
+        </div>
+        <select class="sort-select">
+          <option>Trier par : Pertinence</option>
+          <option>Prix croissant</option>
+          <option>Prix décroissant</option>
+          <option>Mieux notés</option>
+          <option>Nouveaux</option>
+        </select>
+      </div>
+      <div id="results-list"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const SUPPLIERS = [
+      { id: 1, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 000", unit: "FCFA / kg", min: "10kg", img: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=300&q=80", verified: true },
+      { id: 2, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 400", unit: "FCFA / kg", min: "15kg", img: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&q=80", verified: true },
+      { id: 3, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 450", unit: "FCFA / kg", min: "20kg", img: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=300&q=80", verified: true },
+      { id: 4, name: "NaturaSen", cat: "Cosmétiques et beauté", loc: "Thiès, Sénégal", rating: 4.2, reviews: 18, price: "950", unit: "FCFA / kg", min: "5kg", img: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&q=80", verified: false },
+      { id: 5, name: "KariteExport", cat: "Cosmétiques et beauté", loc: "Saint-Louis, Sénégal", rating: 4.7, reviews: 41, price: "1 200", unit: "FCFA / kg", min: "25kg", img: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=300&q=80", verified: true },
+    ];
+
+    function renderResults() {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q') || 'Beurre de karité';
+      const title = document.getElementById('results-title');
+      if (title) title.textContent = `Résultat pour "${q}"`;
+
+      const navInput = document.getElementById('nav-search-input');
+      if (navInput) navInput.value = q;
+
+      const list = document.getElementById('results-list');
+      list.innerHTML = SUPPLIERS.map(s => `
+        <div class="supplier-result-card" onclick="window.location.href='fiche-produit.html?id=${s.id}'">
+          <div class="supplier-result-img"><img src="${s.img}" alt="${s.name}"></div>
+          <div class="supplier-result-info">
+            <h3>${s.name} ${s.verified ? '<span class="badge-verified">✓ Vérifié</span>' : ''}</h3>
+            <div class="category">${s.cat}</div>
+            <div class="location">📍 ${s.loc}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <span class="star-score">★ ${s.rating}</span>
+              <span class="review-count">(${s.reviews} avis)</span>
+            </div>
+            <div class="price">À partir de : <strong>${s.price} ${s.unit}</strong></div>
+            <div class="min-qty">Quantité min. : ${s.min}</div>
+          </div>
+          <div>
+            <button class="btn-primary" onclick="event.stopPropagation();window.location.href='fiche-produit.html?id=${s.id}'">Voir le catalogue</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function doSearch() {
+      const q = document.getElementById('nav-search-input').value.trim();
+      window.location.href = `recherche.html?q=${encodeURIComponent(q || 'produits')}`;
+    }
+    function applyFilters() { showToast('Filtres appliqués', 'success'); }
+
+    document.addEventListener('DOMContentLoaded', renderResults);
+  </script>
+</body>
+</html>
