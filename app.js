@@ -1,38 +1,70 @@
 // ========================================================
-// AFRIMARK — DYNAMIQUE SUPABASE & GESTION EN TEMPS RÉEL
+// AFRIMARK — LOGIQUE GLOBALE ET HYBRIDE (SUPABASE + FALLBACK)
 // ========================================================
 
 const CART_KEY = 'afrimark_cart';
 
-// ---- AUTHENTIFICATION & SESSIONS ----
+// ---- PRODUITS DE SECOURS (DÉMO DESIGN FIGMA) ----
+const FALLBACK_PRODUCTS = [
+  { id: '1', name: "Peinture Unilatex - Senac", price_fcfa: 9000, unit: "pot", min_quantity: 10, image_url: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80" },
+  { id: '2', name: "Lunettes tendance femme", price_fcfa: 2500, unit: "pièce", min_quantity: 12, image_url: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400&q=80" },
+  { id: '3', name: "Tissu Maylouss", price_fcfa: 2000, unit: "pièce", min_quantity: 30, image_url: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&q=80" },
+  { id: '4', name: "Barquette 500g alimentaire", price_fcfa: 100, unit: "unité", min_quantity: 100, image_url: "https://images.unsplash.com/photo-1503364428-b0fd49da42b1?w=400&q=80" },
+  { id: '5', name: "Sac de pommes de terre 5kg", price_fcfa: 2500, unit: "sac", min_quantity: 10, image_url: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=80" },
+  { id: '6', name: "Boucles d'oreilles bijoux", price_fcfa: 500, unit: "pièce", min_quantity: 20, image_url: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80" },
+  { id: '7', name: "Perruque Blend Hair", price_fcfa: 10000, unit: "pièce", min_quantity: 10, image_url: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80" },
+  { id: '8', name: "Beurre de karité brut 100% naturel", price_fcfa: 1000, unit: "pot", min_quantity: 20, image_url: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80" },
+];
+
+// ---- CHARGEMENT DES PRODUITS (SUPABASE OU FALLBACK) ----
+async function loadProducts(category = null) {
+  const grid = document.getElementById('products-grid');
+  if (!grid) return;
+
+  let productsToDisplay = [];
+
+  try {
+    if (typeof fetchProductsFromDB === 'function') {
+      const dbProducts = await fetchProductsFromDB(category);
+      if (dbProducts && dbProducts.length > 0) {
+        productsToDisplay = dbProducts;
+      }
+    }
+  } catch (err) {
+    console.warn('Utilisation des données démo locales:', err);
+  }
+
+  // Si Supabase ne renvoie rien encore, afficher les produits démo
+  if (productsToDisplay.length === 0) {
+    productsToDisplay = FALLBACK_PRODUCTS;
+  }
+
+  grid.innerHTML = productsToDisplay.map(p => `
+    <div class="product-card" onclick="window.location.href='fiche-produit.html?id=${p.id}'">
+      <div class="product-card-img"><img src="${p.image_url}" alt="${p.name}" loading="lazy"></div>
+      <div class="product-card-body">
+        <h3>${p.name}</h3>
+        <div class="product-price">
+          <strong>À partir de : ${Number(p.price_fcfa).toLocaleString('fr-FR')} FCFA / ${p.unit}</strong>
+          <div class="product-min">Commande min. : ${p.min_quantity} ${p.unit}s</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ---- AUTHENTIFICATION ----
 async function registerUser(email, password, fullName, role, companyName) {
   if (!supabase) return { error: 'Supabase non connecté' };
   try {
-    // 1. Inscription Auth Supabase
-    const { data: authData, error: authErr } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName, role: role } }
+    const { data, error } = await supabase.auth.signUp({
+      email, password, options: { data: { full_name: fullName, role } }
     });
-    if (authErr) throw authErr;
+    if (error) throw error;
 
-    // 2. Insérer dans la table public.profiles
-    if (authData.user) {
-      const { error: profileErr } = await supabase.from('profiles').insert([{
-        id: authData.user.id,
-        email: email,
-        full_name: fullName,
-        role: role,
-        company_name: companyName || fullName
-      }]);
-      if (profileErr) console.warn('Note profil:', profileErr.message);
-    }
-    
-    // Sauvegarder la session locale
-    localStorage.setItem('afrimark_user', JSON.stringify({ id: authData.user?.id, email, name: fullName, role }));
-    return { data: authData.user };
+    localStorage.setItem('afrimark_user', JSON.stringify({ id: data.user?.id, email, name: fullName, role }));
+    return { data: data.user };
   } catch (err) {
-    console.error('Erreur inscription:', err);
     return { error: err.message };
   }
 }
@@ -43,19 +75,10 @@ async function loginUser(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
 
-    // Récupérer le profil utilisateur
-    const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
-    const userSession = {
-      id: data.user.id,
-      email: data.user.email,
-      name: profile ? profile.full_name : data.user.email,
-      role: profile ? profile.role : 'commercant'
-    };
-
+    const userSession = { id: data.user.id, email: data.user.email, name: email.split('@')[0], role: 'commercant' };
     localStorage.setItem('afrimark_user', JSON.stringify(userSession));
     return { data: userSession };
   } catch (err) {
-    console.error('Erreur connexion:', err);
     return { error: err.message };
   }
 }
@@ -70,37 +93,7 @@ function logoutUser() {
   window.location.href = 'index.html';
 }
 
-// ---- CHARGEMENT DES PRODUITS DEPUIS SUPABASE ----
-async function loadProducts(category = null) {
-  const grid = document.getElementById('products-grid');
-  if (!grid) return;
-
-  grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">Chargement des produits depuis Supabase... ⏳</div>';
-
-  if (typeof fetchProductsFromDB === 'function') {
-    const dbProducts = await fetchProductsFromDB(category);
-    if (dbProducts && dbProducts.length > 0) {
-      grid.innerHTML = dbProducts.map(p => `
-        <div class="product-card" onclick="window.location.href='fiche-produit.html?id=${p.id}'">
-          <div class="product-card-img"><img src="${p.image_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80'}" alt="${p.name}"></div>
-          <div class="product-card-body">
-            <h3>${p.name}</h3>
-            <div class="product-price">
-              <strong>À partir de : ${Number(p.price_fcfa).toLocaleString('fr-FR')} FCFA / ${p.unit}</strong>
-              <div class="product-min">Commande min. : ${p.min_quantity} ${p.unit}s</div>
-            </div>
-          </div>
-        </div>
-      `).join('');
-      return;
-    }
-  }
-
-  // Fallback si la BDD est encore vide
-  grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gray);">Aucun produit en base. Connectez-vous en fournisseur pour en ajouter !</div>';
-}
-
-// ---- GESTION DU PANIER & DEVIS ----
+// ---- PANIER & TOAST ----
 function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
 function saveCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCartBadge(); }
 
@@ -140,8 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
     navCta.href = 'dashboard.html';
   }
   
-  if (document.getElementById('products-grid')) {
-    setTimeout(loadProducts, 500);
-  }
+  loadProducts();
   updateCartBadge();
 });
