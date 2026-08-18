@@ -72,12 +72,16 @@ ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.devis ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.devis_items ENABLE ROW LEVEL SECURITY;
 
--- Lecture publique des profils et produits
+-- Politiques RLS pour profiles
 CREATE POLICY "Lecture publique profils" ON public.profiles FOR SELECT USING (true);
+CREATE POLICY "Création profil utilisateur" ON public.profiles FOR INSERT WITH CHECK (true);
+CREATE POLICY "Mise à jour propre profil" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+
+-- Politiques RLS pour produits
 CREATE POLICY "Lecture publique produits" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Fournisseurs modifient leurs produits" ON public.products FOR ALL USING (auth.uid() = supplier_id);
 
--- Politiques de devis
+-- Politiques RLS pour devis
 CREATE POLICY "Voir ses propres devis" ON public.devis FOR SELECT USING (auth.uid() = merchant_id OR auth.uid() = supplier_id);
 CREATE POLICY "Créer un devis" ON public.devis FOR INSERT WITH CHECK (auth.uid() = merchant_id);
 
@@ -90,9 +94,18 @@ BEGIN
     new.id,
     new.email,
     COALESCE(new.raw_user_meta_data->>'full_name', new.email),
-    COALESCE((new.raw_user_meta_data->>'role')::user_role, 'commercant'),
+    COALESCE((new.raw_user_meta_data->>'role')::user_role, 'commercant'::user_role),
     new.raw_user_meta_data->>'company'
-  );
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    full_name = EXCLUDED.full_name,
+    company_name = EXCLUDED.company_name;
+  RETURN NEW;
+EXCEPTION WHEN OTHERS THEN
+  -- En cas d'erreur de cast ou d'insertion, créer quand même l'utilisateur de secours sans bloquer Auth
+  INSERT INTO public.profiles (id, email, full_name, role)
+  VALUES (new.id, new.email, COALESCE(new.raw_user_meta_data->>'full_name', new.email), 'commercant'::user_role)
+  ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
