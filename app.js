@@ -41,11 +41,18 @@ async function loadProducts(category = null) {
 }
 
 // ---- AUTHENTIFICATION ----
+function getSupabaseClient() {
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) return supabaseClient;
+  if (typeof initSupabaseClient === 'function') return initSupabaseClient();
+  return null;
+}
+
 async function registerUser(email, password, fullName, role, companyName) {
-  if (!supabase) return { error: 'Supabase non connecté' };
+  const client = getSupabaseClient();
+  if (!client) return { error: 'Client Supabase non initialisé. Vérifiez que la bibliothèque CDN Supabase est chargée.' };
   try {
-    const { data, error } = await supabase.auth.signUp({
-      email, password, options: { data: { full_name: fullName, role } }
+    const { data, error } = await client.auth.signUp({
+      email, password, options: { data: { full_name: fullName, role, company: companyName } }
     });
     if (error) throw error;
 
@@ -57,9 +64,10 @@ async function registerUser(email, password, fullName, role, companyName) {
 }
 
 async function loginUser(email, password) {
-  if (!supabase) return { error: 'Supabase non connecté' };
+  const client = getSupabaseClient();
+  if (!client) return { error: 'Client Supabase non connecté' };
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
     if (error) throw error;
 
     const userSession = { id: data.user.id, email: data.user.email, name: email.split('@')[0], role: 'commercant' };
@@ -75,7 +83,8 @@ function getCurrentUser() {
 }
 
 function logoutUser() {
-  if (supabase) supabase.auth.signOut();
+  const client = getSupabaseClient();
+  if (client) client.auth.signOut();
   localStorage.removeItem('AfroBaza_user');
   window.location.href = 'index.html';
 }
