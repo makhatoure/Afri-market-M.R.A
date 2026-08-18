@@ -1,5 +1,5 @@
 // ========================================================
-// AFRIMARK — CLIENT SUPABASE (DATABASE & AUTH)
+// AfroBaza — CLIENT SUPABASE (DATABASE & AUTH)
 // ========================================================
 
 const SUPABASE_URL = 'https://zyrzyuzmrdhvcmevxeal.supabase.co';
