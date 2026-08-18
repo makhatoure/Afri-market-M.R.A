@@ -57,8 +57,8 @@
       const result = await loginUser(email, password);
 
       if (result.error) {
-        showToast('❌ Identifiants Supabase incorrects', 'error');
-        btn.textContent = 'Se connecter à Supabase';
+        showToast('❌ Erreur : ' + result.error, 'error');
+        btn.textContent = 'Se connecter à AfroBaza';
         btn.disabled = false;
       } else {
         showToast(`✓ Connexion réussie ! Bienvenue ${result.data.name}`, 'success');
