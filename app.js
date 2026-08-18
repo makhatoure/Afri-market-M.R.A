@@ -49,12 +49,28 @@ function getSupabaseClient() {
 
 async function registerUser(email, password, fullName, role, companyName) {
   const client = getSupabaseClient();
-  if (!client) return { error: 'Client Supabase non initialisé. Vérifiez que la bibliothèque CDN Supabase est chargée.' };
+  if (!client) return { error: 'Client Supabase non initialisé.' };
   try {
+    // 1. Inscription Auth
     const { data, error } = await client.auth.signUp({
       email, password, options: { data: { full_name: fullName, role, company: companyName } }
     });
     if (error) throw error;
+
+    // 2. Création manuelle du profil en base (si un ID utilisateur est retourné)
+    if (data.user) {
+      try {
+        await client.from('profiles').insert([{
+          id: data.user.id,
+          email: email,
+          full_name: fullName,
+          role: role || 'commercant',
+          company_name: companyName || null
+        }]);
+      } catch (profileErr) {
+        console.warn('Création du profil secondaire ignorée:', profileErr);
+      }
+    }
 
     localStorage.setItem('AfroBaza_user', JSON.stringify({ id: data.user?.id, email, name: fullName, role }));
     return { data: data.user };

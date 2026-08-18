@@ -95,39 +95,8 @@ DROP POLICY IF EXISTS "Créer un devis" ON public.devis;
 CREATE POLICY "Voir ses propres devis" ON public.devis FOR SELECT USING (auth.uid() = merchant_id OR auth.uid() = supplier_id);
 CREATE POLICY "Créer un devis" ON public.devis FOR INSERT WITH CHECK (auth.uid() = merchant_id);
 
--- 7. TRIGGER AUTOMATIQUE À L'INSCRIPTION (VERSION ROBUSTE)
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
-DECLARE
-  user_role_val user_role := 'commercant';
-BEGIN
-  IF new.raw_user_meta_data->>'role' = 'fournisseur' THEN
-    user_role_val := 'fournisseur';
-  END IF;
-
-  INSERT INTO public.profiles (id, email, full_name, role, company_name)
-  VALUES (
-    new.id,
-    new.email,
-    COALESCE(new.raw_user_meta_data->>'full_name', new.email),
-    user_role_val,
-    new.raw_user_meta_data->>'company'
-  )
-  ON CONFLICT (id) DO UPDATE SET
-    full_name = EXCLUDED.full_name,
-    company_name = EXCLUDED.company_name;
-    
-  RETURN NEW;
-EXCEPTION WHEN OTHERS THEN
-  -- En cas de problème de profil, on valide l'utilisateur auth sans bloquer l'inscription
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
+-- 7. TRIGGER AUTOMATIQUE À L'INSCRIPTION (DÉSACTIVÉ POUR DÉBOGAGE)
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- 8. PRODUITS D'EXEMPLE INITIALS
 INSERT INTO public.products (name, description, category, price_fcfa, unit, min_quantity, image_url)
