@@ -73,15 +73,25 @@ ALTER TABLE public.devis ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.devis_items ENABLE ROW LEVEL SECURITY;
 
 -- Politiques RLS pour profiles
+DROP POLICY IF EXISTS "Lecture publique profils" ON public.profiles;
+DROP POLICY IF EXISTS "Création profil utilisateur" ON public.profiles;
+DROP POLICY IF EXISTS "Mise à jour propre profil" ON public.profiles;
+
 CREATE POLICY "Lecture publique profils" ON public.profiles FOR SELECT USING (true);
 CREATE POLICY "Création profil utilisateur" ON public.profiles FOR INSERT WITH CHECK (true);
 CREATE POLICY "Mise à jour propre profil" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
 -- Politiques RLS pour produits
+DROP POLICY IF EXISTS "Lecture publique produits" ON public.products;
+DROP POLICY IF EXISTS "Fournisseurs modifient leurs produits" ON public.products;
+
 CREATE POLICY "Lecture publique produits" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Fournisseurs modifient leurs produits" ON public.products FOR ALL USING (auth.uid() = supplier_id);
 
 -- Politiques RLS pour devis
+DROP POLICY IF EXISTS "Voir ses propres devis" ON public.devis;
+DROP POLICY IF EXISTS "Créer un devis" ON public.devis;
+
 CREATE POLICY "Voir ses propres devis" ON public.devis FOR SELECT USING (auth.uid() = merchant_id OR auth.uid() = supplier_id);
 CREATE POLICY "Créer un devis" ON public.devis FOR INSERT WITH CHECK (auth.uid() = merchant_id);
 
