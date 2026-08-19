@@ -214,11 +214,12 @@
       document.getElementById('dash-user-email').textContent = currentUser.email;
       document.getElementById('dash-email-display').textContent = currentUser.email;
 
-      // 3. Affichage systématique des sections selon le rôle exact
+      // 3. Affichage systématique des sections selon le rôle exact (gestion de la casse)
+      const roleLower = String(currentUser.role || '').toLowerCase();
       const supplierSec = document.getElementById('supplier-section');
       const merchantSec = document.getElementById('merchant-section');
 
-      if (currentUser.role === 'fournisseur') {
+      if (roleLower === 'fournisseur') {
         if (supplierSec) supplierSec.style.display = 'block';
         if (merchantSec) merchantSec.style.display = 'none';
       } else {
