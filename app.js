@@ -140,9 +140,27 @@ function showToast(msg, type = '') {
 document.addEventListener('DOMContentLoaded', () => {
   const user = getCurrentUser();
   const navCta = document.getElementById('nav-cta');
-  if (user && navCta) {
-    navCta.textContent = user.name || 'Mon espace';
-    navCta.href = 'dashboard.html';
+  const navActions = document.querySelector('.nav-actions');
+
+  if (user) {
+    if (navCta) {
+      navCta.textContent = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
+      navCta.href = 'dashboard.html';
+    }
+
+    if (navActions && !document.getElementById('logout-btn-nav')) {
+      const logoutBtn = document.createElement('button');
+      logoutBtn.id = 'logout-btn-nav';
+      logoutBtn.className = 'btn-outline';
+      logoutBtn.style.borderColor = '#ef4444';
+      logoutBtn.style.color = '#ef4444';
+      logoutBtn.style.padding = '8px 14px';
+      logoutBtn.style.fontSize = '13px';
+      logoutBtn.style.cursor = 'pointer';
+      logoutBtn.textContent = 'Déconnexion 🚪';
+      logoutBtn.onclick = logoutUser;
+      navActions.appendChild(logoutBtn);
+    }
   }
   
   loadProducts();
