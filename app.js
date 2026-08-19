@@ -86,7 +86,21 @@ async function loginUser(email, password) {
     const { data, error } = await client.auth.signInWithPassword({ email, password });
     if (error) throw error;
 
-    const userSession = { id: data.user.id, email: data.user.email, name: email.split('@')[0], role: 'commercant' };
+    let userRole = data.user.user_metadata?.role || 'commercant';
+    let userName = data.user.user_metadata?.full_name || email.split('@')[0];
+
+    // Tenter d'aller chercher le profil exact en BDD
+    try {
+      const { data: profile } = await client.from('profiles').select('role, full_name, company_name').eq('id', data.user.id).single();
+      if (profile) {
+        if (profile.role) userRole = profile.role;
+        if (profile.company_name || profile.full_name) userName = profile.company_name || profile.full_name;
+      }
+    } catch (pErr) {
+      console.warn('Erreur lecture profil Supabase:', pErr);
+    }
+
+    const userSession = { id: data.user.id, email: data.user.email, name: userName, role: userRole };
     localStorage.setItem('AfroBaza_user', JSON.stringify(userSession));
     return { data: userSession };
   } catch (err) {
