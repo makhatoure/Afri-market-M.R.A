@@ -184,14 +184,29 @@
   <script>
     let currentUser = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       currentUser = getCurrentUser();
       if (!currentUser) {
         window.location.href = 'connexion.html';
         return;
       }
 
-      // Injection dynamique des infos réelles de l'utilisateur
+      // 1. Tenter d'aller chercher le profil en direct dans Supabase pour être sûr du rôle
+      const client = getSupabaseClient();
+      if (client) {
+        try {
+          const { data: profile } = await client.from('profiles').select('role, full_name, company_name').eq('id', currentUser.id).single();
+          if (profile) {
+            if (profile.role) currentUser.role = profile.role;
+            if (profile.company_name || profile.full_name) currentUser.name = profile.company_name || profile.full_name;
+            localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+          }
+        } catch (e) {
+          console.warn('Problème chargement profil direct:', e);
+        }
+      }
+
+      // 2. Injection des données utilisateur
       const name = currentUser.name || currentUser.email.split('@')[0];
       document.getElementById('dash-user-name').textContent = name;
       document.getElementById('dash-greeting').textContent = 'Bonjour, ' + name;
@@ -199,11 +214,16 @@
       document.getElementById('dash-user-email').textContent = currentUser.email;
       document.getElementById('dash-email-display').textContent = currentUser.email;
 
-      // Affichage dynamique des espaces dédiés selon le rôle
+      // 3. Affichage systématique des sections selon le rôle exact
+      const supplierSec = document.getElementById('supplier-section');
+      const merchantSec = document.getElementById('merchant-section');
+
       if (currentUser.role === 'fournisseur') {
-        document.getElementById('supplier-section').style.display = 'block';
+        if (supplierSec) supplierSec.style.display = 'block';
+        if (merchantSec) merchantSec.style.display = 'none';
       } else {
-        document.getElementById('merchant-section').style.display = 'block';
+        if (merchantSec) merchantSec.style.display = 'block';
+        if (supplierSec) supplierSec.style.display = 'none';
         loadDashSuppliers();
       }
     });
