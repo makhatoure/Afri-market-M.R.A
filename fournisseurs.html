@@ -50,14 +50,12 @@
       }
 
       try {
-        const { data: suppliers, error } = await client
-          .from('profiles')
-          .select('*')
-          .or('role.ilike.fournisseur,role.eq.Fournisseur');
-
+        const { data: allProfiles, error } = await client.from('profiles').select('*');
         if (error) throw error;
 
-        if (!suppliers || suppliers.length === 0) {
+        const suppliers = (allProfiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+
+        if (suppliers.length === 0) {
           container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">Aucun fournisseur enregistré sur la plateforme pour le moment.</div>';
           return;
         }

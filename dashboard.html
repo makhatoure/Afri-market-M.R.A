@@ -264,14 +264,12 @@
       if (!client) return;
 
       try {
-        const { data, error } = await client
-          .from('profiles')
-          .select('*')
-          .or('role.ilike.fournisseur,role.eq.Fournisseur');
-
+        const { data: allProfiles, error } = await client.from('profiles').select('*');
         if (error) throw error;
 
-        if (!data || data.length === 0) {
+        const data = (allProfiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+
+        if (data.length === 0) {
           container.innerHTML = '<div style="color:#666;font-size:13px;">Aucun compte fournisseur enregistré pour le moment.</div>';
           return;
         }
