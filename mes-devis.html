@@ -114,10 +114,13 @@
       tbody.innerHTML = filtered.map(d => `
         <tr>
           <td class="devis-number">${d.devis_number || 'DEV-' + d.id.slice(0,6)}</td>
-          <td>${d.supplier_id || 'Fournisseur AfroBaza'}</td>
+          <td>${d.supplier_id || 'Partenaire AfroBaza'}</td>
           <td style="font-weight:700;">${Number(d.total_amount_fcfa || 0).toLocaleString('fr-FR')} FCFA</td>
           <td><span class="badge-status ${STATUS_CLASSES[d.status] || 'badge-sent'}">${STATUS_LABELS[d.status] || d.status}</span></td>
           <td>${new Date(d.created_at).toLocaleDateString('fr-FR')}</td>
+          <td>
+            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 Négocier / Discuter</button>
+          </td>
         </tr>
       `).join('');
     }
@@ -126,6 +129,97 @@
       document.querySelectorAll('.account-content button').forEach(b => b.classList.replace('btn-primary','btn-outline'));
       btn.classList.replace('btn-outline','btn-primary');
       renderDevis(filter);
+    }
+  </script>
+
+  <!-- MODAL DE MESSAGERIE INTERNE -->
+  <div id="chat-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;width:90%;max-width:600px;border-radius:12px;padding:24px;display:flex;flex-direction:column;max-height:85vh;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:12px;">
+        <h3 style="font-size:18px;" id="chat-title">Négociation du Devis</h3>
+        <button onclick="closeChatModal()" style="background:none;border:none;font-size:20px;cursor:pointer;">✕</button>
+      </div>
+
+      <div id="chat-messages" style="flex:1;overflow-y:auto;margin-bottom:16px;display:flex;flex-direction:column;gap:12px;padding-right:8px;min-height:200px;">
+        <div style="text-align:center;color:#888;font-size:14px;">Chargement de la discussion...</div>
+      </div>
+
+      <form onsubmit="handleSendMessage(event)" style="display:flex;gap:10px;">
+        <input type="text" id="chat-input" class="form-control" placeholder="Proposez un prix ou posez une question..." required style="flex:1;">
+        <button type="submit" class="btn-primary" id="chat-send-btn">Envoyer</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let activeDevisId = null;
+
+    async function openChatModal(devisId, devisNum) {
+      activeDevisId = devisId;
+      document.getElementById('chat-title').textContent = '💬 Négociation : ' + devisNum;
+      document.getElementById('chat-modal').style.display = 'flex';
+      await loadMessages();
+    }
+
+    function closeChatModal() {
+      document.getElementById('chat-modal').style.display = 'none';
+      activeDevisId = null;
+    }
+
+    async function loadMessages() {
+      const container = document.getElementById('chat-messages');
+      const client = getSupabaseClient();
+      const user = getCurrentUser();
+
+      if (!client || !activeDevisId) return;
+
+      try {
+        const { data, error } = await client.from('messages').select('*').eq('devis_id', activeDevisId).order('created_at', { ascending: true });
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          container.innerHTML = '<div style="text-align:center;color:#888;font-size:14px;padding:20px;">Aucun message envoyé pour l\'instant. Proposez une offre ou posez vos questions directement ici.</div>';
+          return;
+        }
+
+        container.innerHTML = data.map(m => {
+          const isMe = m.sender_id === user.id;
+          return `
+            <div style="align-self:${isMe ? 'flex-end' : 'flex-start'};max-width:80%;background:${isMe ? 'var(--yellow-light)' : '#f1f5f9'};border:${isMe ? '1px solid var(--yellow)' : '1px solid #e2e8f0'};padding:10px 14px;border-radius:10px;">
+              <div style="font-size:11px;color:#666;margin-bottom:4px;">${isMe ? 'Vous' : 'Interlocuteur'} • ${new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+              <div style="font-size:14px;color:#1e293b;">${m.message}</div>
+            </div>
+          `;
+        }).join('');
+        container.scrollTop = container.scrollHeight;
+      } catch (err) {
+        container.innerHTML = '<div style="color:red;text-align:center;">Erreur de chargement des messages.</div>';
+      }
+    }
+
+    async function handleSendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const msgText = input.value.trim();
+      if (!msgText || !activeDevisId) return;
+
+      const client = getSupabaseClient();
+      const user = getCurrentUser();
+      if (!client) return;
+
+      try {
+        const { error } = await client.from('messages').insert([{
+          devis_id: activeDevisId,
+          sender_id: user.id,
+          message: msgText
+        }]);
+
+        if (error) throw error;
+        input.value = '';
+        await loadMessages();
+      } catch (err) {
+        showToast('❌ Erreur envoi : ' + err.message, 'error');
+      }
     }
   </script>
 </body>

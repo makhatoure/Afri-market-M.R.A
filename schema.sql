@@ -66,11 +66,22 @@ CREATE TABLE IF NOT EXISTS public.devis_items (
     total_price_fcfa NUMERIC NOT NULL
 );
 
--- 6. POLITIQUES DE SÉCURITÉ (RLS - ROW LEVEL SECURITY)
+-- 6. TABLE DES MESSAGES DE NÉGOCIATION
+CREATE TABLE IF NOT EXISTS public.messages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    devis_id UUID REFERENCES public.devis(id) ON DELETE CASCADE,
+    sender_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+    receiver_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 7. POLITIQUES DE SÉCURITÉ (RLS - ROW LEVEL SECURITY)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.devis ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.devis_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 
 -- Politiques RLS pour profiles
 DROP POLICY IF EXISTS "Lecture publique profils" ON public.profiles;
@@ -84,16 +95,27 @@ CREATE POLICY "Mise à jour propre profil" ON public.profiles FOR UPDATE USING (
 -- Politiques RLS pour produits
 DROP POLICY IF EXISTS "Lecture publique produits" ON public.products;
 DROP POLICY IF EXISTS "Fournisseurs modifient leurs produits" ON public.products;
+DROP POLICY IF EXISTS "Fournisseurs ajoutent des produits" ON public.products;
 
 CREATE POLICY "Lecture publique produits" ON public.products FOR SELECT USING (true);
+CREATE POLICY "Fournisseurs ajoutent des produits" ON public.products FOR INSERT WITH CHECK (auth.uid() = supplier_id);
 CREATE POLICY "Fournisseurs modifient leurs produits" ON public.products FOR ALL USING (auth.uid() = supplier_id);
 
 -- Politiques RLS pour devis
 DROP POLICY IF EXISTS "Voir ses propres devis" ON public.devis;
 DROP POLICY IF EXISTS "Créer un devis" ON public.devis;
+DROP POLICY IF EXISTS "Mettre a jour devis" ON public.devis;
 
 CREATE POLICY "Voir ses propres devis" ON public.devis FOR SELECT USING (auth.uid() = merchant_id OR auth.uid() = supplier_id);
 CREATE POLICY "Créer un devis" ON public.devis FOR INSERT WITH CHECK (auth.uid() = merchant_id);
+CREATE POLICY "Mettre a jour devis" ON public.devis FOR UPDATE USING (auth.uid() = merchant_id OR auth.uid() = supplier_id);
+
+-- Politiques RLS pour messages
+DROP POLICY IF EXISTS "Voir ses messages" ON public.messages;
+DROP POLICY IF EXISTS "Envoyer message" ON public.messages;
+
+CREATE POLICY "Voir ses messages" ON public.messages FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
+CREATE POLICY "Envoyer message" ON public.messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
 
 -- 7. TRIGGER AUTOMATIQUE À L'INSCRIPTION (DÉSACTIVÉ POUR DÉBOGAGE)
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;

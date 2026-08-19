@@ -89,9 +89,59 @@
           <h3>Bienvenue sur votre espace personnel</h3>
           <p style="color:#666;line-height:1.6;margin-top:8px;">
             Vous êtes connecté avec votre compte <strong id="dash-email-display">...</strong>.<br>
-            Vous pouvez parcourir les produits, effectuer des demandes de devis et gérer vos commandes.
+            Vous pouvez parcourir les produits, effectuer des demandes de devis et gérer vos transactions.
           </p>
         </div>
+      </div>
+
+      <!-- ESPACE EXCLUSIF FOURNISSEUR : AJOUT DE PRODUIT -->
+      <div id="supplier-section" style="display:none;margin-top:32px;background:#fff;padding:24px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);border:1px solid #eee;">
+        <h2 style="font-size:20px;margin-bottom:16px;color:#111;">📦 Espace Fournisseur : Ajouter un produit à votre catalogue</h2>
+        <form onsubmit="handleAddProduct(event)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group">
+              <label for="prod-name">Nom du produit</label>
+              <input type="text" id="prod-name" class="form-control" placeholder="Ex: Beurre de karité brut" required>
+            </div>
+            <div class="form-group">
+              <label for="prod-cat">Catégorie</label>
+              <select id="prod-cat" class="form-control" required>
+                <option value="Cosmétiques">Cosmétiques & Beauté</option>
+                <option value="Textiles">Textiles & Mode</option>
+                <option value="Électroniques">Électroniques</option>
+                <option value="Enfants">Enfants & Jouets</option>
+                <option value="Maison">Maison & Décoration</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+            <div class="form-group">
+              <label for="prod-price">Prix unitaire (FCFA)</label>
+              <input type="number" id="prod-price" class="form-control" placeholder="Ex: 2500" required min="1">
+            </div>
+            <div class="form-group">
+              <label for="prod-unit">Unité</label>
+              <input type="text" id="prod-unit" class="form-control" placeholder="Ex: Kg, Pièce, Sac" required>
+            </div>
+            <div class="form-group">
+              <label for="prod-min">Commande min. (MOQ)</label>
+              <input type="number" id="prod-min" class="form-control" placeholder="Ex: 10" required min="1">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prod-img">URL d'image du produit</label>
+            <input type="url" id="prod-img" class="form-control" placeholder="https://images.unsplash.com/..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="prod-desc">Description du produit</label>
+            <textarea id="prod-desc" class="form-control" rows="3" placeholder="Description détaillée pour les commerçants..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" id="add-prod-btn">Publier le produit dans le catalogue</button>
+        </form>
       </div>
     </main>
   </div>
@@ -101,21 +151,68 @@
   <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
+    let currentUser = null;
+
     document.addEventListener('DOMContentLoaded', () => {
-      const user = getCurrentUser();
-      if (!user) {
+      currentUser = getCurrentUser();
+      if (!currentUser) {
         window.location.href = 'connexion.html';
         return;
       }
 
       // Injection dynamique des infos réelles de l'utilisateur
-      const name = user.name || user.email.split('@')[0];
+      const name = currentUser.name || currentUser.email.split('@')[0];
       document.getElementById('dash-user-name').textContent = name;
       document.getElementById('dash-greeting').textContent = 'Bonjour, ' + name;
-      document.getElementById('dash-user-role').textContent = user.role || 'Commerçant';
-      document.getElementById('dash-user-email').textContent = user.email;
-      document.getElementById('dash-email-display').textContent = user.email;
+      document.getElementById('dash-user-role').textContent = currentUser.role || 'Commerçant';
+      document.getElementById('dash-user-email').textContent = currentUser.email;
+      document.getElementById('dash-email-display').textContent = currentUser.email;
+
+      // Si l'utilisateur est un fournisseur, afficher l'espace d'ajout de produit
+      if (currentUser.role === 'fournisseur') {
+        document.getElementById('supplier-section').style.display = 'block';
+      }
     });
+
+    async function handleAddProduct(e) {
+      e.preventDefault();
+      const btn = document.getElementById('add-prod-btn');
+      btn.textContent = 'Publication en cours... ⏳';
+      btn.disabled = true;
+
+      const client = getSupabaseClient();
+      if (!client) {
+        showToast('❌ Erreur de connexion Supabase', 'error');
+        btn.textContent = 'Publier le produit dans le catalogue';
+        btn.disabled = false;
+        return;
+      }
+
+      const newProduct = {
+        supplier_id: currentUser.id,
+        name: document.getElementById('prod-name').value,
+        category: document.getElementById('prod-cat').value,
+        price_fcfa: Number(document.getElementById('prod-price').value),
+        unit: document.getElementById('prod-unit').value,
+        min_quantity: Number(document.getElementById('prod-min').value),
+        image_url: document.getElementById('prod-img').value,
+        description: document.getElementById('prod-desc').value,
+        in_stock: true
+      };
+
+      try {
+        const { data, error } = await client.from('products').insert([newProduct]);
+        if (error) throw error;
+
+        showToast('✓ Produit publié avec succès dans le catalogue !', 'success');
+        e.target.reset();
+      } catch (err) {
+        showToast('❌ Erreur : ' + err.message, 'error');
+      } finally {
+        btn.textContent = 'Publier le produit dans le catalogue';
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>
