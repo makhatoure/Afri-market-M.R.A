@@ -154,8 +154,16 @@
           </div>
 
           <div class="form-group">
-            <label for="prod-img">URL d'image du produit</label>
-            <input type="url" id="prod-img" class="form-control" placeholder="https://images.unsplash.com/..." required>
+            <label for="prod-img">📸 Photo du produit</label>
+            <div style="border:2px dashed #d1d5db;border-radius:10px;padding:20px;text-align:center;background:#f9fafb;cursor:pointer;position:relative;" onclick="document.getElementById('prod-img').click()" id="img-drop-zone">
+              <input type="file" id="prod-img" accept="image/*" style="display:none;" onchange="previewImage(event)">
+              <img id="img-preview" src="" alt="" style="display:none;max-height:160px;max-width:100%;border-radius:8px;margin-bottom:8px;">
+              <div id="img-placeholder">
+                <div style="font-size:36px;margin-bottom:8px;">🖼️</div>
+                <div style="font-weight:600;color:#374151;font-size:14px;">Cliquez pour choisir une photo</div>
+                <div style="font-size:12px;color:#9ca3af;margin-top:4px;">JPG, PNG, WEBP — max 5 Mo</div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -291,6 +299,29 @@
         return;
       }
 
+      // Upload de la photo dans Supabase Storage
+      const fileInput = document.getElementById('prod-img');
+      const file = fileInput.files[0];
+      let imageUrl = '';
+
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `products/${currentUser.id}_${Date.now()}.${fileExt}`;
+        const { data: uploadData, error: uploadError } = await client.storage
+          .from('product-images')
+          .upload(fileName, file, { upsert: true });
+
+        if (uploadError) {
+          showToast('❌ Erreur upload photo : ' + uploadError.message, 'error');
+          btn.textContent = 'Publier le produit dans le catalogue';
+          btn.disabled = false;
+          return;
+        }
+
+        const { data: urlData } = client.storage.from('product-images').getPublicUrl(fileName);
+        imageUrl = urlData.publicUrl;
+      }
+
       const newProduct = {
         supplier_id: currentUser.id,
         name: document.getElementById('prod-name').value,
@@ -298,7 +329,7 @@
         price_fcfa: Number(document.getElementById('prod-price').value),
         unit: document.getElementById('prod-unit').value,
         min_quantity: Number(document.getElementById('prod-min').value),
-        image_url: document.getElementById('prod-img').value,
+        image_url: imageUrl,
         description: document.getElementById('prod-desc').value,
         in_stock: true
       };
@@ -309,12 +340,28 @@
 
         showToast('✓ Produit publié avec succès dans le catalogue !', 'success');
         e.target.reset();
+        document.getElementById('img-preview').style.display = 'none';
+        document.getElementById('img-placeholder').style.display = 'block';
       } catch (err) {
         showToast('❌ Erreur : ' + err.message, 'error');
       } finally {
         btn.textContent = 'Publier le produit dans le catalogue';
         btn.disabled = false;
       }
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById('img-preview');
+        const placeholder = document.getElementById('img-placeholder');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
