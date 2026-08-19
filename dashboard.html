@@ -191,25 +191,44 @@
         return;
       }
 
-      // 1. Tenter d'aller chercher le profil en direct dans Supabase pour être sûr du rôle
+      // ÉTAPE 1 : Afficher immédiatement les sections basées sur le localStorage (sans attendre Supabase)
+      afficherEspace(currentUser);
+
+      // ÉTAPE 2 : Mise à jour asynchrone depuis Supabase (en arrière-plan)
       const client = getSupabaseClient();
       if (client && currentUser.id) {
         try {
-          const { data: profile } = await client.from('profiles').select('role, full_name, company_name').eq('id', currentUser.id).maybeSingle();
-          if (profile) {
-            if (profile.role) currentUser.role = profile.role;
-            if (profile.company_name || profile.full_name) currentUser.name = profile.company_name || profile.full_name;
-            localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+          const { data: profile, error } = await client
+            .from('profiles')
+            .select('role, full_name, company_name')
+            .eq('id', currentUser.id)
+            .maybeSingle();
+
+          if (!error && profile) {
+            let changed = false;
+            if (profile.role && profile.role !== currentUser.role) {
+              currentUser.role = profile.role;
+              changed = true;
+            }
+            if (profile.company_name || profile.full_name) {
+              const newName = profile.company_name || profile.full_name;
+              if (newName !== currentUser.name) { currentUser.name = newName; changed = true; }
+            }
+            if (changed) {
+              localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+              afficherEspace(currentUser); // Re-afficher si le rôle a changé
+            }
           }
         } catch (e) {
-          console.warn('Problème chargement profil direct:', e);
+          console.warn('Profil Supabase non disponible, utilisation du cache local:', e);
         }
       }
+    });
 
-      // 2. Injection des données utilisateur
-      const name = currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Utilisateur');
-      const roleText = currentUser.role || 'Commerçant';
-      
+    function afficherEspace(user) {
+      const name = user.name || (user.email ? user.email.split('@')[0] : 'Utilisateur');
+      const roleText = user.role || 'commercant';
+
       const elName = document.getElementById('dash-user-name');
       const elGreet = document.getElementById('dash-greeting');
       const elRole = document.getElementById('dash-user-role');
@@ -219,23 +238,24 @@
       if (elName) elName.textContent = name;
       if (elGreet) elGreet.textContent = 'Bonjour, ' + name;
       if (elRole) elRole.textContent = roleText;
-      if (elEmail) elEmail.textContent = currentUser.email || 'Connecté';
-      if (elEmailDisp) elEmailDisp.textContent = currentUser.email || '';
+      if (elEmail) elEmail.textContent = user.email || '';
+      if (elEmailDisp) elEmailDisp.textContent = user.email || '';
 
-      // 3. Affichage garanti de l'espace Fournisseur (analyse insensible à la casse et sans bloquer)
-      const roleStr = String(roleText).toLowerCase().trim();
       const supplierSec = document.getElementById('supplier-section');
       const merchantSec = document.getElementById('merchant-section');
+      const roleStr = String(roleText).toLowerCase().trim();
+
+      console.log('AfroBaza - Rôle détecté :', roleStr);
 
       if (roleStr.includes('fournisseur')) {
-        if (supplierSec) supplierSec.style.display = 'block';
-        if (merchantSec) merchantSec.style.display = 'none';
+        if (supplierSec) { supplierSec.style.display = 'block'; supplierSec.style.visibility = 'visible'; }
+        if (merchantSec) { merchantSec.style.display = 'none'; }
       } else {
-        if (merchantSec) merchantSec.style.display = 'block';
-        if (supplierSec) supplierSec.style.display = 'none';
+        if (merchantSec) { merchantSec.style.display = 'block'; merchantSec.style.visibility = 'visible'; }
+        if (supplierSec) { supplierSec.style.display = 'none'; }
         if (typeof loadDashSuppliers === 'function') loadDashSuppliers();
       }
-    });
+    }
 
     async function loadDashSuppliers() {
       const container = document.getElementById('dash-suppliers-list');
