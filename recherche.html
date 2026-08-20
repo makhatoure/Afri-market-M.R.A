@@ -89,45 +89,78 @@
     </div>
   </div>
 
+  <!-- SDK SUPABASE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
-    const SUPPLIERS = [
-      { id: 1, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 000", unit: "FCFA / kg", min: "10kg", img: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=300&q=80", verified: true },
-      { id: 2, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 400", unit: "FCFA / kg", min: "15kg", img: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=300&q=80", verified: true },
-      { id: 3, name: "Ryn's Home", cat: "Cosmétiques et beauté", loc: "Dakar, Sénégal", rating: 4.5, reviews: 23, price: "1 450", unit: "FCFA / kg", min: "20kg", img: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=300&q=80", verified: true },
-      { id: 4, name: "NaturaSen", cat: "Cosmétiques et beauté", loc: "Thiès, Sénégal", rating: 4.2, reviews: 18, price: "950", unit: "FCFA / kg", min: "5kg", img: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=300&q=80", verified: false },
-      { id: 5, name: "KariteExport", cat: "Cosmétiques et beauté", loc: "Saint-Louis, Sénégal", rating: 4.7, reviews: 41, price: "1 200", unit: "FCFA / kg", min: "25kg", img: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=300&q=80", verified: true },
-    ];
+    document.addEventListener('DOMContentLoaded', renderResults);
 
-    function renderResults() {
+    async function renderResults() {
       const params = new URLSearchParams(window.location.search);
-      const q = params.get('q') || 'Beurre de karité';
+      const supplierId = params.get('supplier_id');
+      const category = params.get('cat');
+      const q = params.get('q');
+
       const title = document.getElementById('results-title');
-      if (title) title.textContent = `Résultat pour "${q}"`;
-
-      const navInput = document.getElementById('nav-search-input');
-      if (navInput) navInput.value = q;
-
       const list = document.getElementById('results-list');
-      list.innerHTML = SUPPLIERS.map(s => `
-        <div class="supplier-result-card" onclick="window.location.href='fiche-produit.html?id=${s.id}'">
-          <div class="supplier-result-img"><img src="${s.img}" alt="${s.name}"></div>
-          <div class="supplier-result-info">
-            <h3>${s.name} ${s.verified ? '<span class="badge-verified">✓ Vérifié</span>' : ''}</h3>
-            <div class="category">${s.cat}</div>
-            <div class="location">📍 ${s.loc}</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <span class="star-score">★ ${s.rating}</span>
-              <span class="review-count">(${s.reviews} avis)</span>
+      const client = getSupabaseClient();
+
+      if (!client) {
+        list.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Erreur de connexion à la base de données.</div>';
+        return;
+      }
+
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">Chargement des offres en direct...</div>';
+
+      try {
+        let query = client.from('products').select('*');
+
+        if (supplierId) {
+          query = query.eq('supplier_id', supplierId);
+        } else if (category) {
+          query = query.ilike('category', `%${category}%`);
+        } else if (q) {
+          query = query.ilike('name', `%${q}%`);
+        }
+
+        const { data: products, error } = await query;
+        if (error) throw error;
+
+        // Récupérer le nom du fournisseur s'il s'agit d'une recherche par fournisseur
+        let supplierName = 'Catalogue des offres';
+        if (supplierId) {
+          const { data: supp } = await client.from('profiles').select('company_name, full_name').eq('id', supplierId).maybeSingle();
+          if (supp) supplierName = 'Catalogue de ' + (supp.company_name || supp.full_name);
+        }
+
+        if (title) title.textContent = supplierId ? supplierName : (q ? `Résultats pour "${q}"` : 'Toutes les offres');
+
+        if (!products || products.length === 0) {
+          list.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">Aucun produit disponible pour cette sélection.</div>';
+          return;
+        }
+
+        list.innerHTML = products.map(p => `
+          <div class="supplier-result-card" onclick="window.location.href='fiche-produit.html?id=${p.id}'" style="margin-bottom:20px;cursor:pointer;">
+            <div class="supplier-result-img" style="width:160px;height:140px;">
+              <img src="${p.image_url || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300&q=80'}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
             </div>
-            <div class="price">À partir de : <strong>${s.price} ${s.unit}</strong></div>
-            <div class="min-qty">Quantité min. : ${s.min}</div>
+            <div class="supplier-result-info">
+              <h3 style="font-size:20px;">${p.name} <span class="badge-verified">✓ Vérifié</span></h3>
+              <div class="category" style="color:var(--yellow);font-weight:600;font-size:14px;margin-bottom:4px;">${p.category || 'Général'}</div>
+              <div class="price" style="font-size:16px;margin-bottom:4px;">À partir de : <strong>${Number(p.price_fcfa).toLocaleString('fr-FR')} FCFA / ${p.unit}</strong></div>
+              <div class="min-qty" style="font-size:14px;color:#64748b;">Quantité min. obligatoire : ${p.min_quantity} ${p.unit}s</div>
+            </div>
+            <div>
+              <button class="btn-primary" onclick="event.stopPropagation();window.location.href='fiche-produit.html?id=${p.id}'">Voir le produit</button>
+            </div>
           </div>
-          <div>
-            <button class="btn-primary" onclick="event.stopPropagation();window.location.href='fiche-produit.html?id=${s.id}'">Voir le catalogue</button>
-          </div>
-        </div>
-      `).join('');
+        `).join('');
+      } catch (err) {
+        console.error(err);
+        list.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Erreur de chargement du catalogue.</div>';
+      }
     }
 
     function doSearch() {
@@ -135,8 +168,6 @@
       window.location.href = `recherche.html?q=${encodeURIComponent(q || 'produits')}`;
     }
     function applyFilters() { showToast('Filtres appliqués', 'success'); }
-
-    document.addEventListener('DOMContentLoaded', renderResults);
   </script>
 </body>
 </html>

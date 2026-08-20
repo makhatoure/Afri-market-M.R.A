@@ -280,7 +280,7 @@
               <strong style="font-size:14px;color:#0f172a;">${s.company_name || s.full_name}</strong>
               <div style="font-size:12px;color:#64748b;">📍 ${s.location || 'Dakar, Sénégal'} • ${s.email}</div>
             </div>
-            <a href="index.html" class="btn-outline" style="font-size:12px;padding:4px 10px;">Voir catalogue</a>
+            <a href="recherche.html?supplier_id=${s.id}" class="btn-outline" style="font-size:12px;padding:4px 10px;">Voir catalogue</a>
           </div>
         `).join('');
       } catch (err) {
