@@ -53,32 +53,36 @@
         const { data: allProfiles, error } = await client.from('profiles').select('*');
         if (error) throw error;
 
-        const suppliers = (allProfiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+        // Filtrage souple pour tous les comptes enregistrés comme fournisseur
+        const suppliers = (allProfiles || []).filter(p => p.role && String(p.role).toLowerCase().includes('fournisseur'));
 
         if (suppliers.length === 0) {
           container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">Aucun fournisseur enregistré sur la plateforme pour le moment.</div>';
           return;
         }
 
-        container.innerHTML = suppliers.map(s => `
-          <div class="supplier-result-card" style="margin-bottom:24px;">
-            <div class="supplier-result-img" style="width:160px;height:140px;">
-              <img src="${s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80'}" alt="${s.company_name || s.full_name}">
-            </div>
-            <div class="supplier-result-info">
-              <h2 style="font-size:22px;">${s.company_name || s.full_name} <span class="badge-verified">✓ Vérifié</span></h2>
-              <div class="location" style="font-size:14px;margin-bottom:8px;">📍 ${s.location || 'Dakar, Sénégal'}</div>
-              <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Fournisseur certifié AfroBaza — contact direct via demande de devis interne sur les fiches produits.</p>
-              <div style="display:flex;align-items:center;gap:12px;">
-                <span class="star-score" style="font-size:16px;">★ 5,0</span>
-                <span class="review-count">Partenaire certifié</span>
+        container.innerHTML = suppliers.map(s => {
+          const dispName = s.company_name || s.full_name || (s.email ? s.email.split('@')[0] : 'Fournisseur Certifié');
+          return `
+            <div class="supplier-result-card" style="margin-bottom:24px;">
+              <div class="supplier-result-img" style="width:160px;height:140px;">
+                <img src="${s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80'}" alt="${dispName}">
+              </div>
+              <div class="supplier-result-info">
+                <h2 style="font-size:22px;">${dispName} <span class="badge-verified">✓ Vérifié</span></h2>
+                <div class="location" style="font-size:14px;margin-bottom:8px;">📍 ${s.location || 'Dakar, Sénégal'}</div>
+                <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Fournisseur certifié AfroBaza — contact direct via demande de devis interne sur les fiches produits.</p>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span class="star-score" style="font-size:16px;">★ 5,0</span>
+                  <span class="review-count">Partenaire certifié</span>
+                </div>
+              </div>
+              <div>
+                <a href="recherche.html?supplier_id=${s.id}" class="btn-primary">Voir les offres</a>
               </div>
             </div>
-            <div>
-              <a href="recherche.html?supplier_id=${s.id}" class="btn-primary">Voir les offres</a>
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       } catch (err) {
         console.error('Erreur chargement fournisseurs:', err);
         container.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Impossible de charger la liste des fournisseurs.</div>';
