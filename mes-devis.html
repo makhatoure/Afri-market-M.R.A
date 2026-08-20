@@ -89,10 +89,13 @@
       const client = getSupabaseClient();
       if (client) {
         try {
-          const field = user.role === 'fournisseur' ? 'supplier_id' : 'merchant_id';
-          const { data, error } = await client.from('devis').select('*').eq(field, user.id);
+          const isSupplier = String(user.role || '').toLowerCase().includes('fournisseur');
+          const field = isSupplier ? 'supplier_id' : 'merchant_id';
+          const { data, error } = await client.from('devis').select('*').eq(field, user.id).order('created_at', { ascending: false });
           if (!error && data) {
             userDevis = data;
+          } else if (error) {
+            console.error('Erreur Supabase devis:', error);
           }
         } catch (err) {
           console.warn('Erreur chargement devis:', err);
