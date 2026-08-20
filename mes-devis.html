@@ -208,11 +208,21 @@
       if (!client) return;
 
       try {
-        const { error } = await client.from('messages').insert([{
+        // Trouver le devis actif pour connaître le destinataire (receiver_id)
+        const devisObj = userDevis.find(d => d.id === activeDevisId);
+        let receiverId = null;
+        if (devisObj) {
+          receiverId = (user.id === devisObj.merchant_id) ? devisObj.supplier_id : devisObj.merchant_id;
+        }
+
+        const messageData = {
           devis_id: activeDevisId,
           sender_id: user.id,
           message: msgText
-        }]);
+        };
+        if (receiverId) messageData.receiver_id = receiverId;
+
+        const { error } = await client.from('messages').insert([messageData]);
 
         if (error) throw error;
         input.value = '';
