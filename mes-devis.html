@@ -165,17 +165,27 @@
     let recordTimerInterval = null;
     let recordSeconds = 0;
 
+    let chatInterval = null;
+
     async function openChatModal(devisId, devisNum) {
       activeDevisId = devisId;
       document.getElementById('chat-title').textContent = '💬 Négociation : ' + devisNum;
       document.getElementById('chat-modal').style.display = 'flex';
       await loadMessages();
+
+      // Rafraîchissement automatique des messages toutes les 3s pour voir les réponses de l'interlocuteur
+      if (chatInterval) clearInterval(chatInterval);
+      chatInterval = setInterval(loadMessages, 3000);
     }
 
     function closeChatModal() {
       document.getElementById('chat-modal').style.display = 'none';
       activeDevisId = null;
       if (isRecording) stopVoiceRecord();
+      if (chatInterval) {
+        clearInterval(chatInterval);
+        chatInterval = null;
+      }
     }
 
     async function loadMessages() {
