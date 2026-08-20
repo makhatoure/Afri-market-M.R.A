@@ -167,21 +167,34 @@
       }
 
       const client = getSupabaseClient();
-      if (client) {
+      const itemsToQuote = cartItems.filter(i => (i.supplier || 'Fournisseur AfroBaza') === supplierName);
+
+      if (client && itemsToQuote.length > 0) {
         try {
-          const itemsToQuote = cartItems.filter(i => (i.supplier || 'Fournisseur AfroBaza') === supplierName);
-          await client.from('devis').insert([{
+          const firstItem = itemsToQuote[0];
+          const supplierId = firstItem.supplier_id || null;
+
+          const devisRecord = {
             merchant_id: user.id,
-            status: 'En attente',
-            total_amount: itemsToQuote.reduce((s, i) => s + (i.qty * i.price), 0),
+            supplier_id: supplierId,
+            status: 'pending',
+            total_amount_fcfa: itemsToQuote.reduce((s, i) => s + (i.qty * Number(i.price || 0)), 0),
             items: itemsToQuote
-          }]);
+          };
+
+          const { error } = await client.from('devis').insert([devisRecord]);
+          if (error) console.error('Erreur Supabase insertion devis:', error);
         } catch (e) {
-          console.warn('Enregistrement Supabase devis:', e);
+          console.warn('Enregistrement Supabase devis exception:', e);
         }
       }
 
       showToast(`✓ Demande de devis envoyée avec succès à ${supplierName} !`, 'success');
+      
+      // Retirer les articles soumis du panier
+      const remaining = cartItems.filter(i => (i.supplier || 'Fournisseur AfroBaza') !== supplierName);
+      saveCart(remaining);
+      renderCart();
     }
 
     async function sendAllQuotes() {
@@ -192,9 +205,16 @@
         return;
       }
 
-      showToast('✓ Vos demandes de devis ont été envoyées aux fournisseurs !', 'success');
-      saveCart([]);
-      renderCart();
+      const groups = {};
+      cartItems.forEach(item => {
+        const suppName = item.supplier || 'Fournisseur AfroBaza';
+        if (!groups[suppName]) groups[suppName] = [];
+        groups[suppName].push(item);
+      });
+
+      for (const [suppName] of Object.entries(groups)) {
+        await sendQuoteForGroup(suppName);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', renderCart);

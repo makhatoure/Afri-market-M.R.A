@@ -161,6 +161,7 @@
       const supplierName = currentSupplier ? (currentSupplier.company_name || currentSupplier.full_name) : 'Fournisseur AfroBaza';
       addToCart({
         id: currentProduct.id,
+        supplier_id: currentProduct.supplier_id,
         name: currentProduct.name,
         price: currentProduct.price_fcfa,
         unit: currentProduct.unit,
