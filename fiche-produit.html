@@ -36,97 +36,138 @@
     </div>
   </div>
 
-  <div class="product-page">
-    <!-- GALLERY -->
-    <div class="product-gallery">
-      <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=700&q=80" alt="Beurre de karité brut 100% naturel" id="main-product-img">
-      <div style="display:flex;gap:10px;margin-top:12px;">
-        <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=200&q=80" alt="" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid var(--yellow);">
-        <img src="https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=200&q=80" alt="" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid var(--gray-border);" onclick="switchImg(this)">
-        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=200&q=80" alt="" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid var(--gray-border);" onclick="switchImg(this)">
-      </div>
-    </div>
-
-    <!-- INFO -->
-    <div class="product-info">
-      <h1>Beurre de karité brut<br>100% naturel</h1>
-
-      <div class="product-price-display">
-        À partir de
-        <strong>1 000 FCFA / Kg</strong>
-      </div>
-
-      <div class="availability-card">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        <div>
-          <div><strong>Disponibilité : </strong><span class="status">En stock</span></div>
-          <small>livraison sous 24 à 48h</small>
-        </div>
-      </div>
-
-      <div class="product-meta">
-        <div class="meta-row"><span>Quantité minimale</span><span>5 kg</span></div>
-        <div class="meta-row"><span>Conditionnement</span><span>En vrac / pot / sceau / sachet</span></div>
-        <div class="meta-row"><span>Origine</span><span>Sénégal</span></div>
-        <div class="meta-row"><span>Catégorie</span><span>Cosmétique et beauté</span></div>
-      </div>
-
-      <div class="product-description">
-        <h3>Description</h3>
-        <p>Beurre de karité 100% naturel, non raffiné, idéal pour les soins de la peau et des cheveux. Riche en vitamine A, E et F. Produit du Sénégal.</p>
-      </div>
-
-      <div>
-        <div style="font-weight:700;margin-bottom:10px;">Conditionnement disponible</div>
-        <div class="packaging-options">
-          <button class="pkg-btn active" id="pkg-vrac" onclick="selectPkg(this)">En vrac</button>
-          <button class="pkg-btn" id="pkg-1kg" onclick="selectPkg(this)">pot 1kg</button>
-          <button class="pkg-btn" id="pkg-5kg" onclick="selectPkg(this)">Sceau 5kg</button>
-          <button class="pkg-btn" id="pkg-500g" onclick="selectPkg(this)">Sachet 500g</button>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;">
-        <div>
-          <div style="font-weight:700;margin-bottom:10px;">Quantité</div>
-          <div class="qty-control">
-            <button class="qty-btn" onclick="changeQty(-1)">−</button>
-            <span class="qty-value" id="qty-display">5 kg</span>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
-          </div>
-          <div class="qty-label">Quantité minimale : 5 kg</div>
-        </div>
-      </div>
-
-      <button class="add-to-cart-btn" onclick="addProductToCart()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Ajouter au panier
-      </button>
-      <button class="request-quote-btn" onclick="window.location.href='panier.html'">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Demande de devis
-      </button>
-    </div>
+  <!-- CONTENU DYNAMIQUE PRODUIT ET FOURNISSEUR -->
+  <div class="product-page" id="product-details-container">
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:#666;">Chargement de la fiche produit en direct de Supabase...</div>
   </div>
 
+  <!-- SDK SUPABASE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
-    let currentQty = 5;
+    let currentProduct = null;
+    let currentSupplier = null;
+    let currentQty = 1;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+
+      const container = document.getElementById('product-details-container');
+      const client = getSupabaseClient();
+
+      if (!client || !productId) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Produit non trouvé. Veuillez repasser par le catalogue.</div>';
+        return;
+      }
+
+      try {
+        // 1. Récupérer le produit en BDD
+        const { data: prod, error: prodErr } = await client.from('products').select('*').eq('id', productId).single();
+        if (prodErr || !prod) throw new Error("Impossible de trouver ce produit.");
+
+        currentProduct = prod;
+        currentQty = prod.min_quantity || 1;
+
+        // 2. Récupérer le profil du VRAI fournisseur propriétaire
+        let supplierData = null;
+        if (prod.supplier_id) {
+          const { data: supp } = await client.from('profiles').select('*').eq('id', prod.supplier_id).maybeSingle();
+          if (supp) supplierData = supp;
+        }
+        currentSupplier = supplierData;
+
+        const supplierName = supplierData ? (supplierData.company_name || supplierData.full_name) : 'Fournisseur AfroBaza';
+        const supplierLocation = supplierData ? (supplierData.location || 'Dakar, Sénégal') : 'Dakar, Sénégal';
+        const supplierAvatar = supplierData ? (supplierData.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80') : 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80';
+
+        container.innerHTML = `
+          <!-- GALLERY -->
+          <div class="product-gallery">
+            <img src="${prod.image_url || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=700&q=80'}" alt="${prod.name}" id="main-product-img" style="width:100%;max-height:450px;object-fit:cover;border-radius:12px;">
+          </div>
+
+          <!-- INFO PRODUIT & VRAI FOURNISSEUR -->
+          <div class="product-info">
+            <h1>${prod.name}</h1>
+
+            <div class="product-price-display" style="margin: 16px 0;">
+              À partir de <strong>${Number(prod.price_fcfa).toLocaleString('fr-FR')} FCFA / ${prod.unit}</strong>
+            </div>
+
+            <!-- VRAI FOURNISSEUR PROPRIÉTAIRE -->
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:16px;border-radius:10px;margin-bottom:20px;display:flex;align-items:center;gap:14px;">
+              <img src="${supplierAvatar}" alt="${supplierName}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">
+              <div>
+                <div style="font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;">Fournisseur officiel du produit :</div>
+                <div style="font-weight:700;font-size:16px;color:#0f172a;">${supplierName} <span style="color:#16a34a;font-size:13px;">✓ Vérifié</span></div>
+                <div style="font-size:12px;color:#64748b;">📍 ${supplierLocation}</div>
+              </div>
+            </div>
+
+            <div class="availability-card" style="margin-bottom:20px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              <div>
+                <div><strong>Disponibilité : </strong><span class="status" style="color:#16a34a;font-weight:600;">En stock</span></div>
+                <small style="color:#64748b;">Livraison directe sous 24 à 48h</small>
+              </div>
+            </div>
+
+            <div class="product-meta" style="margin-bottom:20px;">
+              <div class="meta-row"><span>Commande minimale (MOQ)</span><span>${prod.min_quantity} ${prod.unit}s</span></div>
+              <div class="meta-row"><span>Catégorie</span><span>${prod.category}</span></div>
+            </div>
+
+            <div class="product-description" style="margin-bottom:24px;">
+              <h3 style="font-size:16px;margin-bottom:8px;">Description du produit</h3>
+              <p style="color:#475569;line-height:1.6;">${prod.description || 'Aucune description spécifiée.'}</p>
+            </div>
+
+            <div style="margin-bottom:24px;">
+              <div style="font-weight:700;margin-bottom:10px;">Quantité souhaitée</div>
+              <div class="qty-control" style="display:flex;align-items:center;gap:12px;">
+                <button class="qty-btn" onclick="changeQty(-1)" style="padding:6px 16px;font-size:18px;cursor:pointer;">−</button>
+                <span class="qty-value" id="qty-display" style="font-weight:700;font-size:16px;">${currentQty} ${prod.unit}s</span>
+                <button class="qty-btn" onclick="changeQty(1)" style="padding:6px 16px;font-size:18px;cursor:pointer;">+</button>
+              </div>
+              <div class="qty-label" style="font-size:12px;color:#64748b;margin-top:6px;">Minimum obligatoire : ${prod.min_quantity} ${prod.unit}s</div>
+            </div>
+
+            <div style="display:flex;gap:16px;">
+              <button class="btn-primary" onclick="addProductToCart()" style="flex:1;padding:12px;">
+                Ajouter au panier
+              </button>
+              <button class="btn-outline" onclick="window.location.href='panier.html'" style="flex:1;padding:12px;">
+                Demander un devis
+              </button>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">${err.message}</div>`;
+      }
+    });
+
     function changeQty(delta) {
-      currentQty = Math.max(5, currentQty + delta);
-      document.getElementById('qty-display').textContent = currentQty + ' kg';
+      if (!currentProduct) return;
+      const min = currentProduct.min_quantity || 1;
+      currentQty = Math.max(min, currentQty + delta);
+      document.getElementById('qty-display').textContent = currentQty + ' ' + currentProduct.unit + 's';
     }
-    function selectPkg(btn) {
-      document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-    function switchImg(el) {
-      document.getElementById('main-product-img').src = el.src.replace('w=200', 'w=700');
-      document.querySelectorAll('[onclick="switchImg(this)"]').forEach(i => i.style.borderColor = 'var(--gray-border)');
-      el.style.borderColor = 'var(--yellow)';
-    }
+
     function addProductToCart() {
-      addToCart({ id: 8, name: "Beurre de karité brut 100% naturel", price: "1 000", unit: "FCFA / Kg", img: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80", supplier: "Ryn's Home" }, currentQty);
+      if (!currentProduct) return;
+      const supplierName = currentSupplier ? (currentSupplier.company_name || currentSupplier.full_name) : 'Fournisseur AfroBaza';
+      addToCart({
+        id: currentProduct.id,
+        name: currentProduct.name,
+        price: currentProduct.price_fcfa,
+        unit: currentProduct.unit,
+        img: currentProduct.image_url,
+        supplier: supplierName
+      }, currentQty);
+      showToast('✓ Produit ajouté au panier avec succès !', 'success');
     }
   </script>
 </body>
