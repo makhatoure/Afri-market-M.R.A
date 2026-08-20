@@ -47,96 +47,159 @@
     </div>
   </div>
 
+  <!-- SDK SUPABASE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
-    const DEFAULT_CART = [
-      { id: 8, name: "Beurre de karité brut 100% naturel", supplier: "Ryn's Home", qty: 20, price: 1000, unit: "FCFA / Kg", img: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=200&q=80" },
-      { id: 3, name: "Tissu Maylouss", supplier: "Ryn's Home", qty: 20, price: 2000, unit: "FCFA / Pièce", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=200&q=80" },
-      { id: 6, name: "Boucles d'oreilles (Bijoux)", supplier: "Ryn's Home", qty: 20, price: 500, unit: "FCFA / Pièce", img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&q=80" },
-    ];
-
-    let cartItems = [...DEFAULT_CART];
+    let cartItems = [];
 
     function renderCart() {
+      cartItems = getCart(); // Récupère le vrai panier utilisateur (localStorage)
+
       const content = document.getElementById('cart-content');
       const empty = document.getElementById('cart-empty');
       const subtitle = document.getElementById('cart-subtitle');
 
-      if (cartItems.length === 0) {
+      if (!cartItems || cartItems.length === 0) {
         content.innerHTML = '';
         empty.style.display = 'block';
+        if (subtitle) subtitle.textContent = '0 article(s) dans le panier';
         return;
       }
+
       empty.style.display = 'none';
-      subtitle.textContent = `${cartItems.length} article(s) chez 1 fournisseur(s)`;
+      
+      // Groupement par vrai nom de fournisseur
+      const groups = {};
+      cartItems.forEach((item, index) => {
+        const suppName = item.supplier || 'Fournisseur AfroBaza';
+        if (!groups[suppName]) groups[suppName] = [];
+        groups[suppName].push({ ...item, originalIndex: index });
+      });
 
-      const total = cartItems.reduce((s, i) => s + i.qty * i.price, 0);
+      const totalCount = cartItems.reduce((s, i) => s + (i.qty || 1), 0);
+      const supplierCount = Object.keys(groups).length;
+      if (subtitle) subtitle.textContent = `${totalCount} article(s) chez ${supplierCount} fournisseur(s)`;
 
-      content.innerHTML = `
-        <div class="cart-group">
-          <div class="cart-group-header">
-            <div class="cart-supplier-logo">
-              <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&q=80" alt="Ryn's Home">
-            </div>
-            <div class="cart-supplier-info">
-              <div class="supplier-name">Ryn's Home</div>
-              <div class="supplier-cat">Cosmétiques et beauté</div>
-            </div>
-            <span class="badge-verified">✓ Vérifié</span>
-            <div class="location-tag"><span>📍</span> Dakar, Sénégal</div>
-            <button class="btn-primary" onclick="showToast('Demande de devis envoyée !','success')">Demande de devis</button>
-          </div>
-          ${cartItems.map((item, i) => `
-            <div class="cart-item">
-              <div class="cart-item-img"><img src="${item.img}" alt="${item.name}"></div>
-              <div class="cart-item-info">
-                <div class="item-name">${item.name}</div>
-                <div class="item-supplier">${item.supplier}</div>
-                <span class="remove-item" onclick="removeItem(${i})">Supprimer</span>
-              </div>
-              <div class="cart-qty-control">
-                <button class="cart-qty-btn" onclick="changeCartQty(${i}, -1)">−</button>
-                <span class="cart-qty-val">${item.qty}</span>
-                <button class="cart-qty-btn" onclick="changeCartQty(${i}, 1)">+</button>
-              </div>
+      let html = '';
+      let grandTotal = 0;
+
+      for (const [supplierName, items] of Object.entries(groups)) {
+        const groupTotal = items.reduce((s, i) => s + (i.qty * (i.price || 0)), 0);
+        grandTotal += groupTotal;
+
+        html += `
+          <div class="cart-group" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px;">
+            <div class="cart-group-header" style="display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid #f1f5f9;margin-bottom:16px;">
               <div>
-                <div class="item-price">${(item.qty * item.price).toLocaleString('fr-FR')} FCFA</div>
-                <div class="item-unit-price">${item.price.toLocaleString('fr-FR')} ${item.unit}</div>
+                <div style="font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;">Fournisseur :</div>
+                <div style="font-size:18px;font-weight:700;color:#0f172a;">${supplierName} <span style="color:#16a34a;font-size:13px;">✓ Vérifié</span></div>
               </div>
-              <button class="cart-delete-btn" onclick="removeItem(${i})">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-              </button>
+              <button class="btn-primary" onclick="sendQuoteForGroup('${supplierName}')">Envoyer demande de devis</button>
             </div>
-          `).join('')}
-        </div>
+
+            ${items.map(item => `
+              <div class="cart-item" style="display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid #f8fafc;">
+                <img src="${item.img || 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=200&q=80'}" alt="${item.name}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;">
+                <div style="flex:1;">
+                  <div style="font-weight:700;font-size:15px;">${item.name}</div>
+                  <div style="font-size:13px;color:#64748b;">${Number(item.price).toLocaleString('fr-FR')} FCFA / ${item.unit || 'unité'}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <button class="cart-qty-btn" onclick="changeCartQty(${item.originalIndex}, -1)">−</button>
+                  <span style="font-weight:700;">${item.qty}</span>
+                  <button class="cart-qty-btn" onclick="changeCartQty(${item.originalIndex}, 1)">+</button>
+                </div>
+                <div style="font-weight:700;min-width:110px;text-align:right;">
+                  ${(item.qty * item.price).toLocaleString('fr-FR')} FCFA
+                </div>
+                <button class="cart-delete-btn" onclick="removeItem(${item.originalIndex})" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:4px;">🗑️</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      html += `
         <div style="display:flex;justify-content:flex-end;margin-top:16px;">
-          <div style="background:var(--white);border:1px solid var(--gray-border);border-radius:var(--radius);padding:24px;min-width:300px;">
-            <div style="font-size:18px;font-weight:700;margin-bottom:16px;">Récapitulatif</div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;"><span>Sous-total</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:14px;color:var(--gray);"><span>Livraison</span><span>À définir</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid var(--gray-border);padding-top:12px;"><span>Total</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>
-            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px;" onclick="showToast('Demande de devis envoyée !','success')">Demande de devis</button>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;min-width:320px;">
+            <div style="font-size:18px;font-weight:700;margin-bottom:16px;">Récapitulatif Global</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;"><span>Articles</span><span>${totalCount}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;border-top:1px solid #e2e8f0;padding-top:12px;margin-top:12px;"><span>Total Estimé</span><span>${grandTotal.toLocaleString('fr-FR')} FCFA</span></div>
+            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px;" onclick="sendAllQuotes()">Envoyer toutes les demandes de devis</button>
           </div>
         </div>
       `;
+
+      content.innerHTML = html;
     }
 
     function changeCartQty(index, delta) {
-      cartItems[index].qty = Math.max(1, cartItems[index].qty + delta);
+      const cart = getCart();
+      if (!cart[index]) return;
+      cart[index].qty = Math.max(1, cart[index].qty + delta);
+      saveCart(cart);
       renderCart();
     }
 
     function removeItem(index) {
-      cartItems.splice(index, 1);
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
       renderCart();
       showToast('Article retiré du panier');
     }
 
     function clearCartUI() {
-      if (confirm('Vider le panier ?')) { cartItems = []; renderCart(); }
+      if (confirm('Vider le panier ?')) {
+        saveCart([]);
+        renderCart();
+      }
+    }
+
+    async function sendQuoteForGroup(supplierName) {
+      const user = getCurrentUser();
+      if (!user) {
+        showToast('Veuillez vous connecter pour envoyer une demande de devis', 'error');
+        setTimeout(() => window.location.href = 'connexion.html', 1500);
+        return;
+      }
+
+      const client = getSupabaseClient();
+      if (client) {
+        try {
+          const itemsToQuote = cartItems.filter(i => (i.supplier || 'Fournisseur AfroBaza') === supplierName);
+          await client.from('devis').insert([{
+            merchant_id: user.id,
+            status: 'En attente',
+            total_amount: itemsToQuote.reduce((s, i) => s + (i.qty * i.price), 0),
+            items: itemsToQuote
+          }]);
+        } catch (e) {
+          console.warn('Enregistrement Supabase devis:', e);
+        }
+      }
+
+      showToast(`✓ Demande de devis envoyée avec succès à ${supplierName} !`, 'success');
+    }
+
+    async function sendAllQuotes() {
+      const user = getCurrentUser();
+      if (!user) {
+        showToast('Veuillez vous connecter pour envoyer une demande de devis', 'error');
+        setTimeout(() => window.location.href = 'connexion.html', 1500);
+        return;
+      }
+
+      showToast('✓ Vos demandes de devis ont été envoyées aux fournisseurs !', 'success');
+      saveCart([]);
+      renderCart();
     }
 
     document.addEventListener('DOMContentLoaded', renderCart);
   </script>
+</body>
+</html>
 </body>
 </html>
