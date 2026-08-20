@@ -172,18 +172,39 @@
       if (client && itemsToQuote.length > 0) {
         try {
           const firstItem = itemsToQuote[0];
-          const supplierId = firstItem.supplier_id || null;
+          let supplierId = firstItem.supplier_id || null;
+
+          // Si supplier_id manque dans l'article, tenter d'aller le chercher depuis la table products
+          if (!supplierId && firstItem.id) {
+            const { data: pData } = await client.from('products').select('supplier_id').eq('id', firstItem.id).maybeSingle();
+            if (pData && pData.supplier_id) supplierId = pData.supplier_id;
+          }
+
+          const devisNum = 'DEV-' + Math.floor(100000 + Math.random() * 900000);
+          const totalAmt = itemsToQuote.reduce((s, i) => s + (i.qty * Number(i.price || 0)), 0);
 
           const devisRecord = {
+            devis_number: devisNum,
             merchant_id: user.id,
             supplier_id: supplierId,
             status: 'pending',
-            total_amount_fcfa: itemsToQuote.reduce((s, i) => s + (i.qty * Number(i.price || 0)), 0),
-            items: itemsToQuote
+            total_amount_fcfa: totalAmt
           };
 
-          const { error } = await client.from('devis').insert([devisRecord]);
-          if (error) console.error('Erreur Supabase insertion devis:', error);
+          const { data: insertedDevis, error } = await client.from('devis').insert([devisRecord]).select().single();
+          if (error) {
+            console.error('Erreur Supabase insertion devis:', error);
+          } else if (insertedDevis) {
+            // Insertion des articles de devis dans devis_items
+            const devisItemsRecords = itemsToQuote.map(item => ({
+              devis_id: insertedDevis.id,
+              product_name: item.name,
+              quantity: item.qty,
+              unit_price_fcfa: Number(item.price || 0),
+              total_price_fcfa: item.qty * Number(item.price || 0)
+            }));
+            await client.from('devis_items').insert(devisItemsRecords);
+          }
         } catch (e) {
           console.warn('Enregistrement Supabase devis exception:', e);
         }
