@@ -68,7 +68,7 @@
       <h1 id="dash-greeting">Bonjour !</h1>
       <p class="subtitle">Voici un aperçu de votre activité sur AfroBaza</p>
 
-      <div class="stats-grid">
+      <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
         <div class="stat-card">
           <div class="stat-label">Commandes en cours</div>
           <div class="stat-value" id="stat-cmd-count">0</div>
@@ -76,10 +76,6 @@
         <div class="stat-card">
           <div class="stat-label">Demandes de devis</div>
           <div class="stat-value" id="stat-devis-count">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Statut du compte</div>
-          <div class="stat-value" style="font-size:16px;color:#2e7d32;" id="stat-user-email">Actif</div>
         </div>
       </div>
 
@@ -254,6 +250,23 @@
         if (merchantSec) { merchantSec.style.display = 'block'; merchantSec.style.visibility = 'visible'; }
         if (supplierSec) { supplierSec.style.display = 'none'; }
         if (typeof loadDashSuppliers === 'function') loadDashSuppliers();
+      }
+
+      // Synchronisation en direct des compteurs de devis et commandes
+      const client = getSupabaseClient();
+      if (client && user.id) {
+        client.from('devis').select('id, status', { count: 'exact' })
+          .or(`merchant_id.eq.${user.id},supplier_id.eq.${user.id}`)
+          .then(({ data, count }) => {
+            if (count !== null) {
+              const elDevis = document.getElementById('stat-devis-count');
+              if (elDevis) elDevis.textContent = count;
+
+              const acceptedCmds = (data || []).filter(d => d.status === 'accepted').length;
+              const elCmd = document.getElementById('stat-cmd-count');
+              if (elCmd) elCmd.textContent = acceptedCmds;
+            }
+          });
       }
     }
 

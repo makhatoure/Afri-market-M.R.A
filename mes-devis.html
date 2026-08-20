@@ -110,25 +110,67 @@
 
     function renderDevis(filter = 'all') {
       const tbody = document.getElementById('devis-tbody');
+      const user = getCurrentUser();
+      const isSupplier = user && String(user.role || '').toLowerCase().includes('fournisseur');
+
       const filtered = filter === 'all' ? userDevis : userDevis.filter(d => d.status === filter);
       
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#666;">Aucune demande de devis enregistrée.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#666;">Aucune demande de devis enregistrée.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = filtered.map(d => `
-        <tr>
-          <td class="devis-number">${d.devis_number || 'DEV-' + d.id.slice(0,6)}</td>
-          <td>${d.supplier_id || 'Partenaire AfroBaza'}</td>
-          <td style="font-weight:700;">${Number(d.total_amount_fcfa || 0).toLocaleString('fr-FR')} FCFA</td>
-          <td><span class="badge-status ${STATUS_CLASSES[d.status] || 'badge-sent'}">${STATUS_LABELS[d.status] || d.status}</span></td>
-          <td>${new Date(d.created_at).toLocaleDateString('fr-FR')}</td>
-          <td>
-            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 Négocier / Discuter</button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = filtered.map(d => {
+        const isPending = (d.status === 'pending' || d.status === 'sent');
+        const isAccepted = d.status === 'accepted';
+        const isRefused = d.status === 'refused';
+
+        let actionButtons = `
+          <button class="btn-primary" style="padding:6px 12px;font-size:12px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 Négocier</button>
+        `;
+
+        if (isPending) {
+          actionButtons += `
+            <button class="btn-outline" style="padding:6px 10px;font-size:12px;color:#16a34a;border-color:#16a34a;margin-left:4px;" onclick="updateDevisStatus('${d.id}', 'accepted')">✓ Accepter</button>
+            <button class="btn-outline" style="padding:6px 10px;font-size:12px;color:#dc2626;border-color:#dc2626;margin-left:4px;" onclick="updateDevisStatus('${d.id}', 'refused')">✕ Refuser</button>
+          `;
+        }
+
+        return `
+          <tr>
+            <td class="devis-number">${d.devis_number || 'DEV-' + d.id.slice(0,6)}</td>
+            <td>${d.supplier_id || 'Partenaire AfroBaza'}</td>
+            <td style="font-weight:700;">${Number(d.total_amount_fcfa || 0).toLocaleString('fr-FR')} FCFA</td>
+            <td><span class="badge-status ${STATUS_CLASSES[d.status] || 'badge-sent'}">${STATUS_LABELS[d.status] || d.status}</span></td>
+            <td>${new Date(d.created_at).toLocaleDateString('fr-FR')}</td>
+            <td style="display:flex;align-items:center;gap:4px;padding:12px 8px;">
+              ${actionButtons}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateDevisStatus(devisId, newStatus) {
+      const client = getSupabaseClient();
+      if (!client) return;
+
+      const label = newStatus === 'accepted' ? 'acceptée' : 'refusée';
+      if (!confirm(`Voulez-vous vraiment confirmer cette demande comme ${label} ?`)) return;
+
+      try {
+        const { error } = await client.from('devis').update({ status: newStatus }).eq('id', devisId);
+        if (error) throw error;
+
+        // Mise à jour locale
+        const devisObj = userDevis.find(d => d.id === devisId);
+        if (devisObj) devisObj.status = newStatus;
+
+        showToast(`✓ Demande de devis ${label} avec succès !`, 'success');
+        renderDevis();
+      } catch (err) {
+        showToast('❌ Erreur : ' + err.message, 'error');
+      }
     }
 
     function filterDevis(filter, btn) {
