@@ -85,17 +85,20 @@
       document.getElementById('sidebar-user-name').textContent = user.name || user.email.split('@')[0];
       document.getElementById('sidebar-user-role').textContent = user.role || 'Commerçant';
 
-      // Chargement en direct depuis Supabase
+      // Chargement en direct depuis Supabase avec OR pour garantir la détection (Commerçant ou Fournisseur)
       const client = getSupabaseClient();
       if (client) {
         try {
-          const isSupplier = String(user.role || '').toLowerCase().includes('fournisseur');
-          const field = isSupplier ? 'supplier_id' : 'merchant_id';
-          const { data, error } = await client.from('devis').select('*').eq(field, user.id).order('created_at', { ascending: false });
+          const { data, error } = await client
+            .from('devis')
+            .select('*')
+            .or(`merchant_id.eq.${user.id},supplier_id.eq.${user.id}`)
+            .order('created_at', { ascending: false });
+
           if (!error && data) {
             userDevis = data;
-          } else if (error) {
-            console.error('Erreur Supabase devis:', error);
+          } else {
+            console.error('Erreur chargement devis Supabase:', error);
           }
         } catch (err) {
           console.warn('Erreur chargement devis:', err);
