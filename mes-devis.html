@@ -13,7 +13,11 @@
       <a href="index.html" class="logo">Afro<span>Baza</span></a>
       <div class="nav-actions">
         <a href="panier.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
-        <a href="dashboard.html" class="icon-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+        <div class="icon-btn-wrap" id="bell-wrap">
+          <button class="icon-btn" id="bell-btn" title="Notifications" onclick="window.location.reload()">
+            <svg id="bell-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+        </div>
       </div>
     </div>
     <div class="nav-links">
@@ -33,7 +37,13 @@
       </div>
       <nav class="sidebar-nav">
         <a href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Tableau de bord</a>
-        <a href="mes-devis.html" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mes devis</a>
+        <a href="mes-devis.html" class="active" style="justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Mes devis
+          </span>
+          <span class="sidebar-badge" id="sidebar-devis-badge" style="display:none;">0</span>
+        </a>
       </nav>
     </aside>
 
@@ -378,6 +388,119 @@
 
       await sendDirectMessage(msgText);
       input.value = '';
+    }
+  </script>
+
+  <!-- ==========================================
+       SYSTÈME DE NOTIFICATIONS EN TEMPS RÉEL
+       ========================================== -->
+  <script>
+    let _notifLastMsgCount = -1;
+    let _notifLastDevisCount = -1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => startNotifPolling(), 2000);
+    });
+
+    function startNotifPolling() {
+      const user = getCurrentUser();
+      if (!user) return;
+      pollNotifications();
+      setInterval(pollNotifications, 30000);
+    }
+
+    async function pollNotifications() {
+      const user = getCurrentUser();
+      const client = getSupabaseClient();
+      if (!user || !client) return;
+
+      try {
+        const { data: msgs } = await client
+          .from('messages')
+          .select('id')
+          .eq('receiver_id', user.id)
+          .limit(50);
+        const msgCount = (msgs || []).length;
+
+        const { data: devisList } = await client
+          .from('devis')
+          .select('id, status')
+          .or(`merchant_id.eq.${user.id},supplier_id.eq.${user.id}`);
+        const pendingDevis = (devisList || []).filter(d => d.status === 'pending' || d.status === 'sent').length;
+
+        if (_notifLastMsgCount === -1) {
+          _notifLastMsgCount = msgCount;
+          _notifLastDevisCount = pendingDevis;
+          updateNotifBadges(msgCount, pendingDevis);
+          return;
+        }
+
+        const newMsgs = msgCount - _notifLastMsgCount;
+        if (newMsgs > 0) {
+          ringBell();
+          showNotifToast('💬 Nouveau message', `${newMsgs} nouveau${newMsgs > 1 ? 'x' : ''} message${newMsgs > 1 ? 's' : ''} de négociation`, null);
+          _notifLastMsgCount = msgCount;
+          // Recharge les messages du chat ouvert si applicable
+          if (typeof loadMessages === 'function' && activeDevisId) loadMessages();
+        }
+
+        const newDevis = pendingDevis - _notifLastDevisCount;
+        if (newDevis > 0) {
+          ringBell();
+          showNotifToast('📄 Nouvelle demande de devis', `${newDevis} nouvelle${newDevis > 1 ? 's' : ''} demande${newDevis > 1 ? 's' : ''} en attente`, null);
+          _notifLastDevisCount = pendingDevis;
+          // Recharge le tableau des devis
+          const { data, error } = await client.from('devis').select('*').or(`merchant_id.eq.${user.id},supplier_id.eq.${user.id}`).order('created_at', { ascending: false });
+          if (!error && data) { userDevis = data; renderDevis('all'); }
+        } else {
+          _notifLastDevisCount = pendingDevis;
+        }
+
+        updateNotifBadges(msgCount, pendingDevis);
+      } catch(e) { console.warn('Notif poll:', e); }
+    }
+
+    function updateNotifBadges(msgCount, devisCount) {
+      const wrap = document.getElementById('bell-wrap');
+      if (wrap) {
+        let badge = document.getElementById('bell-badge');
+        const total = msgCount + devisCount;
+        if (total > 0) {
+          if (!badge) { badge = document.createElement('span'); badge.className = 'notif-badge'; badge.id = 'bell-badge'; wrap.appendChild(badge); }
+          badge.textContent = total > 99 ? '99+' : total;
+        } else if (badge) badge.remove();
+      }
+      const sb = document.getElementById('sidebar-devis-badge');
+      if (sb) { sb.textContent = devisCount; sb.style.display = devisCount > 0 ? 'inline-flex' : 'none'; }
+    }
+
+    function ringBell() {
+      const bell = document.getElementById('bell-icon');
+      if (!bell) return;
+      bell.parentElement.classList.remove('bell-ringing');
+      void bell.parentElement.offsetWidth;
+      bell.parentElement.classList.add('bell-ringing');
+      setTimeout(() => bell.parentElement.classList.remove('bell-ringing'), 900);
+    }
+
+    function showNotifToast(title, msg, href) {
+      let container = document.getElementById('toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+      }
+      const el = document.createElement('div');
+      el.className = 'toast-notif';
+      el.innerHTML = `
+        <span class="notif-icon">🔔</span>
+        <div class="notif-body"><div class="notif-title">${title}</div><div class="notif-msg">${msg}</div></div>
+        <span class="notif-close" onclick="this.parentElement.remove()">✕</span>
+      `;
+      if (href) el.addEventListener('click', (e) => { if (!e.target.classList.contains('notif-close')) window.location.href = href; });
+      container.appendChild(el);
+      setTimeout(() => { el.classList.add('removing'); setTimeout(() => el.remove(), 350); }, 6000);
     }
   </script>
 </body>
