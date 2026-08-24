@@ -20,47 +20,9 @@
   <nav class="navbar" id="navbar">
     <div class="nav-top">
       <a href="index.html" class="logo">Afro<span>Baza</span></a>
-      <div class="nav-actions">
-        <!-- Loupe -->
-        <button class="icon-btn" id="search-toggle-btn" aria-label="Rechercher" title="Rechercher un produit">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-
-        <!-- Panier avec badge -->
-        <div class="icon-btn-wrap">
-          <a href="panier.html" class="icon-btn" aria-label="Panier" title="Mon panier">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          </a>
-          <span class="notif-badge cart-badge" id="cart-badge-home" style="display:none;">0</span>
-        </div>
-
-        <!-- Favoris -->
-        <div class="user-menu-wrapper" id="fav-wrapper">
-          <button class="icon-btn" id="fav-btn" aria-label="Mes favoris" title="Mes favoris" onclick="toggleFavPanel()">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-          <div class="user-dropdown" id="fav-dropdown">
-            <div class="user-dropdown-header">❤️ Mes favoris</div>
-            <div id="fav-list"><div style="padding:16px 20px;color:#64748b;font-size:14px;">Chargement...</div></div>
-          </div>
-        </div>
-
-        <!-- Compte utilisateur -->
-        <div class="user-menu-wrapper">
-          <button class="icon-btn" id="user-menu-btn" aria-label="Mon compte" title="Mon compte">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </button>
-          <div class="user-dropdown" id="user-dropdown">
-            <div class="user-dropdown-header" id="dropdown-greeting">Mon compte</div>
-            <a href="dashboard.html">📦 Mes commandes</a>
-            <a href="mes-devis.html">📄 Mes devis</a>
-            <a href="panier.html">🛒 Mon panier</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="signout" onclick="logoutUser()">Se déconnecter</a>
-          </div>
-        </div>
-
-        <a href="inscription.html" class="btn-primary" id="nav-cta">S'inscrire</a>
+      <div class="nav-actions" id="home-nav-actions">
+        <a href="connexion.html" class="btn-outline" id="nav-login">Se connecter</a>
+        <a href="inscription.html" class="btn-primary" id="nav-signup">S'inscrire</a>
       </div>
     </div>
     <div class="nav-links">
@@ -232,33 +194,16 @@
         document.getElementById('user-dropdown')?.classList.remove('open');
     });
 
-    // --- ADAPTATION AU STATUT CONNEXION ---
     document.addEventListener('DOMContentLoaded', () => {
       const user = getCurrentUser();
-      const navCta = document.getElementById('nav-cta');
-      const greeting = document.getElementById('dropdown-greeting');
+      const actions = document.getElementById('home-nav-actions');
 
-      // Panier badge
-      const cart = (() => { try { return JSON.parse(localStorage.getItem('AfroBaza_cart')) || []; } catch { return []; } })();
-      const cartTotal = cart.reduce((s, i) => s + (i.qty || 1), 0);
-      const cartBadge = document.getElementById('cart-badge-home');
-      if (cartBadge && cartTotal > 0) { cartBadge.textContent = cartTotal; cartBadge.style.display = 'flex'; }
-
-      if (user) {
-        // Bouton CTA
-        if (navCta) { navCta.textContent = 'Mon espace'; navCta.href = 'dashboard.html'; }
-        // Salutation dans le dropdown
-        if (greeting) greeting.textContent = '👋 Bonjour, ' + (user.name || user.email.split('@')[0]);
-        // Icône cœur : remplir si favoris
-        const favs = getFavorites();
-        if (favs.length > 0) {
-          const favBtn = document.getElementById('fav-btn');
-          if (favBtn) favBtn.querySelector('svg path').setAttribute('fill', '#ef4444');
-        }
-      } else {
-        // Non connecté : masquer les éléments réservés aux connectés dans le dropdown
-        if (navCta) { navCta.textContent = "S'inscrire"; navCta.href = 'inscription.html'; }
-        if (greeting) greeting.textContent = 'Mon compte';
+      if (user && actions) {
+        actions.innerHTML = `
+          <a href="dashboard.html" class="btn-primary" style="gap:6px;">
+            <span>👤</span> Mon espace (${user.name || user.email.split('@')[0]})
+          </a>
+        `;
       }
     });
   </script>
