@@ -632,3 +632,54 @@ input, select, textarea { font-family: var(--font); }
 .breadcrumb a { color: var(--gray); }
 .breadcrumb a:hover { color: var(--yellow); }
 .breadcrumb .sep { color: var(--gray-border); }
+
+/* ===========================
+   RESPONSIVE DESIGN (MOBILES & TABLETTES)
+   =========================== */
+
+/* Tablettes & Petits écrans PC (max-width: 992px) */
+@media (max-width: 992px) {
+  .nav-top { padding: 12px 24px; }
+  .nav-links { padding: 0 24px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-image { height: 280px; }
+  .hero-content { padding: 40px 24px; }
+  .section { padding: 40px 24px; }
+  
+  .account-layout { grid-template-columns: 1fr; min-height: auto; }
+  .account-sidebar { border-right: none; border-bottom: 1px solid var(--gray-border); padding: 20px 0; }
+  .account-sidebar .sidebar-nav { display: flex; overflow-x: auto; padding: 0 16px; gap: 8px; }
+  .account-sidebar .sidebar-nav a { border-right: none; border-bottom: 3px solid transparent; border-radius: 8px; padding: 10px 16px; white-space: nowrap; }
+  .account-sidebar .sidebar-nav a.active { border-right: none; border-bottom: 3px solid var(--yellow); }
+  .account-content { padding: 24px 16px; }
+
+  .cart-page, .devis-page, .supplier-profile-page { padding: 24px 16px; }
+  .cart-item { grid-template-columns: 60px 1fr; gap: 12px; }
+  .cart-item .item-price { text-align: left; }
+
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* Téléphones (max-width: 640px) */
+@media (max-width: 640px) {
+  .logo { font-size: 24px; }
+  .nav-top { padding: 10px 16px; }
+  .nav-actions { gap: 4px; }
+  .btn-primary, .btn-outline, .btn-dark { padding: 8px 14px; font-size: 13px; }
+  #nav-cta { font-size: 12px; padding: 6px 12px; }
+
+  .hero-content h1 { font-size: 26px; }
+  .hero-search { flex-direction: column; background: transparent; border: none; padding: 0; box-shadow: none; }
+  .hero-search input { width: 100%; border: 2px solid var(--gray-border); border-radius: var(--radius-full); padding: 12px 16px; }
+  .hero-search button { width: 100%; justify-content: center; border-radius: var(--radius-full); padding: 12px; }
+
+  .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .products-grid { grid-template-columns: repeat(1, 1fr); gap: 16px; }
+
+  .stats-grid { grid-template-columns: 1fr !important; }
+
+  .devis-table { display: block; overflow-x: auto; white-space: nowrap; }
+  
+  .search-overlay { padding: 0 16px; }
+  .search-overlay.open { padding: 10px 16px; }
+}
