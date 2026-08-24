@@ -333,7 +333,7 @@
           stream.getTracks().forEach(track => track.stop());
         };
 
-        mediaRecorder.start();
+        mediaRecorder.start(250);
         isRecording = true;
         recordSeconds = 0;
         const btn = document.getElementById('voice-record-btn');
