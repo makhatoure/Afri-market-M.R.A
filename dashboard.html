@@ -267,15 +267,14 @@
               </div>
             </div>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group">
-                <label for="prof-location">📍 Localisation exacte de la boutique</label>
-                <input type="text" id="prof-location" class="form-control" placeholder="Ex: Marché HLM Villa 14, Dakar / Treichville, Abidjan" required>
-              </div>
-              <div class="form-group">
-                <label for="prof-phone">📞 Numéro Téléphone Direct</label>
-                <input type="tel" id="prof-phone" class="form-control" placeholder="Ex: +221 77 123 45 67">
-              </div>
+            <div class="form-group">
+              <label for="prof-location">📍 Localisation exacte de la boutique</label>
+              <input type="text" id="prof-location" class="form-control" placeholder="Ex: Marché HLM Villa 14, Dakar / Treichville, Abidjan" required>
+            </div>
+
+            <div class="form-group">
+              <label for="prof-desc">📝 Description de la boutique & Activités</label>
+              <textarea id="prof-desc" class="form-control" rows="3" placeholder="Présentez votre boutique, vos produits phares, vos spécialités de gros..."></textarea>
             </div>
 
             <button type="submit" class="btn-primary" id="save-profile-btn" style="margin-top:12px; padding:12px 24px;">Enregistrer mes modifications</button>
@@ -354,12 +353,12 @@
       const elName = document.getElementById('prof-name');
       const elComp = document.getElementById('prof-company');
       const elLoc = document.getElementById('prof-location');
-      const elPhone = document.getElementById('prof-phone');
+      const elDesc = document.getElementById('prof-desc');
       
       if (elName) elName.value = currentUser.name || '';
       if (elComp) elComp.value = currentUser.company_name || currentUser.name || '';
       if (elLoc) elLoc.value = currentUser.location || 'Dakar, Sénégal';
-      if (elPhone) elPhone.value = currentUser.phone || '';
+      if (elDesc) elDesc.value = currentUser.description || '';
 
       const dispName = document.getElementById('profile-display-name');
       const dispRole = document.getElementById('profile-display-role');
@@ -381,7 +380,7 @@
           if (profile.full_name && elName) elName.value = profile.full_name;
           if (profile.company_name && elComp) elComp.value = profile.company_name;
           if (profile.location && elLoc) elLoc.value = profile.location;
-          if (profile.phone && elPhone) elPhone.value = profile.phone;
+          if (profile.description && elDesc) elDesc.value = profile.description;
           if (profile.avatar_url) {
             const prev = document.getElementById('profile-avatar-preview');
             const dashAv = document.getElementById('dash-avatar');
@@ -416,7 +415,7 @@
       const fullName = document.getElementById('prof-name').value;
       const companyName = document.getElementById('prof-company').value;
       const location = document.getElementById('prof-location').value;
-      const phone = document.getElementById('prof-phone').value;
+      const description = document.getElementById('prof-desc').value;
       const avatarFile = document.getElementById('profile-avatar-input').files[0];
 
       let avatarUrl = currentUser ? (currentUser.avatar_url || '') : '';
@@ -436,7 +435,7 @@
           full_name: fullName,
           company_name: companyName,
           location: location,
-          phone: phone,
+          description: description,
           avatar_url: avatarUrl
         };
 
@@ -450,7 +449,7 @@
           currentUser.name = companyName || fullName;
           currentUser.company_name = companyName;
           currentUser.location = location;
-          currentUser.phone = phone;
+          currentUser.description = description;
           currentUser.avatar_url = avatarUrl;
           localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
           afficherEspace(currentUser);
