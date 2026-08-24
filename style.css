@@ -683,30 +683,36 @@ input, select, textarea { font-family: var(--font); }
   .hero-image { height: 280px; }
   .hero-content { padding: 40px 24px; }
   .section { padding: 40px 24px; }
-  
+
+  /* Dashboard Layout : sidebar en haut sur tablette */
   .account-layout { grid-template-columns: 1fr; min-height: auto; }
-  .account-sidebar { border-right: none; border-bottom: 1px solid var(--gray-border); padding: 20px 0; }
-  .account-sidebar .sidebar-nav { display: flex; overflow-x: auto; padding: 0 16px; gap: 8px; }
-  .account-sidebar .sidebar-nav a { border-right: none; border-bottom: 3px solid transparent; border-radius: 8px; padding: 10px 16px; white-space: nowrap; }
-  .account-sidebar .sidebar-nav a.active { border-right: none; border-bottom: 3px solid var(--yellow); }
-  .account-content { padding: 24px 16px; }
+  .account-sidebar { border-right: none; border-bottom: 1px solid var(--gray-border); padding: 16px 0; }
+  .account-sidebar .user-avatar-wrap { padding: 0 16px 12px; flex-direction: row; align-items: center; gap: 14px; }
+  .account-sidebar .sidebar-nav { display: flex; overflow-x: auto; padding: 0 12px 8px; gap: 6px; scrollbar-width: none; }
+  .account-sidebar .sidebar-nav::-webkit-scrollbar { display: none; }
+  .account-sidebar .sidebar-nav a { border-right: none; border-bottom: 3px solid transparent; border-radius: 8px; padding: 10px 14px; white-space: nowrap; min-width: max-content; font-size: 13px; }
+  .account-sidebar .sidebar-nav a.active { border-right: none; border-bottom: 3px solid var(--yellow); background: var(--yellow-light); }
+  .account-content { padding: 20px 16px; }
 
   .cart-page, .devis-page, .supplier-profile-page { padding: 24px 16px; }
   .cart-item { grid-template-columns: 60px 1fr; gap: 12px; }
   .cart-item .item-price { text-align: left; }
 
   .dashboard-grid { grid-template-columns: 1fr; }
+
+  /* Stats cards : 2 colonnes sur tablette */
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 /* Téléphones (max-width: 640px) */
 @media (max-width: 640px) {
-  .logo { font-size: 24px; }
-  .nav-top { padding: 10px 16px; }
+  .logo { font-size: 22px; }
+  .nav-top { padding: 10px 12px; }
   .nav-actions { gap: 4px; }
   .btn-primary, .btn-outline, .btn-dark { padding: 8px 14px; font-size: 13px; }
   #nav-cta { font-size: 12px; padding: 6px 12px; }
 
-  .hero-content h1 { font-size: 26px; }
+  .hero-content h1 { font-size: 24px; }
   .hero-search { flex-direction: column; background: transparent; border: none; padding: 0; box-shadow: none; }
   .hero-search input { width: 100%; border: 2px solid var(--gray-border); border-radius: var(--radius-full); padding: 12px 16px; }
   .hero-search button { width: 100%; justify-content: center; border-radius: var(--radius-full); padding: 12px; }
@@ -714,10 +720,35 @@ input, select, textarea { font-family: var(--font); }
   .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .products-grid { grid-template-columns: repeat(1, 1fr); gap: 16px; }
 
-  .stats-grid { grid-template-columns: 1fr !important; }
+  /* Dashboard : 1 colonne sur mobile */
+  .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
 
-  .devis-table { display: block; overflow-x: auto; white-space: nowrap; }
-  
-  .search-overlay { padding: 0 16px; }
-  .search-overlay.open { padding: 10px 16px; }
+  /* Formulaire profil : 1 colonne sur mobile */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Avatar sidebar : compact sur mobile */
+  .account-sidebar .user-avatar-wrap { padding: 0 12px 10px; }
+  .account-sidebar .user-avatar { width: 44px !important; height: 44px !important; }
+  .account-content { padding: 14px 10px; }
+
+  /* Tableaux de commandes / devis : scroll horizontal */
+  .devis-table, table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+
+  /* Zone chat mes-devis : plein écran sur mobile */
+  .devis-page { padding: 12px 8px !important; }
+
+  /* Modal visionneuse image : adaptée mobile */
+  #image-modal > div { max-width: 95%; }
+  #image-modal-img { border-radius: 10px; }
+
+  /* Overlay de recherche */
+  .search-overlay { padding: 0 12px; }
+  .search-overlay.open { padding: 8px 12px; }
+
+  /* Boutons d'action profil : flex wrap */
+  #tab-profile [style*="display:flex"] { flex-wrap: wrap; }
+
+  /* Toast notifications : pleine largeur sur mobile */
+  .toast-notif { right: 8px; left: 8px; max-width: none; }
 }
