@@ -69,7 +69,7 @@
         </a>
         <a href="#" id="nav-profile" onclick="showTab('tab-profile', this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Mon Profil & Boutique
+          Mon Profil
         </a>
       </nav>
     </aside>
@@ -312,6 +312,27 @@
             .eq('id', currentUser.id)
             .maybeSingle();
 
+          if (!error && profile) {
+            let changed = false;
+            if (profile.role && profile.role !== currentUser.role) {
+              currentUser.role = profile.role;
+              changed = true;
+            }
+            if (profile.company_name || profile.full_name) {
+              const newName = profile.company_name || profile.full_name;
+              if (newName !== currentUser.name) { currentUser.name = newName; changed = true; }
+            }
+            if (changed) {
+              localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+              afficherEspace(currentUser);
+            }
+          }
+        } catch (e) {
+          console.warn('Profil Supabase non disponible, utilisation du cache local:', e);
+        }
+      }
+    });
+
     // --- GESTION DES ONGLETS ---
     function showTab(tabId, el) {
       document.querySelectorAll('.dash-tab').forEach(t => t.style.display = 'none');
@@ -327,18 +348,29 @@
 
     // --- CHARGEMENT DU FORMULAIRE DE PROFIL ---
     async function loadProfileForm() {
+      if (!currentUser) currentUser = getCurrentUser();
       if (!currentUser) return;
-      document.getElementById('prof-name').value = currentUser.name || '';
-      document.getElementById('prof-company').value = currentUser.company_name || currentUser.name || '';
-      document.getElementById('prof-location').value = currentUser.location || 'Dakar, Sénégal';
-      document.getElementById('prof-phone').value = currentUser.phone || '';
+      
+      const elName = document.getElementById('prof-name');
+      const elComp = document.getElementById('prof-company');
+      const elLoc = document.getElementById('prof-location');
+      const elPhone = document.getElementById('prof-phone');
+      
+      if (elName) elName.value = currentUser.name || '';
+      if (elComp) elComp.value = currentUser.company_name || currentUser.name || '';
+      if (elLoc) elLoc.value = currentUser.location || 'Dakar, Sénégal';
+      if (elPhone) elPhone.value = currentUser.phone || '';
 
-      document.getElementById('profile-display-name').textContent = currentUser.company_name || currentUser.name || 'Mon Profil';
-      document.getElementById('profile-display-role').textContent = (currentUser.role || 'Commerçant').toUpperCase();
+      const dispName = document.getElementById('profile-display-name');
+      const dispRole = document.getElementById('profile-display-role');
+      if (dispName) dispName.textContent = currentUser.company_name || currentUser.name || 'Mon Profil';
+      if (dispRole) dispRole.textContent = (currentUser.role || 'Commerçant').toUpperCase();
 
       if (currentUser.avatar_url) {
-        document.getElementById('profile-avatar-preview').src = currentUser.avatar_url;
-        document.getElementById('dash-avatar').src = currentUser.avatar_url;
+        const prev = document.getElementById('profile-avatar-preview');
+        const dashAv = document.getElementById('dash-avatar');
+        if (prev) prev.src = currentUser.avatar_url;
+        if (dashAv) dashAv.src = currentUser.avatar_url;
       }
 
       // Fetch fresh data from Supabase
@@ -346,13 +378,15 @@
       if (client && currentUser.id) {
         const { data: profile } = await client.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
         if (profile) {
-          if (profile.full_name) document.getElementById('prof-name').value = profile.full_name;
-          if (profile.company_name) document.getElementById('prof-company').value = profile.company_name;
-          if (profile.location) document.getElementById('prof-location').value = profile.location;
-          if (profile.phone) document.getElementById('prof-phone').value = profile.phone;
+          if (profile.full_name && elName) elName.value = profile.full_name;
+          if (profile.company_name && elComp) elComp.value = profile.company_name;
+          if (profile.location && elLoc) elLoc.value = profile.location;
+          if (profile.phone && elPhone) elPhone.value = profile.phone;
           if (profile.avatar_url) {
-            document.getElementById('profile-avatar-preview').src = profile.avatar_url;
-            document.getElementById('dash-avatar').src = profile.avatar_url;
+            const prev = document.getElementById('profile-avatar-preview');
+            const dashAv = document.getElementById('dash-avatar');
+            if (prev) prev.src = profile.avatar_url;
+            if (dashAv) dashAv.src = profile.avatar_url;
           }
         }
       }
@@ -363,8 +397,10 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (e) => {
-        document.getElementById('profile-avatar-preview').src = e.target.result;
-        document.getElementById('dash-avatar').src = e.target.result;
+        const prev = document.getElementById('profile-avatar-preview');
+        const dashAv = document.getElementById('dash-avatar');
+        if (prev) prev.src = e.target.result;
+        if (dashAv) dashAv.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
@@ -383,10 +419,10 @@
       const phone = document.getElementById('prof-phone').value;
       const avatarFile = document.getElementById('profile-avatar-input').files[0];
 
-      let avatarUrl = currentUser.avatar_url || '';
+      let avatarUrl = currentUser ? (currentUser.avatar_url || '') : '';
 
       try {
-        if (avatarFile && client) {
+        if (avatarFile && client && currentUser) {
           const fileExt = avatarFile.name.split('.').pop();
           const fileName = `avatars/${currentUser.id}_${Date.now()}.${fileExt}`;
           const { data: uploadData, error: uploadErr } = await client.storage.from('avatars').upload(fileName, avatarFile, { upsert: true });
@@ -404,20 +440,22 @@
           avatar_url: avatarUrl
         };
 
-        if (client && currentUser.id) {
+        if (client && currentUser && currentUser.id) {
           const { error } = await client.from('profiles').update(updatedFields).eq('id', currentUser.id);
           if (error) throw error;
         }
 
         // Local update
-        currentUser.name = companyName || fullName;
-        currentUser.company_name = companyName;
-        currentUser.location = location;
-        currentUser.phone = phone;
-        currentUser.avatar_url = avatarUrl;
-        localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+        if (currentUser) {
+          currentUser.name = companyName || fullName;
+          currentUser.company_name = companyName;
+          currentUser.location = location;
+          currentUser.phone = phone;
+          currentUser.avatar_url = avatarUrl;
+          localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+          afficherEspace(currentUser);
+        }
 
-        afficherEspace(currentUser);
         showToast('✓ Profil et informations de boutique mis à jour avec succès !', 'success');
       } catch (err) {
         showToast('❌ Erreur : ' + err.message, 'error');
@@ -477,11 +515,6 @@
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:red;">Erreur de chargement des commandes.</td></tr>';
       }
     }
-        } catch (e) {
-          console.warn('Profil Supabase non disponible, utilisation du cache local:', e);
-        }
-      }
-    });
 
     function afficherEspace(user) {
       const name = user.name || (user.email ? user.email.split('@')[0] : 'Utilisateur');
