@@ -158,7 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (user) {
     if (navCta) {
-      navCta.textContent = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
+      const avatarSrc = user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80';
+      navCta.className = 'user-space-pill';
+      navCta.innerHTML = `
+        <img src="${avatarSrc}" alt="${user.name}" class="user-space-avatar">
+        <span>${user.name || user.email.split('@')[0]}</span>
+        <span style="font-size:11px; opacity:0.6; margin-left:-4px;">(Mon Espace)</span>
+      `;
       navCta.href = 'dashboard.html';
     }
 

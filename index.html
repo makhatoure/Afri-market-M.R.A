@@ -199,9 +199,12 @@
       const actions = document.getElementById('home-nav-actions');
 
       if (user && actions) {
+        const avatarSrc = user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80';
         actions.innerHTML = `
-          <a href="dashboard.html" class="btn-primary" style="gap:6px;">
-            <span>👤</span> Mon espace (${user.name || user.email.split('@')[0]})
+          <a href="dashboard.html" class="user-space-pill" title="Accéder à mon espace personnel">
+            <img src="${avatarSrc}" alt="${user.name}" class="user-space-avatar">
+            <span>${user.name || user.email.split('@')[0]}</span>
+            <span style="font-size:11px; opacity:0.6; margin-left:-4px;">(Mon Espace)</span>
           </a>
         `;
       }

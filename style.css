@@ -51,6 +51,34 @@ input, select, textarea { font-family: var(--font); }
 }
 .btn-primary:hover { background: var(--yellow-hover); transform: translateY(-1px); }
 
+/* Mon Espace Pill avec Avatar */
+.user-space-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  padding: 6px 18px 6px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 700; font-size: 14px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.user-space-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: var(--yellow);
+}
+.user-space-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--yellow);
+  flex-shrink: 0;
+}
+
 .btn-outline {
   display: inline-flex; align-items: center; gap: 8px;
   background: transparent; color: var(--dark);
