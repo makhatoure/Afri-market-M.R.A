@@ -59,7 +59,7 @@
           <label for="reg-password">Mot de passe</label>
           <input type="password" id="reg-password" class="form-control" placeholder="Minimum 6 caractères" required minlength="6">
         </div>
-        <button type="submit" class="btn-primary auth-submit" id="submit-btn">Créer mon compte Supabase</button>
+        <button type="submit" class="btn-primary auth-submit" id="submit-btn">Créer mon compte AfroBaza</button>
       </form>
 
       <div class="auth-footer">Déjà un compte ? <a href="connexion.html">Se connecter</a></div>
@@ -98,7 +98,7 @@
         btn.textContent = 'Créer mon compte Supabase';
         btn.disabled = false;
       } else {
-        showToast('✓ Compte enregistré dans Supabase !', 'success');
+        showToast('✓ Compte créé avec succès sur AfroBaza !', 'success');
         setTimeout(() => window.location.href = 'dashboard.html', 1200);
       }
     }
