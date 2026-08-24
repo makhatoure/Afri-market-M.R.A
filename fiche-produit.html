@@ -6,6 +6,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AfroBaza">
+  <link rel="apple-touch-icon" href="icon-512.png">
+  <meta name="theme-color" content="#F4B400">
 </head>
 <body>
   <nav class="navbar">
@@ -170,5 +177,14 @@
       showToast('‚úì Produit ajout√© au panier avec succ√®s !', 'success');
     }
   </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").then(reg => {
+        console.log("[AfroBaza PWA] Service Worker enregistrÈ :", reg.scope);
+      }).catch(err => console.warn("[AfroBaza PWA] SW Èchec :", err));
+    });
+  }
+</script>
 </body>
 </html>
