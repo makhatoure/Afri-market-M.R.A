@@ -24,10 +24,14 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     role user_role DEFAULT 'commercant',
     company_name TEXT,
     location TEXT DEFAULT 'Dakar, Sénégal',
+    description TEXT,
     is_verified BOOLEAN DEFAULT false,
     avatar_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Sécurité d'ajout de la colonne description si la table existe déjà
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS description TEXT;
 
 -- 3. TABLE DES PRODUITS
 CREATE TABLE IF NOT EXISTS public.products (

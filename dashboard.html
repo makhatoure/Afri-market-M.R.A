@@ -441,7 +441,15 @@
 
         if (client && currentUser && currentUser.id) {
           const { error } = await client.from('profiles').update(updatedFields).eq('id', currentUser.id);
-          if (error) throw error;
+          if (error) {
+            // Si la colonne description n'a pas encore été créée en BDD Supabase, retenter sans description
+            if (error.message && error.message.includes('description')) {
+              delete updatedFields.description;
+              await client.from('profiles').update(updatedFields).eq('id', currentUser.id);
+            } else {
+              throw error;
+            }
+          }
         }
 
         // Local update
