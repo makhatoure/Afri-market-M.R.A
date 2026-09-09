@@ -1,0 +1,1472 @@
+{
+  "nodes": [
+    {
+      "id": "26:2",
+      "name": "Rectangle 9",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "734756ea3f9f18a1b61ab34253da908a5daca3d7"
+      ]
+    },
+    {
+      "id": "40:2",
+      "name": "Ellipse 1",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "40:3",
+      "name": "Ellipse 2",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "c1cac42ae8b69e85617ab58f1056dd9ca08b96bb"
+      ]
+    },
+    {
+      "id": "40:4",
+      "name": "Ellipse 3",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fda18cc479781be02cdead9453ca577377d4ba33"
+      ]
+    },
+    {
+      "id": "40:5",
+      "name": "Ellipse 4",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ac7222bca65a91cb9f24f8717a4ea12ef0b84412"
+      ]
+    },
+    {
+      "id": "40:6",
+      "name": "Ellipse 5",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "deae26637ad74a2bcdc19b8243e8a1ccd1b7edd1"
+      ]
+    },
+    {
+      "id": "117:19",
+      "name": "Rectangle 18",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7bcaa9421285579de29e339e3c6d96ba8a88708a"
+      ]
+    },
+    {
+      "id": "117:9",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3f38113ba23b109bb18d1106631bdd2115999ad5"
+      ]
+    },
+    {
+      "id": "117:11",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "117:16",
+      "name": "Rectangle 16",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3b664d7361b59fadac7e081ef96816a9ed055539"
+      ]
+    },
+    {
+      "id": "117:28",
+      "name": "Rectangle 24",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7050b7cd01fc5568c19c1fe499e239c7199a008e"
+      ]
+    },
+    {
+      "id": "117:31",
+      "name": "Rectangle 26",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "126:4",
+      "name": "Rectangle 28",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ebd9e941f3a795369f1ab23e3dbfed2c757d1062"
+      ]
+    },
+    {
+      "id": "126:7",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "126:10",
+      "name": "Rectangle 32",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "166942ee430cada59078af772d9b98f4b2bd2b2f"
+      ]
+    },
+    {
+      "id": "117:8",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "b3d119ae0f35e9a8dd4e926dbc24ce552008daf3"
+      ]
+    },
+    {
+      "id": "117:22",
+      "name": "Rectangle 20",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "8f638453d5fd0d4e51c2bb7a4cdd1fefecf3ac1e"
+      ]
+    },
+    {
+      "id": "117:25",
+      "name": "Rectangle 22",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "43d8591dfbc33ceb3b7d01446a730445dc107ddf"
+      ]
+    },
+    {
+      "id": "279:55",
+      "name": "Ellipse 13",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "256c7f2ce8ecbe0533dcdc428a4a5b6b3029d376"
+      ]
+    },
+    {
+      "id": "279:51",
+      "name": "Ellipse 11",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "deae26637ad74a2bcdc19b8243e8a1ccd1b7edd1"
+      ]
+    },
+    {
+      "id": "279:53",
+      "name": "Ellipse 12",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4037e95d4d9d91afc7c8849efb402eba2226585a"
+      ]
+    },
+    {
+      "id": "279:57",
+      "name": "Ellipse 14",
+      "type": "VECTOR",
+      "page": "Page 1",
+      "imageRefs": [
+        "ac7222bca65a91cb9f24f8717a4ea12ef0b84412"
+      ]
+    },
+    {
+      "id": "279:59",
+      "name": "Ellipse 15",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6b5fb15d6e69292d818ab9f5e28330280def8457"
+      ]
+    },
+    {
+      "id": "279:61",
+      "name": "Ellipse 16",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "c1cac42ae8b69e85617ab58f1056dd9ca08b96bb"
+      ]
+    },
+    {
+      "id": "279:63",
+      "name": "Ellipse 17",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fda18cc479781be02cdead9453ca577377d4ba33"
+      ]
+    },
+    {
+      "id": "279:50",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "300:19",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "301:49",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "301:67",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "309:21",
+      "name": "Rectangle 9",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "734756ea3f9f18a1b61ab34253da908a5daca3d7"
+      ]
+    },
+    {
+      "id": "321:76",
+      "name": "Rectangle 49",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4ff407525a75e0903000e8a7f1d8bb4674df3ac8"
+      ]
+    },
+    {
+      "id": "395:55",
+      "name": "Rectangle 82",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "396:107",
+      "name": "Rectangle 82",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "b64bd6096b34b89423f5ebc62b8973b6d12e2a34"
+      ]
+    },
+    {
+      "id": "396:124",
+      "name": "Rectangle 82",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "85f76d05e9b7c8b9d4dd24a1a8b50fe1068ec537"
+      ]
+    },
+    {
+      "id": "396:141",
+      "name": "Rectangle 82",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "b7f443c45098f28fd65cfc58480a66ebf482263f"
+      ]
+    },
+    {
+      "id": "405:2",
+      "name": "Rectangle 83",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "467:52",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "624:17",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "624:21",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "624:25",
+      "name": "Rectangle 26",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "407:34",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "407:35",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "407:37",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "431:215",
+      "name": "Rectangle 9",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "734756ea3f9f18a1b61ab34253da908a5daca3d7"
+      ]
+    },
+    {
+      "id": "431:229",
+      "name": "Ellipse 1",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "431:232",
+      "name": "Ellipse 2",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "c1cac42ae8b69e85617ab58f1056dd9ca08b96bb"
+      ]
+    },
+    {
+      "id": "431:235",
+      "name": "Ellipse 3",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fda18cc479781be02cdead9453ca577377d4ba33"
+      ]
+    },
+    {
+      "id": "431:238",
+      "name": "Ellipse 4",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ac7222bca65a91cb9f24f8717a4ea12ef0b84412"
+      ]
+    },
+    {
+      "id": "431:241",
+      "name": "Ellipse 5",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "deae26637ad74a2bcdc19b8243e8a1ccd1b7edd1"
+      ]
+    },
+    {
+      "id": "431:277",
+      "name": "Rectangle 18",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7bcaa9421285579de29e339e3c6d96ba8a88708a"
+      ]
+    },
+    {
+      "id": "431:281",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3f38113ba23b109bb18d1106631bdd2115999ad5"
+      ]
+    },
+    {
+      "id": "431:285",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "431:289",
+      "name": "Rectangle 16",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3b664d7361b59fadac7e081ef96816a9ed055539"
+      ]
+    },
+    {
+      "id": "431:293",
+      "name": "Rectangle 24",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7050b7cd01fc5568c19c1fe499e239c7199a008e"
+      ]
+    },
+    {
+      "id": "431:297",
+      "name": "Rectangle 26",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "431:301",
+      "name": "Rectangle 28",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ebd9e941f3a795369f1ab23e3dbfed2c757d1062"
+      ]
+    },
+    {
+      "id": "431:305",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "431:315",
+      "name": "Rectangle 32",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "166942ee430cada59078af772d9b98f4b2bd2b2f"
+      ]
+    },
+    {
+      "id": "431:318",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "b3d119ae0f35e9a8dd4e926dbc24ce552008daf3"
+      ]
+    },
+    {
+      "id": "431:327",
+      "name": "Rectangle 20",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "8f638453d5fd0d4e51c2bb7a4cdd1fefecf3ac1e"
+      ]
+    },
+    {
+      "id": "431:336",
+      "name": "Rectangle 22",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "43d8591dfbc33ceb3b7d01446a730445dc107ddf"
+      ]
+    },
+    {
+      "id": "430:5",
+      "name": "Rectangle 9",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "734756ea3f9f18a1b61ab34253da908a5daca3d7"
+      ]
+    },
+    {
+      "id": "430:19",
+      "name": "Ellipse 1",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "430:22",
+      "name": "Ellipse 2",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "c1cac42ae8b69e85617ab58f1056dd9ca08b96bb"
+      ]
+    },
+    {
+      "id": "430:25",
+      "name": "Ellipse 3",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fda18cc479781be02cdead9453ca577377d4ba33"
+      ]
+    },
+    {
+      "id": "430:28",
+      "name": "Ellipse 4",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ac7222bca65a91cb9f24f8717a4ea12ef0b84412"
+      ]
+    },
+    {
+      "id": "430:31",
+      "name": "Ellipse 5",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "deae26637ad74a2bcdc19b8243e8a1ccd1b7edd1"
+      ]
+    },
+    {
+      "id": "430:67",
+      "name": "Rectangle 18",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7bcaa9421285579de29e339e3c6d96ba8a88708a"
+      ]
+    },
+    {
+      "id": "430:71",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3f38113ba23b109bb18d1106631bdd2115999ad5"
+      ]
+    },
+    {
+      "id": "430:75",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "430:79",
+      "name": "Rectangle 16",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "3b664d7361b59fadac7e081ef96816a9ed055539"
+      ]
+    },
+    {
+      "id": "430:83",
+      "name": "Rectangle 24",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "7050b7cd01fc5568c19c1fe499e239c7199a008e"
+      ]
+    },
+    {
+      "id": "430:87",
+      "name": "Rectangle 26",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "430:91",
+      "name": "Rectangle 28",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ebd9e941f3a795369f1ab23e3dbfed2c757d1062"
+      ]
+    },
+    {
+      "id": "430:95",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "430:105",
+      "name": "Rectangle 32",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "166942ee430cada59078af772d9b98f4b2bd2b2f"
+      ]
+    },
+    {
+      "id": "430:108",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "b3d119ae0f35e9a8dd4e926dbc24ce552008daf3"
+      ]
+    },
+    {
+      "id": "430:117",
+      "name": "Rectangle 20",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "8f638453d5fd0d4e51c2bb7a4cdd1fefecf3ac1e"
+      ]
+    },
+    {
+      "id": "430:126",
+      "name": "Rectangle 22",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "43d8591dfbc33ceb3b7d01446a730445dc107ddf"
+      ]
+    },
+    {
+      "id": "454:72",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "630:68",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "461:57",
+      "name": "Ellipse 46",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "462:76",
+      "name": "Ellipse 46",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "468:325",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "469:565",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "630:14",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "487:33",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "487:18",
+      "name": "Rectangle 14",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "487:38",
+      "name": "Rectangle 26",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "471:785",
+      "name": "Ellipse 51",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "471:720",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "630:50",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "499:243",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "499:244",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "499:245",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "499:277",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "507:47",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "511:58",
+      "name": "Ellipse 52",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "db1e18249db272d020487eff981f701d401acea5"
+      ]
+    },
+    {
+      "id": "511:59",
+      "name": "Ellipse 53",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "224af7aa5c5142ad118d8b3dceeb0e1a9bb566a3"
+      ]
+    },
+    {
+      "id": "511:60",
+      "name": "Ellipse 54",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "a88dd0eeb31459faa7dfe5dffc45a46c83607a4d"
+      ]
+    },
+    {
+      "id": "511:61",
+      "name": "Ellipse 55",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "0e85d042206e29e37108193bfc4f97c60c561e62"
+      ]
+    },
+    {
+      "id": "511:63",
+      "name": "Ellipse 56",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63720cc4e6adc99d511993cd15938357e0726db8"
+      ]
+    },
+    {
+      "id": "511:64",
+      "name": "Ellipse 57",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "397c488f5ea8c42aedd62a703a32e5b3e5e58b36"
+      ]
+    },
+    {
+      "id": "511:65",
+      "name": "Ellipse 58",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "437a4475a0e4935272b7ba5906f7af61a63f12d3"
+      ]
+    },
+    {
+      "id": "519:84",
+      "name": "Rectangle 20",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "8f638453d5fd0d4e51c2bb7a4cdd1fefecf3ac1e"
+      ]
+    },
+    {
+      "id": "519:94",
+      "name": "Rectangle 28",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ebd9e941f3a795369f1ab23e3dbfed2c757d1062"
+      ]
+    },
+    {
+      "id": "519:99",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "519:111",
+      "name": "Rectangle 32",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "166942ee430cada59078af772d9b98f4b2bd2b2f"
+      ]
+    },
+    {
+      "id": "519:148",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "519:152",
+      "name": "Ellipse 52",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "db1e18249db272d020487eff981f701d401acea5"
+      ]
+    },
+    {
+      "id": "519:155",
+      "name": "Ellipse 53",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "224af7aa5c5142ad118d8b3dceeb0e1a9bb566a3"
+      ]
+    },
+    {
+      "id": "519:158",
+      "name": "Ellipse 54",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "a88dd0eeb31459faa7dfe5dffc45a46c83607a4d"
+      ]
+    },
+    {
+      "id": "519:161",
+      "name": "Ellipse 55",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "0e85d042206e29e37108193bfc4f97c60c561e62"
+      ]
+    },
+    {
+      "id": "519:164",
+      "name": "Ellipse 56",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63720cc4e6adc99d511993cd15938357e0726db8"
+      ]
+    },
+    {
+      "id": "519:167",
+      "name": "Ellipse 57",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "397c488f5ea8c42aedd62a703a32e5b3e5e58b36"
+      ]
+    },
+    {
+      "id": "519:170",
+      "name": "Ellipse 58",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "437a4475a0e4935272b7ba5906f7af61a63f12d3"
+      ]
+    },
+    {
+      "id": "519:173",
+      "name": "Rectangle 20",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "8f638453d5fd0d4e51c2bb7a4cdd1fefecf3ac1e"
+      ]
+    },
+    {
+      "id": "519:258",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "519:262",
+      "name": "Ellipse 52",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "db1e18249db272d020487eff981f701d401acea5"
+      ]
+    },
+    {
+      "id": "519:265",
+      "name": "Ellipse 53",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "224af7aa5c5142ad118d8b3dceeb0e1a9bb566a3"
+      ]
+    },
+    {
+      "id": "519:268",
+      "name": "Ellipse 54",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "a88dd0eeb31459faa7dfe5dffc45a46c83607a4d"
+      ]
+    },
+    {
+      "id": "519:271",
+      "name": "Ellipse 55",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "0e85d042206e29e37108193bfc4f97c60c561e62"
+      ]
+    },
+    {
+      "id": "519:274",
+      "name": "Ellipse 56",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63720cc4e6adc99d511993cd15938357e0726db8"
+      ]
+    },
+    {
+      "id": "519:277",
+      "name": "Ellipse 57",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "397c488f5ea8c42aedd62a703a32e5b3e5e58b36"
+      ]
+    },
+    {
+      "id": "519:280",
+      "name": "Ellipse 58",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "437a4475a0e4935272b7ba5906f7af61a63f12d3"
+      ]
+    },
+    {
+      "id": "519:306",
+      "name": "Rectangle 32",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "166942ee430cada59078af772d9b98f4b2bd2b2f"
+      ]
+    },
+    {
+      "id": "519:368",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "519:372",
+      "name": "Ellipse 52",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "db1e18249db272d020487eff981f701d401acea5"
+      ]
+    },
+    {
+      "id": "519:375",
+      "name": "Ellipse 53",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "224af7aa5c5142ad118d8b3dceeb0e1a9bb566a3"
+      ]
+    },
+    {
+      "id": "519:378",
+      "name": "Ellipse 54",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "a88dd0eeb31459faa7dfe5dffc45a46c83607a4d"
+      ]
+    },
+    {
+      "id": "519:381",
+      "name": "Ellipse 55",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "0e85d042206e29e37108193bfc4f97c60c561e62"
+      ]
+    },
+    {
+      "id": "519:384",
+      "name": "Ellipse 56",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63720cc4e6adc99d511993cd15938357e0726db8"
+      ]
+    },
+    {
+      "id": "519:387",
+      "name": "Ellipse 57",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "397c488f5ea8c42aedd62a703a32e5b3e5e58b36"
+      ]
+    },
+    {
+      "id": "519:390",
+      "name": "Ellipse 58",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "437a4475a0e4935272b7ba5906f7af61a63f12d3"
+      ]
+    },
+    {
+      "id": "519:406",
+      "name": "Rectangle 30",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "519:584",
+      "name": "Rectangle 28",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ebd9e941f3a795369f1ab23e3dbfed2c757d1062"
+      ]
+    },
+    {
+      "id": "519:478",
+      "name": "Ellipse 10",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ddbdfb3fa2642e642264a2bfe62ba5dd9c546528"
+      ]
+    },
+    {
+      "id": "519:482",
+      "name": "Ellipse 52",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "db1e18249db272d020487eff981f701d401acea5"
+      ]
+    },
+    {
+      "id": "519:485",
+      "name": "Ellipse 53",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "224af7aa5c5142ad118d8b3dceeb0e1a9bb566a3"
+      ]
+    },
+    {
+      "id": "519:488",
+      "name": "Ellipse 54",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "a88dd0eeb31459faa7dfe5dffc45a46c83607a4d"
+      ]
+    },
+    {
+      "id": "519:491",
+      "name": "Ellipse 55",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "0e85d042206e29e37108193bfc4f97c60c561e62"
+      ]
+    },
+    {
+      "id": "519:494",
+      "name": "Ellipse 56",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63720cc4e6adc99d511993cd15938357e0726db8"
+      ]
+    },
+    {
+      "id": "519:497",
+      "name": "Ellipse 57",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "397c488f5ea8c42aedd62a703a32e5b3e5e58b36"
+      ]
+    },
+    {
+      "id": "519:500",
+      "name": "Ellipse 58",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "437a4475a0e4935272b7ba5906f7af61a63f12d3"
+      ]
+    },
+    {
+      "id": "529:97",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "530:170",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "585:17",
+      "name": "Ellipse 45",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "fd5691037dd42c3207885fabeadd4a356ad0b667"
+      ]
+    },
+    {
+      "id": "585:2",
+      "name": "Ellipse 18",
+      "type": "ELLIPSE",
+      "page": "Page 1",
+      "imageRefs": [
+        "4c775b613b0c0494518e100c9c833bcd0e9bd18d"
+      ]
+    },
+    {
+      "id": "585:46",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "585:45",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "585:44",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "599:75",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "599:76",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "599:77",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "607:235",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "607:236",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "607:237",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "607:489",
+      "name": "Rectangle 92",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "6549ebaa227a54dd9cd26147daceb7c04354ddc6"
+      ]
+    },
+    {
+      "id": "607:490",
+      "name": "Rectangle 93",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "67f19d633ec6c51d3fc81af85b735f8c36498dce"
+      ]
+    },
+    {
+      "id": "607:491",
+      "name": "Rectangle 94",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "babf5e00114a76a3a849efb4251be1ed868d99db"
+      ]
+    },
+    {
+      "id": "602:44",
+      "name": "Rectangle 182",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "ea6718763756ade1a0d4775a519b2ad31883ac9c"
+      ]
+    },
+    {
+      "id": "602:48",
+      "name": "Rectangle 184",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "63802d0c7cd2cc78d78622c433444059fcf32a9e"
+      ]
+    },
+    {
+      "id": "602:41",
+      "name": "Rectangle 180",
+      "type": "RECTANGLE",
+      "page": "Page 1",
+      "imageRefs": [
+        "c46bf1877b5fb711d6ac1f25b2abdd978629b60d"
+      ]
+    }
+  ],
+  "uniqueCount": 37
+}
