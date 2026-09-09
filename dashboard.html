@@ -402,6 +402,90 @@
         </div>
 
       </div>
+
+      <!-- ESPACE EXCLUSIF FOURNISSEUR : AJOUT DE PRODUIT (STYLE FIGMA EXCLUSIF) -->
+      <div id="supplier-section" style="display:none;margin-top:28px;">
+        
+        <div style="background:#FFFFFF;border-radius:16px;border:1px solid #E5E7EB;padding:32px 36px;box-shadow:0 4px 16px rgba(0,0,0,0.03);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;border-bottom:1px solid #F3F4F6;padding-bottom:16px;">
+            <div>
+              <h2 style="font-size:22px;font-weight:800;color:#000;margin:0 0 6px 0;">📦 Ajouter un nouveau produit au catalogue</h2>
+              <p style="font-size:14px;color:#555;margin:0;">Publiez vos articles pour qu'ils soient visibles par des milliers de commerçants qualifiés.</p>
+            </div>
+            <span style="background:#FFF7DF;color:#D48806;font-size:13px;font-weight:700;padding:6px 14px;border-radius:20px;border:1px solid #FFE7A3;">Espace Fournisseur</span>
+          </div>
+
+          <form onsubmit="handleAddProduct(event)">
+            
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+              <div>
+                <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Nom du produit *</label>
+                <input type="text" id="prod-name" placeholder="Ex: Beurre de karité brut 100% naturel" required style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;">
+              </div>
+              
+              <div>
+                <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Catégorie principale *</label>
+                <select id="prod-cat" required style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;">
+                  <option value="Cosmétiques et beauté">Cosmétiques et beauté</option>
+                  <option value="Alimentation">Alimentation & Épicerie</option>
+                  <option value="Textiles et prêt à porter">Textiles et prêt à porter</option>
+                  <option value="Électroniques">Électroniques</option>
+                  <option value="Enfants">Enfants & Jouets</option>
+                  <option value="Maison et décorations">Maison et décorations</option>
+                  <option value="Emballages et impressions">Emballages et impressions</option>
+                  <option value="Quincailleries">Quincailleries</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+              <div>
+                <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Prix grossiste (FCFA) *</label>
+                <input type="number" id="prod-price" placeholder="Ex: 2500" required min="1" style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;">
+              </div>
+
+              <div>
+                <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Unité de mesure *</label>
+                <input type="text" id="prod-unit" placeholder="Ex: Kg, Pièce, Pot, Carton" required style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;">
+              </div>
+
+              <div>
+                <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Commande minimale (MOQ) *</label>
+                <input type="number" id="prod-min" placeholder="Ex: 10" required min="1" style="width:100%;padding:12px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;">
+              </div>
+            </div>
+
+            <!-- ZONE IMAGE PRODUIT SOIGNÉE FIGMA -->
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Photo officielle du produit *</label>
+              <div onclick="document.getElementById('prod-img').click()" style="border:2px dashed #F5A623;border-radius:12px;padding:28px;text-align:center;background:#FFFDF7;cursor:pointer;transition:background 0.2s;" id="img-drop-zone">
+                <input type="file" id="prod-img" accept="image/*" style="display:none;" onchange="previewImage(event)">
+                <img id="img-preview" src="" alt="Aperçu produit" style="display:none;max-height:180px;max-width:100%;border-radius:10px;margin:0 auto 12px auto;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                <div id="img-placeholder">
+                  <div style="width:52px;height:52px;border-radius:50%;background:#FCE8B3;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8C5400" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div style="font-weight:700;color:#111;font-size:14.5px;">Cliquez pour importer la photo du produit</div>
+                  <div style="font-size:12px;color:#777;margin-top:4px;">Formats acceptés : JPG, PNG, WEBP — Image haute résolution recommandée</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:28px;">
+              <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Description complète du produit *</label>
+              <textarea id="prod-desc" rows="4" placeholder="Décrivez votre produit en détails (qualité, caractéristiques techniques, emballage, origine...)" required style="width:100%;padding:14px 16px;border-radius:10px;border:1px solid #D1D5DB;background:#F9FAFB;font-size:14px;outline:none;box-sizing:border-box;font-family:inherit;"></textarea>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:14px;">
+              <button type="submit" id="add-prod-btn" style="background:#F5A623;color:#000000;border:none;padding:14px 32px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 3px 10px rgba(245,166,35,0.3);">
+                Publier le produit dans le catalogue
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
     </main>
   </div>
 
@@ -410,25 +494,34 @@
   <script src="supabase-client.js"></script>
   <script src="app.js"></script>
   <script>
+    let currentUser = null;
+
     document.addEventListener('DOMContentLoaded', async () => {
-      const user = getCurrentUser();
-      if (!user) {
+      currentUser = getCurrentUser();
+      if (!currentUser) {
         window.location.href = 'connexion.html';
         return;
       }
 
-      const name = user.name || 'Aminata Gueye';
+      const name = currentUser.name || 'Aminata Gueye';
       const elGreet = document.getElementById('dash-greeting-name');
       if (elGreet) elGreet.textContent = 'Bonjour, ' + name;
 
+      // Détecter si le profil est fournisseur
+      const roleStr = String(currentUser.role || '').toLowerCase().trim();
+      const supplierSec = document.getElementById('supplier-section');
+      if (roleStr.includes('fournisseur') && supplierSec) {
+        supplierSec.style.display = 'block';
+      }
+
       // Charger les stats dynamiques Supabase si disponible
       const client = getSupabaseClient();
-      if (client && user.id) {
+      if (client && currentUser.id) {
         try {
           const { count: devisCount } = await client
             .from('devis')
             .select('*', { count: 'exact', head: true })
-            .eq('merchant_id', user.id);
+            .eq('merchant_id', currentUser.id);
 
           if (devisCount !== null) {
             document.getElementById('stat-devis-val').textContent = devisCount;
@@ -438,6 +531,84 @@
         }
       }
     });
+
+    async function handleAddProduct(e) {
+      e.preventDefault();
+      const btn = document.getElementById('add-prod-btn');
+      btn.textContent = 'Publication en cours... ⏳';
+      btn.disabled = true;
+
+      const client = getSupabaseClient();
+      if (!client) {
+        showToast('❌ Erreur de connexion Supabase', 'error');
+        btn.textContent = 'Publier le produit dans le catalogue';
+        btn.disabled = false;
+        return;
+      }
+
+      const fileInput = document.getElementById('prod-img');
+      const file = fileInput.files[0];
+      let imageUrl = '';
+
+      if (file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `products/${currentUser.id}_${Date.now()}.${fileExt}`;
+        const { data: uploadData, error: uploadError } = await client.storage
+          .from('product-images')
+          .upload(fileName, file, { upsert: true });
+
+        if (uploadError) {
+          showToast('❌ Erreur upload photo : ' + uploadError.message, 'error');
+          btn.textContent = 'Publier le produit dans le catalogue';
+          btn.disabled = false;
+          return;
+        }
+
+        const { data: urlData } = client.storage.from('product-images').getPublicUrl(fileName);
+        imageUrl = urlData.publicUrl;
+      }
+
+      const newProduct = {
+        supplier_id: currentUser.id,
+        name: document.getElementById('prod-name').value,
+        category: document.getElementById('prod-cat').value,
+        price_fcfa: Number(document.getElementById('prod-price').value),
+        unit: document.getElementById('prod-unit').value,
+        min_quantity: Number(document.getElementById('prod-min').value),
+        image_url: imageUrl,
+        description: document.getElementById('prod-desc').value,
+        in_stock: true
+      };
+
+      try {
+        const { data, error } = await client.from('products').insert([newProduct]);
+        if (error) throw error;
+
+        showToast('✓ Produit publié avec succès dans le catalogue !', 'success');
+        e.target.reset();
+        document.getElementById('img-preview').style.display = 'none';
+        document.getElementById('img-placeholder').style.display = 'block';
+      } catch (err) {
+        showToast('❌ Erreur : ' + err.message, 'error');
+      } finally {
+        btn.textContent = 'Publier le produit dans le catalogue';
+        btn.disabled = false;
+      }
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById('img-preview');
+        const placeholder = document.getElementById('img-placeholder');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
   </script>
 </body>
 </html>
