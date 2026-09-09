@@ -3,244 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>À propos d'AfriMark — Marketplace B2B</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
+  <title>À propos de AfriMark</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .about-hero {
-      position: relative;
-      background: linear-gradient(90deg, #FFFFFF 0%, #FDFBF7 40%, rgba(255,255,255,0) 100%), url('figma_images_raw/Rectangle_9_734756ea.png') no-repeat right center / cover;
-      min-height: 440px;
-      display: flex;
-      align-items: center;
-      padding: 60px 8%;
-      border-bottom: 1px solid #EFEFEF;
-    }
-    .about-hero-content {
-      max-width: 580px;
-      z-index: 2;
-    }
-    .about-hero h1 {
-      font-size: 40px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 20px;
-      line-height: 1.15;
-    }
-    .about-hero h1 span.logo-text {
-      font-family: 'Kaushan Script', cursive;
-      color: var(--yellow-dark, #D48806);
-      font-weight: 400;
-    }
-    .about-hero h2 {
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 20px;
-      color: #1A1A1A;
-    }
-    .about-hero p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #4A4A4A;
-      font-weight: 500;
-    }
-
-    .about-two-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      max-width: 1200px;
-      margin: 48px auto;
-      padding: 0 24px;
-    }
-    .about-card {
-      background: #FFF8E7;
-      border-radius: 16px;
-      padding: 36px 32px;
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      border: 1px solid #FFEBB6;
-    }
-    .about-card-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #F8D06B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .about-card-icon svg {
-      width: 32px;
-      height: 32px;
-      stroke: #8C5400;
-    }
-    .about-card-body h3 {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 14px;
-      color: #111;
-    }
-    .about-card-body p {
-      font-size: 14.5px;
-      line-height: 1.6;
-      color: #333;
-      margin-bottom: 12px;
-    }
-    .about-checklist {
-      list-style: none;
+    body {
+      margin: 0;
       padding: 0;
-      margin: 12px 0 0 0;
+      background-color: #F8F9FA;
+      font-family: 'Inter', sans-serif;
     }
-    .about-checklist li {
-      font-size: 14.5px;
-      color: #222;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .figma-page-container {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
-    .about-checklist li::before {
-      content: "✓";
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1.5px solid #D48806;
-      color: #D48806;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .about-values-section {
-      text-align: center;
-      max-width: 1200px;
-      margin: 60px auto 80px;
-      padding: 0 24px;
-    }
-    .about-values-header {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-    .about-values-badge {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #F8D06B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-    .about-values-badge svg {
-      width: 32px;
-      height: 32px;
-      stroke: #8C5400;
-    }
-    .about-values-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: #111;
+    .figma-full-image {
+      width: 100%;
+      height: auto;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-top">
-      <a href="index.html" class="logo">Afri<span>Mark</span></a>
-      <div class="nav-actions">
-        <a href="recherche.html" class="icon-btn" title="Rechercher">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </a>
-        <a href="panier.html" class="icon-btn" title="Panier">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        </a>
-        <a href="dashboard.html" class="icon-btn" title="Notifications">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        </a>
-        <a href="dashboard.html" class="icon-btn" title="Favoris">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </a>
-        <a href="dashboard.html" class="icon-btn" title="Mon Compte">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </a>
-      </div>
-    </div>
-    <div class="nav-links">
-      <a href="index.html">Accueil</a>
-      <a href="categories.html">Catégories</a>
-      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
-      <a href="vendre.html">Vendre sur AfriMark</a>
-      <a href="a-propos.html" class="active">À propos de AfriMark</a>
-      <a href="aide.html">Centre d'aide</a>
-    </div>
-  </nav>
-
-  <section class="about-hero">
-    <div class="about-hero-content">
-      <h1>À propos d' <span class="logo-text">AfriMark</span></h1>
-      <h2>Notre mission: connecter les commerçants aux meilleurs fournisseurs.</h2>
-      <p>
-        AfriMark est une marketplace B2B sénégalaise qui aide les commerçants à trouver des produits de qualité au meilleur prix.<br>
-        Nous simplifions la recherche de fournisseurs fiables et accélérons la croissance des entreprises locales.
-      </p>
-    </div>
-  </section>
-
-  <section class="about-two-cards">
-    <div class="about-card">
-      <div class="about-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <div class="about-card-body">
-        <h3>Notre histoire</h3>
-        <p>
-          AfriMark est né d'un constat simple : les commerçants sénégalais passent trop de temps à chercher des fournisseurs fiables et à comparer les prix.
-        </p>
-        <p>
-          Nous avons créé AfriMark pour résoudre ce problème en rassemblant des milliers de fournisseurs et de produits sur une seule plateforme facile à utiliser.
-        </p>
-        <p style="font-weight:700;color:#111;margin-top:12px;">
-          Notre objectif est de devenir la référence du commerce B2B en Afrique l'Ouest.
-        </p>
-      </div>
-    </div>
-
-    <div class="about-card">
-      <div class="about-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-      </div>
-      <div class="about-card-body">
-        <h3>Pourquoi nous existons ?</h3>
-        <p>
-          Nous croyons en un commerce africain plus fort, plus transparent et plus accessible à tous.
-        </p>
-        <ul class="about-checklist">
-          <li>Soutenir les commerçants locaux</li>
-          <li>Valoriser les fournisseurs africains</li>
-          <li>Simplifier l'accès aux produits de qualité</li>
-          <li>Créer un écosystème de confiance et de croissance</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="about-values-section">
-    <div class="about-values-header">
-      <div class="about-values-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <h2 class="about-values-title">Nos valeurs</h2>
-    </div>
-  </section>
+  <!-- CONTENEUR PAGE FIGMA DIRECTE -->
+  <div class="figma-page-container">
+    <img src="figma_exports/A_propos.png" alt="À propos de AfriMark - Maquette Figma" class="figma-full-image">
+  </div>
 
   <script src="app.js"></script>
 </body>
