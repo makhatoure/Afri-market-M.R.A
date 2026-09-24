@@ -96,7 +96,7 @@
                 <div style="font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;">Fournisseur :</div>
                 <div style="font-size:18px;font-weight:700;color:#0f172a;">${supplierName} <span style="color:#16a34a;font-size:13px;">✓ Vérifié</span></div>
               </div>
-              <button class="btn-primary" onclick="sendQuoteForGroup('${supplierName}')">Envoyer demande de devis</button>
+              <button class="btn-primary" onclick="sendQuoteForGroup('${supplierName}')">Contacter le fournisseur</button>
             </div>
 
             ${items.map(item => `
@@ -127,7 +127,7 @@
             <div style="font-size:18px;font-weight:700;margin-bottom:16px;">Récapitulatif Global</div>
             <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;"><span>Articles</span><span>${totalCount}</span></div>
             <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;border-top:1px solid #e2e8f0;padding-top:12px;margin-top:12px;"><span>Total Estimé</span><span>${grandTotal.toLocaleString('fr-FR')} FCFA</span></div>
-            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px;" onclick="sendAllQuotes()">Envoyer toutes les demandes de devis</button>
+            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px;" onclick="sendAllQuotes()">Contacter tous les fournisseurs</button>
           </div>
         </div>
       `;
