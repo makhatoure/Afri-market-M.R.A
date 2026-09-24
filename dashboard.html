@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tableau de bord commerçant — AfriMark</title>
+  <title>Tableau de bord commerçant — AfroBaza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -247,7 +247,7 @@
   <!-- NAVBAR INTERACTIVE FIGMA -->
   <nav class="navbar">
     <div class="nav-top">
-      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <a href="index.html" class="logo">Afro<span>Baza</span></a>
       <div class="nav-actions">
         <a href="recherche.html" class="icon-btn" title="Rechercher">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -270,8 +270,8 @@
       <a href="index.html">Accueil</a>
       <a href="categories.html">Catégories</a>
       <a href="fournisseurs.html">Fournisseurs vérifiés</a>
-      <a href="vendre.html">Vendre sur AfriMark</a>
-      <a href="a-propos.html">À propos de AfriMark</a>
+      <a href="vendre.html">Vendre sur AfroBaza</a>
+      <a href="a-propos.html">À propos de AfroBaza</a>
       <a href="aide.html">Centre d'aide</a>
     </div>
   </nav>
@@ -283,6 +283,8 @@
     <aside class="dash-sidebar">
       <div class="user-profile-wrap">
         <img src="figma_images_raw/Ellipse_18_4c775b61.png" alt="Avatar Utilisateur" class="user-avatar-img" id="dash-user-avatar">
+        <div style="font-weight:700;font-size:15px;color:#111;margin-top:4px;" id="dash-sidebar-name">...</div>
+        <div style="font-size:12px;color:#777;text-transform:capitalize;" id="dash-sidebar-role">...</div>
       </div>
 
       <nav class="dash-nav">
@@ -503,7 +505,7 @@
         return;
       }
 
-      const name = currentUser.name || 'Aminata Gueye';
+      const name = currentUser.name || currentUser.email || 'Utilisateur';
       const elGreet = document.getElementById('dash-greeting-name');
       if (elGreet) elGreet.textContent = 'Bonjour, ' + name;
 
