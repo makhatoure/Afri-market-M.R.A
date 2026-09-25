@@ -74,9 +74,8 @@
                 <span class="review-count">Partenaire certifié</span>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
               <a href="profil-fournisseur.html?id=${s.id}" class="btn-primary">Voir la boutique</a>
-              <button onclick="openContactSupplierModal({ supplierName: '${(s.company_name || s.full_name || '').replace(/'/g, "\\'")}', supplierId: '${s.id}' })" class="btn-outline" style="padding:10px 16px;">Contacter le fournisseur</button>
             </div>
           </div>
         `).join('');
