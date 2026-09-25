@@ -1,5 +1,5 @@
-// ========================================================
-// AfroBaza — LOGIQUE GLOBALE ET HYBRIDE (SUPABASE + FALLBACK)
+﻿// ========================================================
+// AfroBaza â€” LOGIQUE GLOBALE ET HYBRIDE (SUPABASE + FALLBACK)
 // ========================================================
 
 const CART_KEY = 'AfroBaza_cart';
@@ -18,7 +18,7 @@ async function loadProducts(category = null) {
     }
 
     if (!dbProducts || dbProducts.length === 0) {
-      grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: #666;">Aucun produit trouvé dans la base de données.</div>';
+      grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: #666;">Aucun produit trouvÃ© dans la base de donnÃ©es.</div>';
       return;
     }
 
@@ -28,7 +28,7 @@ async function loadProducts(category = null) {
         <div class="product-card-body">
           <h3>${p.name}</h3>
           <div class="product-price">
-            <strong>À partir de : ${Number(p.price_fcfa).toLocaleString('fr-FR')} FCFA / ${p.unit}</strong>
+            <strong>Ã€ partir de : ${Number(p.price_fcfa).toLocaleString('fr-FR')} FCFA / ${p.unit}</strong>
             <div class="product-min">Commande min. : ${p.min_quantity} ${p.unit}s</div>
           </div>
         </div>
@@ -36,7 +36,7 @@ async function loadProducts(category = null) {
     `).join('');
   } catch (err) {
     console.error('Erreur lors du chargement des produits Supabase:', err);
-    grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: red;">Erreur de connexion à la base de données.</div>';
+    grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: red;">Erreur de connexion Ã  la base de donnÃ©es.</div>';
   }
 }
 
@@ -49,7 +49,7 @@ function getSupabaseClient() {
 
 async function registerUser(email, password, fullName, role, companyName) {
   const client = getSupabaseClient();
-  if (!client) return { error: 'Client Supabase non initialisé.' };
+  if (!client) return { error: 'Client Supabase non initialisÃ©.' };
   try {
     // 1. Inscription Auth
     const { data, error } = await client.auth.signUp({
@@ -57,7 +57,7 @@ async function registerUser(email, password, fullName, role, companyName) {
     });
     if (error) throw error;
 
-    // 2. Création manuelle du profil en base (si un ID utilisateur est retourné)
+    // 2. CrÃ©ation manuelle du profil en base (si un ID utilisateur est retournÃ©)
     if (data.user) {
       try {
         await client.from('profiles').insert([{
@@ -68,7 +68,7 @@ async function registerUser(email, password, fullName, role, companyName) {
           company_name: companyName || null
         }]);
       } catch (profileErr) {
-        console.warn('Création du profil secondaire ignorée:', profileErr);
+        console.warn('CrÃ©ation du profil secondaire ignorÃ©e:', profileErr);
       }
     }
 
@@ -81,7 +81,7 @@ async function registerUser(email, password, fullName, role, companyName) {
 
 async function loginUser(email, password) {
   const client = getSupabaseClient();
-  if (!client) return { error: 'Client Supabase non connecté' };
+  if (!client) return { error: 'Client Supabase non connectÃ©' };
   try {
     const { data, error } = await client.auth.signInWithPassword({ email, password });
     if (error) throw error;
@@ -128,7 +128,7 @@ function addToCart(product, qty = 1) {
   const existing = cart.find(i => i.id === product.id);
   if (existing) { existing.qty += qty; } else { cart.push({ ...product, qty }); }
   saveCart(cart);
-  showToast('✓ Produit ajouté au panier', 'success');
+  showToast('âœ“ Produit ajoutÃ© au panier', 'success');
 }
 
 function updateCartBadge() {
@@ -169,13 +169,13 @@ function openContactSupplierModal(options = {}) {
   const modalHtml = `
     <div id="contact-supplier-modal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);">
       <div style="background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);position:relative;padding:32px;">
-        <button onclick="closeContactSupplierModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;padding:4px;">✕</button>
+        <button onclick="closeContactSupplierModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;padding:4px;">âœ•</button>
         
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;">💬</div>
+          <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;">ðŸ’¬</div>
           <div>
             <h2 style="font-size:20px;font-weight:700;color:#0f172a;margin:0;">Contacter le fournisseur</h2>
-            <p style="font-size:13px;color:#64748b;margin:2px 0 0 0;">Fournisseur: <strong>${supplierName || 'Fournisseur AfroBaza'}</strong> <span style="color:#16a34a;font-weight:600;">✓ Vérifié</span></p>
+            <p style="font-size:13px;color:#64748b;margin:2px 0 0 0;">Fournisseur: <strong>${supplierName || 'Fournisseur AfroBaza'}</strong> <span style="color:#16a34a;font-weight:600;">âœ“ VÃ©rifiÃ©</span></p>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ function openContactSupplierModal(options = {}) {
             ${productImg ? `<img src="${productImg}" style="width:60px;height:60px;border-radius:8px;object-fit:cover;">` : ''}
             <div style="flex:1;">
               <div style="font-weight:700;font-size:15px;color:#0f172a;">${productName}</div>
-              <div style="font-size:13px;color:#64748b;margin-top:2px;">${productPrice ? Number(productPrice).toLocaleString('fr-FR') + ' FCFA / ' + (productUnit || 'unité') : ''}</div>
+              <div style="font-size:13px;color:#64748b;margin-top:2px;">${productPrice ? Number(productPrice).toLocaleString('fr-FR') + ' FCFA / ' + (productUnit || 'unitÃ©') : ''}</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:4px 8px;">
               <button type="button" onclick="adjustModalQty(-1)" style="border:none;background:none;font-weight:bold;cursor:pointer;padding:2px 6px;">-</button>
@@ -197,21 +197,21 @@ function openContactSupplierModal(options = {}) {
         <form id="contact-supplier-form" onsubmit="handleSendSupplierMessage(event, ${optionsJson})">
           <div style="margin-bottom:16px;">
             <label style="display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">Message au fournisseur</label>
-            <textarea id="modal-message-input" rows="4" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;resize:vertical;" placeholder="Précisez vos besoins, questions sur les prix, quantité, délais de livraison..." required>Bonjour, je souhaiterais obtenir des informations et échanger directement avec vous concernant cette commande.</textarea>
+            <textarea id="modal-message-input" rows="4" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;resize:vertical;" placeholder="PrÃ©cisez vos besoins, questions sur les prix, quantitÃ©, dÃ©lais de livraison..." required>Bonjour, je souhaiterais obtenir des informations et Ã©changer directement avec vous concernant cette commande.</textarea>
           </div>
 
           <div style="margin-bottom:24px;">
-            <label style="display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">Mode de livraison souhaité</label>
+            <label style="display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">Mode de livraison souhaitÃ©</label>
             <select id="modal-delivery-select" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font-family:inherit;font-size:14px;background:#fff;">
               <option value="Standard">Livraison Standard AfroBaza (24h - 48h)</option>
-              <option value="Express">Livraison Express par transporteur dédié</option>
-              <option value="Retrait">Retrait direct en entrepôt / boutique</option>
+              <option value="Express">Livraison Express par transporteur dÃ©diÃ©</option>
+              <option value="Retrait">Retrait direct en entrepÃ´t / boutique</option>
             </select>
           </div>
 
           <div style="display:flex;gap:12px;justify-content:flex-end;">
             <button type="button" class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Annuler</button>
-            <button type="submit" class="btn-primary" style="padding:12px 24px;">Envoyer le message 🚀</button>
+            <button type="submit" class="btn-primary" style="padding:12px 24px;">Envoyer le message ðŸš€</button>
           </div>
         </form>
       </div>
@@ -255,10 +255,10 @@ async function handleSendSupplierMessage(e, options) {
         status: 'pending',
         total_amount_fcfa: (options.productPrice || 0) * qty,
         items: [{
-          name: options.productName || 'Prise de contact générale',
+          name: options.productName || 'Prise de contact gÃ©nÃ©rale',
           price: options.productPrice || 0,
           qty: qty,
-          unit: options.productUnit || 'unité',
+          unit: options.productUnit || 'unitÃ©',
           img: options.productImg || null,
           supplier: options.supplierName || 'Fournisseur AfroBaza'
         }],
@@ -279,25 +279,25 @@ async function handleSendSupplierMessage(e, options) {
 
     modalContainer.innerHTML = `
       <div style="text-align:center;padding:16px 8px;">
-        <div style="width:72px;height:72px;border-radius:50%;background:#dcfce7;color:#16a34a;display:inline-flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;">✓</div>
-        <h2 style="font-size:22px;font-weight:800;color:#0f172a;margin-bottom:8px;">Votre demande a été envoyée avec succès !</h2>
-        <p style="font-size:14px;color:#64748b;margin-bottom:24px;">Le fournisseur <strong>${options.supplierName || 'AfroBaza'}</strong> a bien reçu votre message et y répondra sous peu.</p>
+        <div style="width:72px;height:72px;border-radius:50%;background:#dcfce7;color:#16a34a;display:inline-flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;">âœ“</div>
+        <h2 style="font-size:22px;font-weight:800;color:#0f172a;margin-bottom:8px;">Votre demande a Ã©tÃ© envoyÃ©e avec succÃ¨s !</h2>
+        <p style="font-size:14px;color:#64748b;margin-bottom:24px;">Le fournisseur <strong>${options.supplierName || 'AfroBaza'}</strong> a bien reÃ§u votre message et y rÃ©pondra sous peu.</p>
 
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;">
           <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#64748b;">
-            <span>Référence :</span><strong style="color:#0f172a;">${devisNumber}</strong>
+            <span>RÃ©fÃ©rence :</span><strong style="color:#0f172a;">${devisNumber}</strong>
           </div>
           <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#64748b;">
             <span>Date & Heure :</span><strong style="color:#0f172a;">${dateStr}</strong>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:13px;color:#64748b;">
-            <span>Fournisseur contacté :</span><strong style="color:#16a34a;">1 fournisseur (Vérifié)</strong>
+            <span>Fournisseur contactÃ© :</span><strong style="color:#16a34a;">1 fournisseur (VÃ©rifiÃ©)</strong>
           </div>
         </div>
 
         <div style="display:flex;gap:12px;justify-content:center;">
           <button class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Fermer</button>
-          <a href="mes-devis.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir mes devis & messages 📩</a>
+          <a href="mes-devis.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir mes devis & messages ðŸ“©</a>
         </div>
       </div>
     `;
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
       logoutBtn.style.padding = '8px 14px';
       logoutBtn.style.fontSize = '13px';
       logoutBtn.style.cursor = 'pointer';
-      logoutBtn.textContent = 'Déconnexion 🚪';
+      logoutBtn.textContent = 'DÃ©connexion ðŸšª';
       logoutBtn.onclick = logoutUser;
       navActions.appendChild(logoutBtn);
     }
@@ -334,4 +334,5 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   updateCartBadge();
 });
+
 
