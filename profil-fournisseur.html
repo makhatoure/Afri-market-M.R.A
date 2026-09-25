@@ -29,8 +29,13 @@
         <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80" alt="Ryn's Home">
       </div>
       <div class="supplier-profile-info">
-        <h1>Ryn's Home <span class="badge-verified">✓ Vérifié</span></h1>
-        <p style="color:var(--gray);margin-bottom:12px;">📍 Dakar, Sénégal • Cosmétiques & Beauté, Textiles</p>
+        <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+          <div>
+            <h1>Ryn's Home <span class="badge-verified">✓ Vérifié</span></h1>
+            <p style="color:var(--gray);margin-bottom:12px;">📍 Dakar, Sénégal • Cosmétiques & Beauté, Textiles</p>
+          </div>
+          <button onclick="openContactSupplierModal({ supplierName: 'Ryn\'s Home' })" class="btn-primary" style="padding:12px 24px;">💬 Contacter le fournisseur</button>
+        </div>
         <div class="supplier-stats">
           <div class="supplier-stat">
             <span class="s-val">★ 4.8</span>

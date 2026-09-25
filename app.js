@@ -150,6 +150,160 @@ function showToast(msg, type = '') {
   setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2500);
 }
 
+// ---- MODAL CONTACT FOURNISSEUR & DEMANDE DE DEVIS ----
+function openContactSupplierModal(options = {}) {
+  const { supplierName, supplierId, productName, productPrice, productUnit, productImg, initialQty } = options;
+  const user = getCurrentUser();
+  if (!user) {
+    showToast('Veuillez vous connecter pour contacter un fournisseur', 'error');
+    setTimeout(() => window.location.href = 'connexion.html', 1500);
+    return;
+  }
+
+  // Remove existing modal if any
+  const oldModal = document.getElementById('contact-supplier-modal');
+  if (oldModal) oldModal.remove();
+
+  const optionsJson = JSON.stringify(options || {}).replace(/"/g, '&quot;');
+
+  const modalHtml = `
+    <div id="contact-supplier-modal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);">
+      <div style="background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);position:relative;padding:32px;">
+        <button onclick="closeContactSupplierModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;padding:4px;">✕</button>
+        
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;">💬</div>
+          <div>
+            <h2 style="font-size:20px;font-weight:700;color:#0f172a;margin:0;">Contacter le fournisseur</h2>
+            <p style="font-size:13px;color:#64748b;margin:2px 0 0 0;">Fournisseur: <strong>${supplierName || 'Fournisseur AfroBaza'}</strong> <span style="color:#16a34a;font-weight:600;">✓ Vérifié</span></p>
+          </div>
+        </div>
+
+        ${productName ? `
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:16px;">
+            ${productImg ? `<img src="${productImg}" style="width:60px;height:60px;border-radius:8px;object-fit:cover;">` : ''}
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;color:#0f172a;">${productName}</div>
+              <div style="font-size:13px;color:#64748b;margin-top:2px;">${productPrice ? Number(productPrice).toLocaleString('fr-FR') + ' FCFA / ' + (productUnit || 'unité') : ''}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:4px 8px;">
+              <button type="button" onclick="adjustModalQty(-1)" style="border:none;background:none;font-weight:bold;cursor:pointer;padding:2px 6px;">-</button>
+              <span id="modal-qty-val" style="font-weight:700;font-size:14px;min-width:24px;text-align:center;">${initialQty || 1}</span>
+              <button type="button" onclick="adjustModalQty(1)" style="border:none;background:none;font-weight:bold;cursor:pointer;padding:2px 6px;">+</button>
+            </div>
+          </div>
+        ` : ''}
+
+        <form id="contact-supplier-form" onsubmit="handleSendSupplierMessage(event, ${optionsJson})">
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">Message au fournisseur</label>
+            <textarea id="modal-message-input" rows="4" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;resize:vertical;" placeholder="Précisez vos besoins, questions sur les prix, quantité, délais de livraison..." required>Bonjour, je souhaiterais obtenir des informations et échanger directement avec vous concernant cette commande.</textarea>
+          </div>
+
+          <div style="margin-bottom:24px;">
+            <label style="display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">Mode de livraison souhaité</label>
+            <select id="modal-delivery-select" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font-family:inherit;font-size:14px;background:#fff;">
+              <option value="Standard">Livraison Standard AfroBaza (24h - 48h)</option>
+              <option value="Express">Livraison Express par transporteur dédié</option>
+              <option value="Retrait">Retrait direct en entrepôt / boutique</option>
+            </select>
+          </div>
+
+          <div style="display:flex;gap:12px;justify-content:flex-end;">
+            <button type="button" class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Annuler</button>
+            <button type="submit" class="btn-primary" style="padding:12px 24px;">Envoyer le message 🚀</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closeContactSupplierModal() {
+  const m = document.getElementById('contact-supplier-modal');
+  if (m) m.remove();
+}
+
+function adjustModalQty(delta) {
+  const qEl = document.getElementById('modal-qty-val');
+  if (!qEl) return;
+  let val = parseInt(qEl.textContent) || 1;
+  val = Math.max(1, val + delta);
+  qEl.textContent = val;
+}
+
+async function handleSendSupplierMessage(e, options) {
+  e.preventDefault();
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const msg = document.getElementById('modal-message-input').value;
+  const delivery = document.getElementById('modal-delivery-select').value;
+  const qtyEl = document.getElementById('modal-qty-val');
+  const qty = qtyEl ? parseInt(qtyEl.textContent) : (options.initialQty || 1);
+
+  const client = getSupabaseClient();
+  const devisNumber = '#DMD-' + Math.floor(100000 + Math.random() * 900000);
+
+  if (client) {
+    try {
+      await client.from('devis').insert([{
+        merchant_id: user.id,
+        supplier_id: options.supplierId || null,
+        status: 'pending',
+        total_amount_fcfa: (options.productPrice || 0) * qty,
+        items: [{
+          name: options.productName || 'Prise de contact générale',
+          price: options.productPrice || 0,
+          qty: qty,
+          unit: options.productUnit || 'unité',
+          img: options.productImg || null,
+          supplier: options.supplierName || 'Fournisseur AfroBaza'
+        }],
+        message: msg,
+        delivery_option: delivery,
+        reference: devisNumber
+      }]);
+    } catch (err) {
+      console.warn('Erreur insertion Supabase devis:', err);
+    }
+  }
+
+  // Show Confirmation UI (matching Confirmation_demande.png)
+  const modalContainer = document.querySelector('#contact-supplier-modal > div');
+  if (modalContainer) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+    modalContainer.innerHTML = `
+      <div style="text-align:center;padding:16px 8px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:#dcfce7;color:#16a34a;display:inline-flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;">✓</div>
+        <h2 style="font-size:22px;font-weight:800;color:#0f172a;margin-bottom:8px;">Votre demande a été envoyée avec succès !</h2>
+        <p style="font-size:14px;color:#64748b;margin-bottom:24px;">Le fournisseur <strong>${options.supplierName || 'AfroBaza'}</strong> a bien reçu votre message et y répondra sous peu.</p>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px;text-align:left;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#64748b;">
+            <span>Référence :</span><strong style="color:#0f172a;">${devisNumber}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#64748b;">
+            <span>Date & Heure :</span><strong style="color:#0f172a;">${dateStr}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#64748b;">
+            <span>Fournisseur contacté :</span><strong style="color:#16a34a;">1 fournisseur (Vérifié)</strong>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Fermer</button>
+          <a href="mes-devis.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir mes devis & messages 📩</a>
+        </div>
+      </div>
+    `;
+  }
+}
+
 // ---- INITIALISATION AUTO ----
 document.addEventListener('DOMContentLoaded', () => {
   const user = getCurrentUser();
@@ -180,3 +334,4 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   updateCartBadge();
 });
+

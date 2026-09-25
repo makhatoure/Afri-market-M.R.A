@@ -138,7 +138,15 @@
               <button class="btn-primary" onclick="addProductToCart()" style="flex:1;padding:12px;">
                 Ajouter au panier
               </button>
-              <button class="btn-outline" onclick="window.location.href='panier.html'" style="flex:1;padding:12px;">
+              <button class="btn-outline" onclick="openContactSupplierModal({
+                supplierName: currentSupplier ? (currentSupplier.company_name || currentSupplier.full_name) : 'Fournisseur AfroBaza',
+                supplierId: currentProduct ? currentProduct.supplier_id : null,
+                productName: currentProduct ? currentProduct.name : '',
+                productPrice: currentProduct ? currentProduct.price_fcfa : 0,
+                productUnit: currentProduct ? currentProduct.unit : 'unité',
+                productImg: currentProduct ? currentProduct.image_url : '',
+                initialQty: currentQty
+              })" style="flex:1;padding:12px;">
                 Contacter le fournisseur
               </button>
             </div>
