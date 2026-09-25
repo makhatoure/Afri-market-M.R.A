@@ -1,4 +1,4 @@
-﻿// ========================================================
+// ========================================================
 // AfroBaza â€” LOGIQUE GLOBALE ET HYBRIDE (SUPABASE + FALLBACK)
 // ========================================================
 
@@ -297,10 +297,65 @@ async function handleSendSupplierMessage(e, options) {
 
         <div style="display:flex;gap:12px;justify-content:center;">
           <button class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Fermer</button>
-          <a href="mes-devis.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir mes devis & messages ðŸ“©</a>
+          <a href="messagerie.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir la conversation 💬</a>
         </div>
       </div>
     `;
+  }
+}
+
+// ---- BADGE MESSAGES DANS LA NAVBAR ----
+async function updateMessageBadge() {
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const navActions = document.querySelector('.nav-actions');
+  if (!navActions) return;
+
+  // Créer le bouton icône messagerie s'il n'existe pas encore
+  let msgBtn = document.getElementById('nav-msg-btn');
+  if (!msgBtn) {
+    msgBtn = document.createElement('a');
+    msgBtn.id = 'nav-msg-btn';
+    msgBtn.href = 'messagerie.html';
+    msgBtn.className = 'icon-btn';
+    msgBtn.title = 'Messagerie & Messages';
+    msgBtn.style.position = 'relative';
+    msgBtn.style.display = 'inline-flex';
+    msgBtn.style.alignItems = 'center';
+    msgBtn.style.justifyContent = 'center';
+    msgBtn.style.color = '#334155';
+    msgBtn.innerHTML = `
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="msg-badge" id="nav-msg-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;font-weight:700;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,0.15);">0</span>
+    `;
+
+    const dashBtn = navActions.querySelector('a[href="dashboard.html"]');
+    if (dashBtn) {
+      navActions.insertBefore(msgBtn, dashBtn);
+    } else {
+      navActions.appendChild(msgBtn);
+    }
+  }
+
+  // Calculer le nombre de conversations/messages actifs pour cet utilisateur
+  const client = getSupabaseClient();
+  if (client) {
+    try {
+      const field = user.role === 'fournisseur' ? 'supplier_id' : 'merchant_id';
+      const { data: devisList } = await client.from('devis').select('id').eq(field, user.id);
+      if (devisList && devisList.length > 0) {
+        const badge = document.getElementById('nav-msg-badge');
+        if (badge) {
+          badge.textContent = devisList.length;
+          badge.style.display = 'flex';
+        }
+      }
+    } catch (e) {
+      console.warn('Erreur mise à jour badge messages:', e);
+    }
   }
 }
 
@@ -325,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
       logoutBtn.style.padding = '8px 14px';
       logoutBtn.style.fontSize = '13px';
       logoutBtn.style.cursor = 'pointer';
-      logoutBtn.textContent = 'DÃ©connexion ðŸšª';
+      logoutBtn.textContent = 'Déconnexion 🚪';
       logoutBtn.onclick = logoutUser;
       navActions.appendChild(logoutBtn);
     }
@@ -333,6 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   loadProducts();
   updateCartBadge();
+  updateMessageBadge();
 });
 
 
