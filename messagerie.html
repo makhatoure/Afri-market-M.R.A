@@ -164,46 +164,7 @@
       renderConvList(filtered);
     }
 
-    function openConversation(devis) {
-      activeConvId = devis.id;
-      document.querySelectorAll(".conv-item").forEach(el => el.classList.remove("active"));
-      const el = document.getElementById("conv-" + devis.id);
-      if (el) el.classList.add("active");
-
-      const isMerchant = devis.merchant_id === currentUser.id;
-      const otherLabel = isMerchant ? ((devis.items && devis.items[0] && devis.items[0].supplier) || "Fournisseur AfroBaza") : "Commerçant";
-      const ref = devis.reference || devis.devis_number || ("DEV-" + devis.id.slice(0,6));
-      const initial = otherLabel.charAt(0).toUpperCase();
-      const productLine = devis.items && devis.items[0];
-      const statusMap = { pending: "En attente", sent: "Envoyé", accepted: "Accepté", refused: "Refusé" };
-
-      const chatEl = document.getElementById("msg-chat");
-      chatEl.innerHTML =
-        "<div class='chat-header'>" +
-          "<div class='chat-header-avatar'>" + initial + "</div>" +
-          "<div class='chat-header-info'>" +
-            "<div class='chat-header-name'>" + otherLabel + "</div>" +
-            "<div class='chat-header-status'>Fournisseur vérifié AfroBaza</div>" +
-          "</div>" +
-          "<div style='display:flex;gap:8px;flex-wrap:wrap;'>" +
-            (productLine ? "<span class='devis-badge'>Produit : " + (productLine.name || "Produit") + " x" + (productLine.qty || 1) + "</span>" : "") +
-            "<span class='devis-badge' style='background:#f0fdf4;border-color:#86efac;color:#166534;'>Ref. " + ref + "</span>" +
-            "<span class='devis-badge' style='background:#f1f5f9;border-color:#cbd5e1;color:#475569;'>Statut : " + (statusMap[devis.status] || devis.status) + "</span>" +
-          "</div>" +
-        "</div>" +
-        "<div class='chat-messages' id='chat-messages'>" +
-          "<div class='chat-system-msg'>Conversation démarrée</div>" +
-          "<div style='text-align:center;color:#94a3b8;font-size:13px;padding:20px;'>Chargement des messages...</div>" +
-        "</div>" +
-        "<div class='chat-input-bar'>" +
-          "<textarea id='chat-input' placeholder='Écrivez votre message...' rows='1' onkeydown='handleKeyDown(event)'></textarea>" +
-          "<button class='chat-send-btn' onclick='sendMessage()'>&#10148;</button>" +
-        "</div>";
-
-      clearInterval(pollInterval);
-      loadMessages();
-      pollInterval = setInterval(loadMessages, 4000);
-    }
+    [object Promise]
 
     async function loadMessages() {
       if (!activeConvId) return;

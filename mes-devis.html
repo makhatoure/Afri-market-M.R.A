@@ -40,19 +40,20 @@
 
     <main class="account-content">
       <h1>Mes devis</h1>
-      <p class="subtitle">Suivez l'Ã©tat de vos demandes de devis enregistrÃ©es dans Supabase</p>
+      <p class="subtitle">Suivez l'état de vos demandes de devis enregistrées dans Supabase</p>
 
       <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
         <button class="btn-primary" onclick="filterDevis('all',this)">Tous</button>
-        <button class="btn-outline" onclick="filterDevis('sent',this)">EnvoyÃ©s</button>
-        <button class="btn-outline" onclick="filterDevis('accepted',this)">AcceptÃ©s</button>
-        <button class="btn-outline" onclick="filterDevis('refused',this)">RefusÃ©s</button>
+        <button class="btn-outline" onclick="filterDevis('sent',this)">Envoyés</button>
+        <button class="btn-outline" onclick="filterDevis('accepted',this)">Acceptés ✅</button>
+        <button class="btn-outline" onclick="filterDevis('revision',this)">En révision 🔄</button>
+        <button class="btn-outline" onclick="filterDevis('refused',this)">Refusés ❌</button>
       </div>
 
       <table class="devis-table" id="devis-table">
         <thead>
           <tr>
-            <th>NÂ° Devis</th>
+            <th>N° Devis</th>
             <th>Fournisseur / Client</th>
             <th>Montant total</th>
             <th>Statut</th>
@@ -73,7 +74,33 @@
   <script>
     let userDevis = [];
 
-    const STATUS_LABELS = { sent: 'EnvoyÃ©', accepted: 'AcceptÃ©', refused: 'RefusÃ©', pending: 'En attente' };
+    const STATUS_LABELS = { sent: 'Envoyé 📩', accepted: 'Accepté ✅', refused: 'Refusé ❌', revision: 'En révision 🔄', pending: 'En attente ⏳' };
+const STATUS_CLASSES = { sent: 'badge-sent', accepted: 'badge-accepted', refused: 'badge-refused', revision: 'badge-sent', pending: 'badge-sent' };
+
+async function changeDevisStatusFromTable(devisId, newStatus) {
+  const client = getSupabaseClient();
+  const user = getCurrentUser();
+  if (!client || !devisId || !user) return;
+
+  const labels = { accepted: 'Accepté ✅', refused: 'Refusé ❌', revision: 'En révision 🔄' };
+  try {
+    const { error } = await client.from('devis').update({ status: newStatus }).eq('id', devisId);
+    if (error) throw error;
+
+    await client.from('messages').insert([{
+      devis_id: devisId,
+      sender_id: user.id,
+      message: '📌 Statut du devis mis à jour : ' + (labels[newStatus] || newStatus)
+    }]);
+
+    showToast('✓ Statut du devis mis à jour : ' + (labels[newStatus] || newStatus), 'success');
+    const d = userDevis.find(item => item.id === devisId);
+    if (d) d.status = newStatus;
+    renderDevis();
+  } catch (err) {
+    showToast('❌ Erreur mise à jour : ' + err.message, 'error');
+  }
+}
     const STATUS_CLASSES = { sent: 'badge-sent', accepted: 'badge-accepted', refused: 'badge-refused', pending: 'badge-sent' };
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -84,7 +111,7 @@
       }
 
       document.getElementById('sidebar-user-name').textContent = user.name || user.email.split('@')[0];
-      document.getElementById('sidebar-user-role').textContent = user.role || 'CommerÃ§ant';
+      document.getElementById('sidebar-user-role').textContent = user.role || 'Commerçant';
 
       // Chargement en direct depuis Supabase
       const client = getSupabaseClient();
@@ -120,7 +147,8 @@
           <td><span class="badge-status ${STATUS_CLASSES[d.status] || 'badge-sent'}">${STATUS_LABELS[d.status] || d.status}</span></td>
           <td>${new Date(d.created_at).toLocaleDateString('fr-FR')}</td>
           <td>
-            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 NÃ©gocier / Discuter</button>
+            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 Négocier / Discuter</button>
+<select onchange="changeDevisStatusFromTable('${d.id}', this.value)" style="margin-left:8px;padding:5px 8px;border-radius:6px;font-size:12px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;"><option value="" disabled selected>Changer statut...</option><option value="accepted">✅ Accepter</option><option value="revision">🔄 En révision</option><option value="refused">❌ Refuser</option></select>
           </td>
         </tr>
       `).join('');

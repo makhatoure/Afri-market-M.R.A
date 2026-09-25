@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -515,6 +515,16 @@
       const name = currentUser.name || currentUser.email || 'Utilisateur';
       const elGreet = document.getElementById('dash-greeting-name');
       if (elGreet) elGreet.textContent = 'Bonjour, ' + name;
+      const client = getSupabaseClient();
+      if (client && currentUser.id) {
+        try {
+          const { data: prof } = await client.from('profiles').select('avatar_url').eq('id', currentUser.id).single();
+          if (prof && prof.avatar_url) {
+            currentUser.avatar_url = prof.avatar_url;
+            localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+          }
+        } catch (e) {}
+      }
       if (currentUser.avatar_url) {
         const img = document.getElementById('dash-user-avatar');
         if (img) img.src = currentUser.avatar_url;
@@ -626,49 +636,44 @@
       const file = event.target.files[0];
       if (!file) return;
 
-      const imgEl = document.getElementById('dash-user-avatar');
       const reader = new FileReader();
-      reader.onload = (e) => {
-        if (imgEl) imgEl.src = e.target.result;
+      reader.onload = async (e) => {
+        const base64DataUrl = e.target.result;
+
+        // Immediately show and save base64 data URL (never expires on reload)
+        const imgEl = document.getElementById('dash-user-avatar');
+        if (imgEl) imgEl.src = base64DataUrl;
+
+        currentUser.avatar_url = base64DataUrl;
+        localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+
+        const client = getSupabaseClient();
+        if (client && currentUser.id) {
+          try {
+            // Upload to Supabase Storage if bucket is available
+            const fileExt = file.name.split('.').pop();
+            const fileName = `avatars/${currentUser.id}_${Date.now()}.${fileExt}`;
+            const { error: uploadErr } = await client.storage
+              .from('product-images')
+              .upload(fileName, file, { upsert: true });
+
+            let finalUrl = base64DataUrl;
+            if (!uploadErr) {
+              const { data: urlData } = client.storage.from('product-images').getPublicUrl(fileName);
+              if (urlData && urlData.publicUrl) finalUrl = urlData.publicUrl;
+            }
+
+            // Save in profiles table
+            await client.from('profiles').update({ avatar_url: finalUrl }).eq('id', currentUser.id);
+            currentUser.avatar_url = finalUrl;
+            localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
+          } catch (err) {
+            console.warn('Sync profil Supabase (fallback base64 actif):', err);
+          }
+        }
+        showToast('✓ Photo de profil mise à jour avec succès !', 'success');
       };
       reader.readAsDataURL(file);
-
-      showToast('Upload de la photo de profil...', 'info');
-
-      const client = getSupabaseClient();
-      if (!client || !currentUser) {
-        currentUser.avatar_url = URL.createObjectURL(file);
-        localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
-        showToast('âœ“ Photo de profil mise Ã  jour !', 'success');
-        return;
-      }
-
-      try {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `avatars/${currentUser.id}_${Date.now()}.${fileExt}`;
-        const { data, error } = await client.storage
-          .from('product-images')
-          .upload(fileName, file, { upsert: true });
-
-        if (error) throw error;
-
-        const { data: urlData } = client.storage.from('product-images').getPublicUrl(fileName);
-        const avatarUrl = urlData.publicUrl;
-
-        await client.from('profiles').update({ avatar_url: avatarUrl }).eq('id', currentUser.id);
-
-        currentUser.avatar_url = avatarUrl;
-        localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
-
-        if (imgEl) imgEl.src = avatarUrl;
-        showToast('âœ“ Photo de profil mise Ã  jour avec succÃ¨s !', 'success');
-      } catch (err) {
-        console.warn('Erreur upload avatar Supabase:', err);
-        const localUrl = URL.createObjectURL(file);
-        currentUser.avatar_url = localUrl;
-        localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
-        showToast('âœ“ Photo de profil mise Ã  jour !', 'success');
-      }
     }
   </script>
 </body>
