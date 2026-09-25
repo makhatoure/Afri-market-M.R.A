@@ -34,7 +34,7 @@
             <h1>Ryn's Home <span class="badge-verified">✓ Vérifié</span></h1>
             <p style="color:var(--gray);margin-bottom:12px;">📍 Dakar, Sénégal • Cosmétiques & Beauté, Textiles</p>
           </div>
-          <button onclick="openContactSupplierModal({ supplierName: 'Ryn\'s Home' })" class="btn-primary" style="padding:12px 24px;">💬 Contacter le fournisseur</button>
+          <button id="contact-supplier-profile-btn" onclick="openContactSupplierModal({ supplierName: 'Ryn\'s Home' })" class="btn-primary" style="padding:12px 24px;">💬 Contacter le fournisseur</button>
         </div>
         <div class="supplier-stats">
           <div class="supplier-stat">
@@ -84,5 +84,14 @@
   </div>
 
   <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const u = getCurrentUser();
+      if (u && u.role === 'fournisseur') {
+        const btn = document.getElementById('contact-supplier-profile-btn');
+        if (btn) btn.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
