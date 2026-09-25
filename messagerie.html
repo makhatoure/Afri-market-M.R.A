@@ -64,7 +64,7 @@
     </div>
     <div class="nav-links">
       <a href="index.html">Accueil</a>
-      <a href="categories.html">Categories</a>
+      <a href="categories.html">Catégories</a>
       <a href="fournisseurs.html">Fournisseurs</a>
       <a href="messagerie.html" class="active">Messagerie</a>
     </div>
@@ -85,7 +85,7 @@
       <div class="chat-empty-state" id="chat-empty-state">
         <div class="icon">💬</div>
         <h3>Vos messages</h3>
-        <p>Selectionnez une conversation pour commencer</p>
+        <p>Sélectionnez une conversation pour commencer</p>
       </div>
     </div>
   </div>
@@ -137,7 +137,7 @@
       }
       convList.innerHTML = conversations.map(d => {
         const isMerchant = d.merchant_id === currentUser.id;
-        const otherLabel = isMerchant ? (d.items && d.items[0] && d.items[0].supplier ? d.items[0].supplier : "Fournisseur AfroBaza") : "Commercant";
+        const otherLabel = isMerchant ? (d.items && d.items[0] && d.items[0].supplier ? d.items[0].supplier : "Fournisseur AfroBaza") : "Commerçant";
         const ref = d.reference || d.devis_number || ("DEV-" + d.id.slice(0,6));
         const preview = d.message ? d.message.slice(0,55) + (d.message.length > 55 ? "..." : "") : "Demande de devis";
         const timeStr = d.created_at ? new Date(d.created_at).toLocaleDateString("fr-FR") : "";
@@ -171,11 +171,11 @@
       if (el) el.classList.add("active");
 
       const isMerchant = devis.merchant_id === currentUser.id;
-      const otherLabel = isMerchant ? ((devis.items && devis.items[0] && devis.items[0].supplier) || "Fournisseur AfroBaza") : "Commercant";
+      const otherLabel = isMerchant ? ((devis.items && devis.items[0] && devis.items[0].supplier) || "Fournisseur AfroBaza") : "Commerçant";
       const ref = devis.reference || devis.devis_number || ("DEV-" + devis.id.slice(0,6));
       const initial = otherLabel.charAt(0).toUpperCase();
       const productLine = devis.items && devis.items[0];
-      const statusMap = { pending: "En attente", sent: "Envoye", accepted: "Accepte", refused: "Refuse" };
+      const statusMap = { pending: "En attente", sent: "Envoyé", accepted: "Accepté", refused: "Refusé" };
 
       const chatEl = document.getElementById("msg-chat");
       chatEl.innerHTML =
@@ -183,7 +183,7 @@
           "<div class='chat-header-avatar'>" + initial + "</div>" +
           "<div class='chat-header-info'>" +
             "<div class='chat-header-name'>" + otherLabel + "</div>" +
-            "<div class='chat-header-status'>Fournisseur verifie AfroBaza</div>" +
+            "<div class='chat-header-status'>Fournisseur vérifié AfroBaza</div>" +
           "</div>" +
           "<div style='display:flex;gap:8px;flex-wrap:wrap;'>" +
             (productLine ? "<span class='devis-badge'>Produit : " + (productLine.name || "Produit") + " x" + (productLine.qty || 1) + "</span>" : "") +
@@ -192,11 +192,11 @@
           "</div>" +
         "</div>" +
         "<div class='chat-messages' id='chat-messages'>" +
-          "<div class='chat-system-msg'>Conversation demarre</div>" +
+          "<div class='chat-system-msg'>Conversation démarrée</div>" +
           "<div style='text-align:center;color:#94a3b8;font-size:13px;padding:20px;'>Chargement des messages...</div>" +
         "</div>" +
         "<div class='chat-input-bar'>" +
-          "<textarea id='chat-input' placeholder='Ecrivez votre message...' rows='1' onkeydown='handleKeyDown(event)'></textarea>" +
+          "<textarea id='chat-input' placeholder='Écrivez votre message...' rows='1' onkeydown='handleKeyDown(event)'></textarea>" +
           "<button class='chat-send-btn' onclick='sendMessage()'>&#10148;</button>" +
         "</div>";
 
@@ -220,11 +220,11 @@
         (msgs || []).forEach(m => allMsgs.push(m));
 
         if (!allMsgs.length) {
-          container.innerHTML = "<div class='chat-system-msg'>Conversation demarre</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Aucun message pour l instant.<br>Commencez la discussion ci-dessous.</div>";
+          container.innerHTML = "<div class='chat-system-msg'>Conversation démarrée</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Aucun message pour l'instant.<br>Commencez la discussion ci-dessous.</div>";
           return;
         }
         const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 10;
-        container.innerHTML = "<div class='chat-system-msg'>Debut de la conversation</div>" +
+        container.innerHTML = "<div class='chat-system-msg'>Début de la conversation</div>" +
           allMsgs.map(m => {
             const isMe = m.sender_id === currentUser.id;
             const timeStr = new Date(m.created_at).toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
@@ -256,7 +256,7 @@
         input.style.height = "auto";
         await loadMessages();
       } catch (err) {
-        showToast("Erreur envoi : " + err.message, "error");
+        showToast("Erreur d'envoi : " + err.message, "error");
       } finally {
         input.disabled = false;
         input.focus();
@@ -274,3 +274,4 @@
   </script>
 </body>
 </html>
+
