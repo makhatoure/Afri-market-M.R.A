@@ -172,7 +172,7 @@ function openContactSupplierModal(options = {}) {
         <button onclick="closeContactSupplierModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;color:#64748b;cursor:pointer;padding:4px;">âœ•</button>
         
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;">ðŸ’¬</div>
+          <div style="width:48px;height:48px;border-radius:12px;background:#fef3c7;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;">💬</div>
           <div>
             <h2 style="font-size:20px;font-weight:700;color:#0f172a;margin:0;">Contacter le fournisseur</h2>
             <p style="font-size:13px;color:#64748b;margin:2px 0 0 0;">Fournisseur: <strong>${supplierName || 'Fournisseur AfroBaza'}</strong> <span style="color:#16a34a;font-weight:600;">âœ“ VÃ©rifiÃ©</span></p>

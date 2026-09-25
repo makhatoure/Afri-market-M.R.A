@@ -120,7 +120,7 @@
           <td><span class="badge-status ${STATUS_CLASSES[d.status] || 'badge-sent'}">${STATUS_LABELS[d.status] || d.status}</span></td>
           <td>${new Date(d.created_at).toLocaleDateString('fr-FR')}</td>
           <td>
-            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">ðŸ’¬ NÃ©gocier / Discuter</button>
+            <button class="btn-primary" style="padding:6px 12px;font-size:13px;" onclick="openChatModal('${d.id}', '${d.devis_number || 'DEV-' + d.id.slice(0,6)}')">💬 NÃ©gocier / Discuter</button>
           </td>
         </tr>
       `).join('');
@@ -157,7 +157,7 @@
 
     async function openChatModal(devisId, devisNum) {
       activeDevisId = devisId;
-      document.getElementById('chat-title').textContent = 'ðŸ’¬ NÃ©gociation : ' + devisNum;
+      document.getElementById('chat-title').textContent = '💬 NÃ©gociation : ' + devisNum;
       document.getElementById('chat-modal').style.display = 'flex';
       await loadMessages();
     }
