@@ -1,14 +1,258 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fournisseurs vérifiés — AfroBaza</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fournisseurs Vérifiés — AfroBaza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* STYLES SPÉCIFIQUES MAQUETTE FIGMA FOURNISSEURS VÉRIFIÉS */
+    .suppliers-hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 48px 24px;
+      text-align: center;
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 36px;
+    }
+    .suppliers-hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .suppliers-hero h1 span {
+      color: #EAB308;
+    }
+    .suppliers-hero p {
+      font-size: 16px;
+      color: #94A3B8;
+      max-width: 640px;
+      margin: 0 auto 28px auto;
+      line-height: 1.5;
+    }
+
+    /* BARRE DE RECHERCHE & FILTRES FIGMA */
+    .filter-search-box {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      padding: 12px;
+      border-radius: 16px;
+      display: flex;
+      gap: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      flex-wrap: wrap;
+    }
+    .filter-search-box input {
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      outline: none;
+      color: #0F172A;
+    }
+    .filter-search-box select {
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      outline: none;
+      background: #F8FAFC;
+      color: #334155;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filter-search-box button {
+      background: #EAB308;
+      color: #0F172A;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .filter-search-box button:hover {
+      background: #CA8A04;
+    }
+
+    /* GRILLE FOURNISSEURS VÉRIFIÉS FIGMA */
+    .suppliers-container {
+      max-width: 1200px;
+      margin: 0 auto 60px auto;
+      padding: 0 20px;
+    }
+    .suppliers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    /* CARTE FOURNISSEUR VÉRIFIÉ FIGMA */
+    .supplier-card-figma {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 1px solid #E2E8F0;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .supplier-card-figma:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+    .supplier-card-banner {
+      height: 90px;
+      background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
+      position: relative;
+    }
+    .supplier-card-header {
+      padding: 0 20px;
+      position: relative;
+      margin-top: -36px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .supplier-avatar-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #FFFFFF;
+      object-fit: cover;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .badge-certified-figma {
+      background: #DCFCE7;
+      color: #166534;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid #BBF7D0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .supplier-card-body {
+      padding: 16px 20px 20px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .supplier-name-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 4px;
+    }
+    .supplier-category-tag {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .supplier-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+    .supplier-meta-row span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .supplier-description-text {
+      font-size: 13.5px;
+      color: #64748B;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .supplier-card-footer {
+      border-top: 1px solid #F1F5F9;
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-view-shop {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-view-shop:hover {
+      background: #1E293B;
+    }
+
+    /* SECTION RÉASSURANCE FIGMA */
+    .trust-section-figma {
+      background: #F8FAFC;
+      border-radius: 24px;
+      padding: 40px 24px;
+      margin-top: 40px;
+      border: 1px solid #E2E8F0;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .trust-card {
+      background: #FFFFFF;
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid #E2E8F0;
+      text-align: center;
+    }
+    .trust-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .trust-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 6px;
+    }
+    .trust-card p {
+      font-size: 13px;
+      color: #64748B;
+      line-height: 1.4;
+    }
+  </style>
+
+  <!-- SDK SUPABASE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
 </head>
 <body>
-  <nav class="navbar">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
     <div class="nav-top">
       <a href="index.html" class="logo">Afro<span>Baza</span></a>
       <div class="nav-actions">
@@ -37,64 +281,180 @@
     </div>
   </nav>
 
-  <div class="page-header">
-    <h1>Fournisseurs vérifiés</h1>
-    <p>Achetez en toute confiance auprès de nos partenaires certifiés par l'équipe AfroBaza</p>
-  </div>
-
-  <section class="section" style="max-width: 1200px; margin: 0 auto;" id="suppliers-list">
-    <div style="text-align:center;padding:40px;color:#666;">Chargement des fournisseurs vérifiés...</div>
+  <!-- HERO SECTION FIGMA -->
+  <section class="suppliers-hero">
+    <h1>Fournisseurs <span>Vérifiés</span> AfroBaza</h1>
+    <p>Achetez en toute sérénité auprès des fabricants, grossistes et distributeurs certifiés par l'équipe AfroBaza sur tout le continent.</p>
+    
+    <!-- BARRE DE FILTRES ET RECHERCHE -->
+    <div class="filter-search-box">
+      <input type="text" id="search-supplier-input" placeholder="Rechercher par nom de société ou mot-clé...">
+      <select id="filter-location">
+        <option value="">Tous les pays / villes</option>
+        <option value="Dakar">Dakar (Sénégal)</option>
+        <option value="Abidjan">Abidjan (Côte d'Ivoire)</option>
+        <option value="Bamako">Bamako (Mali)</option>
+        <option value="Cotonou">Cotonou (Bénin)</option>
+      </select>
+      <button onclick="filterSuppliers()">Rechercher</button>
+    </div>
   </section>
 
-  <!-- SDK SUPABASE JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-client.js"></script>
+  <!-- LISTE DES FOURNISSEURS VÉRIFIÉS FIGMA -->
+  <main class="suppliers-container">
+    <div class="suppliers-grid" id="suppliers-list">
+      <div style="grid-column: 1/-1; text-align:center; padding:50px; color:#64748B;">
+        Chargement des fournisseurs certifiés...
+      </div>
+    </div>
+
+    <!-- REASSURANCE FIGMA -->
+    <section class="trust-section-figma">
+      <h2 style="text-align:center; font-size:22px; font-weight:800; color:#0F172A; margin:0;">Pourquoi faire confiance aux Fournisseurs Vérifiés ?</h2>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon">🛡️</div>
+          <h3>Identité & Registre Vérifiés</h3>
+          <p>Leur registre de commerce, identité et locaux ont été audités par l'équipe AfroBaza.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">⚡</div>
+          <h3>Direct Usine & Grossistes</h3>
+          <p>Profitez des meilleurs prix de gros sans intermédiaires inutiles.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">🤝</div>
+          <h3>Commandes Accompagnées</h3>
+          <p>Demandes de devis claires et suivi de négociation en direct sur la messagerie.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <script src="app.js"></script>
   <script>
+    let allSuppliersData = [];
+
     document.addEventListener('DOMContentLoaded', async () => {
+      await loadSuppliers();
+
+      // Filtre en temps réel sur la saisie
+      document.getElementById('search-supplier-input').addEventListener('input', filterSuppliers);
+      document.getElementById('filter-location').addEventListener('change', filterSuppliers);
+    });
+
+    async function loadSuppliers() {
       const container = document.getElementById('suppliers-list');
       const client = getSupabaseClient();
 
       if (!client) {
-        container.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Erreur de connexion aux fournisseurs.</div>';
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Erreur de connexion aux fournisseurs.</div>';
         return;
       }
 
       try {
-        const { data: allProfiles, error } = await client.from('profiles').select('*');
+        const { data: profiles, error } = await client.from('profiles').select('*');
         if (error) throw error;
 
-        const suppliers = (allProfiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+        allSuppliersData = (profiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
 
-        if (suppliers.length === 0) {
-          container.innerHTML = '<div style="text-align:center;padding:40px;color:#666;">Aucun fournisseur enregistré sur la plateforme pour le moment.</div>';
-          return;
+        // Si aucun fournisseur enregistré, injecter des exemples démo fidèles à la maquette Figma
+        if (allSuppliersData.length === 0) {
+          allSuppliersData = [
+            {
+              id: 'demo-1',
+              company_name: "Ryna's Home & Deco",
+              full_name: "Aminata Gueye",
+              category: "Maison & Décoration",
+              location: "Dakar, Sénégal",
+              avatar_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80",
+              description: "Fabricant et grossiste d'articles de décoration africaine et linge de maison sur-mesure."
+            },
+            {
+              id: 'demo-2',
+              company_name: "Afro Beauty Lab",
+              full_name: "Khadija Ba",
+              category: "Cosmétiques & Beauté",
+              location: "Abidjan, Côte d'Ivoire",
+              avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80",
+              description: "Laboratoire cosmétique spécialisé dans le beurre de karité pur et huiles naturelles certifiées."
+            },
+            {
+              id: 'demo-3',
+              company_name: "Senegal Textile Pro",
+              full_name: "Moussa Diop",
+              category: "Textiles & Prêt-à-porter",
+              location: "Dakar, Sénégal",
+              avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80",
+              description: "Fournisseur de tissus wax authentiques, boubous traditionnels et tenues de travail de haute qualité."
+            }
+          ];
         }
 
-        container.innerHTML = suppliers.map(s => `
-          <div class="supplier-result-card" style="margin-bottom:24px;">
-            <div class="supplier-result-img" style="width:160px;height:140px;">
-              <img src="${s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80'}" alt="${s.company_name || s.full_name}">
-            </div>
-            <div class="supplier-result-info">
-              <h2 style="font-size:22px;">${s.company_name || s.full_name} <span class="badge-verified">✓ Vérifié</span></h2>
-              <div class="location" style="font-size:14px;margin-bottom:8px;">📍 ${s.location || 'Dakar, Sénégal'}</div>
-              <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Fournisseur certifié AfroBaza — prise de contact directe et demandes sur les fiches produits.</p>
-              <div style="display:flex;align-items:center;gap:12px;">
-                <span class="star-score" style="font-size:16px;">★ 5,0</span>
-                <span class="review-count">Partenaire certifié</span>
-              </div>
-            </div>
-            <div>
-              <a href="profil-fournisseur.html?id=${s.id}" class="btn-primary">Voir la boutique</a>
-            </div>
-          </div>
-        `).join('');
+        renderSuppliers(allSuppliersData);
       } catch (err) {
         console.error('Erreur chargement fournisseurs:', err);
-        container.innerHTML = '<div style="text-align:center;padding:40px;color:red;">Impossible de charger la liste des fournisseurs.</div>';
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Impossible de charger les fournisseurs.</div>';
       }
-    });
+    }
+
+    function renderSuppliers(list) {
+      const container = document.getElementById('suppliers-list');
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748B;">Aucun fournisseur ne correspond à votre recherche.</div>';
+        return;
+      }
+
+      container.innerHTML = list.map(s => {
+        const name = s.company_name || s.full_name || 'Fournisseur AfroBaza';
+        const category = s.category || 'Grossiste & Distributeur';
+        const location = s.location || 'Dakar, Sénégal';
+        const avatar = s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=300&q=80';
+        const desc = s.description || 'Partenaire certifié par l\'équipe AfroBaza pour des achats en gros fiables et sécurisés.';
+
+        return `
+          <div class="supplier-card-figma">
+            <div class="supplier-card-banner"></div>
+            <div class="supplier-card-header">
+              <img src="${avatar}" alt="${name}" class="supplier-avatar-img">
+              <span class="badge-certified-figma">✓ Vérifié AfroBaza</span>
+            </div>
+            <div class="supplier-card-body">
+              <div class="supplier-name-title">${name}</div>
+              <div class="supplier-category-tag">📦 ${category}</div>
+              <div class="supplier-meta-row">
+                <span>📍 ${location}</span>
+                <span>⭐ 5,0 (Certifié)</span>
+              </div>
+              <div class="supplier-description-text">${desc}</div>
+              <div class="supplier-card-footer">
+                <a href="profil-fournisseur.html?id=${s.id}" class="btn-view-shop">Voir la boutique</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterSuppliers() {
+      const search = document.getElementById('search-supplier-input').value.toLowerCase().trim();
+      const locFilter = document.getElementById('filter-location').value.toLowerCase().trim();
+
+      const filtered = allSuppliersData.filter(s => {
+        const name = (s.company_name || s.full_name || '').toLowerCase();
+        const cat = (s.category || '').toLowerCase();
+        const loc = (s.location || '').toLowerCase();
+        const desc = (s.description || '').toLowerCase();
+
+        const matchSearch = !search || name.includes(search) || cat.includes(search) || desc.includes(search);
+        const matchLoc = !locFilter || loc.includes(locFilter);
+
+        return matchSearch && matchLoc;
+      });
+
+      renderSuppliers(filtered);
+    }
   </script>
 </body>
 </html>
