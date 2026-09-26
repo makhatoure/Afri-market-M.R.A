@@ -342,7 +342,7 @@
         </div>
 
         <div class="dash-stat-card">
-          <div class="stat-title" id="stat-card3-title">Fournisseurs contactés</div>
+          <div class="stat-title" id="stat-card3-title">Fournisseurs favoris</div>
           <div class="stat-number" id="stat-card3-val">0</div>
           <a href="fournisseurs.html" class="stat-link">Voir détails</a>
         </div>
@@ -558,35 +558,52 @@
       if (!client || !currentUser.id) return;
       try {
         if (isSupplier) {
-          const { count: prodCount } = await client.from('products').select('*', { count: 'exact', head: true }).eq('supplier_id', currentUser.id);
-          document.getElementById('stat-card1-title').textContent = 'Produits au catalogue';
-          document.getElementById('stat-card1-val').textContent = prodCount || 0;
-
           const { data: devisList } = await client.from('devis').select('*').or('supplier_id.eq.' + currentUser.id + ',supplier_id.is.null');
+          
+          // 1- Commandes en cours (acceptées ou en cours)
+          const inProgress = (devisList || []).filter(d => d.status === 'accepted' || d.status === 'pending' || d.status === 'sent' || d.status === 'revision');
+          document.getElementById('stat-card1-title').textContent = 'Commandes en cours';
+          document.getElementById('stat-card1-val').textContent = inProgress.length;
+
+          // 2- Demandes de devis
           const devisCount = devisList ? devisList.length : 0;
-          document.getElementById('stat-card2-title').textContent = 'Devis reçus';
+          document.getElementById('stat-card2-title').textContent = 'Demandes de devis';
           document.getElementById('stat-card2-val').textContent = devisCount;
 
-          const accepted = (devisList || []).filter(d => d.status === 'accepted');
-          document.getElementById('stat-card3-title').textContent = 'Commandes validées';
-          document.getElementById('stat-card3-val').textContent = accepted.length;
+          // 3- Mes Produits
+          const { count: prodCount } = await client.from('products').select('*', { count: 'exact', head: true }).eq('supplier_id', currentUser.id);
+          document.getElementById('stat-card3-title').textContent = 'Mes Produits';
+          document.getElementById('stat-card3-val').textContent = prodCount || 0;
 
-          const totalCA = accepted.reduce((sum, d) => sum + Number(d.total_amount_fcfa || 0), 0);
-          document.getElementById('stat-card4-title').textContent = "Chiffre d'affaires estimé";
-          document.getElementById('stat-card4-val').textContent = totalCA.toLocaleString('fr-FR') + ' FCFA';
+          // 4- Vente de ce mois
+          const now = new Date();
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          const acceptedThisMonth = (devisList || []).filter(d => {
+            if (d.status !== 'accepted') return false;
+            const createdAt = d.created_at ? new Date(d.created_at) : null;
+            return createdAt && createdAt >= startOfMonth;
+          });
+          const totalVentesMois = acceptedThisMonth.reduce((sum, d) => sum + Number(d.total_amount_fcfa || 0), 0);
+          document.getElementById('stat-card4-title').textContent = 'Vente de ce mois';
+          document.getElementById('stat-card4-val').textContent = totalVentesMois.toLocaleString('fr-FR') + ' FCFA';
         } else {
           const { data: devisList } = await client.from('devis').select('*').eq('merchant_id', currentUser.id);
+          
+          // 1- Demandes en cours
           const activeDevis = (devisList || []).filter(d => d.status === 'pending' || d.status === 'sent' || d.status === 'revision');
-          document.getElementById('stat-card1-title').textContent = 'Commandes & Demandes en cours';
+          document.getElementById('stat-card1-title').textContent = 'Demandes en cours';
           document.getElementById('stat-card1-val').textContent = activeDevis.length;
 
-          document.getElementById('stat-card2-title').textContent = 'Total demandes de devis';
+          // 2- Demandes de devis
+          document.getElementById('stat-card2-title').textContent = 'Demandes de devis';
           document.getElementById('stat-card2-val').textContent = devisList ? devisList.length : 0;
 
+          // 3- Fournisseurs favoris
           const suppliers = new Set((devisList || []).map(d => d.supplier_id || d.items?.[0]?.supplier).filter(Boolean));
-          document.getElementById('stat-card3-title').textContent = 'Fournisseurs contactés';
+          document.getElementById('stat-card3-title').textContent = 'Fournisseurs favoris';
           document.getElementById('stat-card3-val').textContent = suppliers.size;
 
+          // 4- Dépenses réalisées
           const accepted = (devisList || []).filter(d => d.status === 'accepted');
           const totalExp = accepted.reduce((sum, d) => sum + Number(d.total_amount_fcfa || 0), 0);
           document.getElementById('stat-card4-title').textContent = 'Dépenses réalisées';
