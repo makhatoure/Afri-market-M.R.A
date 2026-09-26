@@ -29,8 +29,8 @@
     </div>
     <div class="nav-links">
       <a href="index.html">Accueil</a>
-      <a href="categories.html">CatÃ©gories</a>
-      <a href="fournisseurs.html">Fournisseurs vÃ©rifiÃ©s</a>
+      <a href="categories.html">Catégories</a>
+      <a href="fournisseurs.html">Fournisseurs vérifiés</a>
       <a href="vendre.html">Vendre sur AfroBaza</a>
     </div>
   </nav>
@@ -146,7 +146,7 @@ async function changeDevisStatusFromTable(devisId, newStatus) {
       const filtered = filter === 'all' ? userDevis : userDevis.filter(d => d.status === filter);
       
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#666;">Aucune demande de devis enregistrÃ©e.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#666;">Aucune demande de devis enregistrée.</td></tr>';
         return;
       }
 
@@ -176,7 +176,7 @@ async function changeDevisStatusFromTable(devisId, newStatus) {
   <div id="chat-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
     <div style="background:#fff;width:90%;max-width:600px;border-radius:12px;padding:24px;display:flex;flex-direction:column;max-height:85vh;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:12px;">
-        <h3 style="font-size:18px;" id="chat-title">NÃ©gociation du Devis</h3>
+        <h3 style="font-size:18px;" id="chat-title">Négociation du Devis</h3>
         <button onclick="closeChatModal()" style="background:none;border:none;font-size:20px;cursor:pointer;">âœ•</button>
       </div>
 
@@ -196,7 +196,7 @@ async function changeDevisStatusFromTable(devisId, newStatus) {
 
     async function openChatModal(devisId, devisNum) {
       activeDevisId = devisId;
-      document.getElementById('chat-title').textContent = '💬 NÃ©gociation : ' + devisNum;
+      document.getElementById('chat-title').textContent = '💬 Négociation : ' + devisNum;
       document.getElementById('chat-modal').style.display = 'flex';
       await loadMessages();
     }
@@ -218,7 +218,7 @@ async function changeDevisStatusFromTable(devisId, newStatus) {
         if (error) throw error;
 
         if (!data || data.length === 0) {
-          container.innerHTML = '<div style="text-align:center;color:#888;font-size:14px;padding:20px;">Aucun message envoyÃ© pour l\'instant. Proposez une offre ou posez vos questions directement ici.</div>';
+          container.innerHTML = '<div style="text-align:center;color:#888;font-size:14px;padding:20px;">Aucun message envoyé pour l\'instant. Proposez une offre ou posez vos questions directement ici.</div>';
           return;
         }
 
