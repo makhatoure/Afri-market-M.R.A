@@ -330,27 +330,27 @@
       <!-- 4 CARTES STATISTIQUES EXACTES DE LA MAQUETTE FIGMA -->
       <div class="dash-stats-grid">
         <div class="dash-stat-card">
-          <div class="stat-title">Commandes en cours</div>
-          <div class="stat-number" id="stat-cmd-val">1</div>
-          <a href="dashboard.html" class="stat-link">Voir dÃ©tails</a>
+          <div class="stat-title" id="stat-card1-title">Commandes en cours</div>
+          <div class="stat-number" id="stat-card1-val">0</div>
+          <a href="mes-commandes.html" class="stat-link">Voir détails</a>
         </div>
 
         <div class="dash-stat-card">
-          <div class="stat-title">Demandes de devis</div>
-          <div class="stat-number" id="stat-devis-val">1</div>
-          <a href="mes-devis.html" class="stat-link">Voir dÃ©tails</a>
+          <div class="stat-title" id="stat-card2-title">Demandes de devis</div>
+          <div class="stat-number" id="stat-card2-val">0</div>
+          <a href="mes-devis.html" class="stat-link">Voir détails</a>
         </div>
 
         <div class="dash-stat-card">
-          <div class="stat-title">Fournisseurs favoris</div>
-          <div class="stat-number" id="stat-fav-val">6</div>
-          <a href="dashboard.html" class="stat-link">Voir dÃ©tails</a>
+          <div class="stat-title" id="stat-card3-title">Fournisseurs contactés</div>
+          <div class="stat-number" id="stat-card3-val">0</div>
+          <a href="fournisseurs.html" class="stat-link">Voir détails</a>
         </div>
 
         <div class="dash-stat-card">
-          <div class="stat-title">DÃ©penses rÃ©alisÃ©es</div>
-          <div class="stat-number" id="stat-expenses-val">21 600 FCFA</div>
-          <a href="dashboard.html" class="stat-link">Voir dÃ©tails</a>
+          <div class="stat-title" id="stat-card4-title">Dépenses réalisées</div>
+          <div class="stat-number" id="stat-card4-val">0 FCFA</div>
+          <a href="mes-devis.html" class="stat-link">Voir détails</a>
         </div>
       </div>
 
@@ -510,48 +510,159 @@
         return;
       }
 
-      const name = currentUser.name || currentUser.email || 'Utilisateur';
-      const elGreet = document.getElementById('dash-greeting-name');
-      if (elGreet) elGreet.textContent = 'Bonjour, ' + name;
       const client = getSupabaseClient();
+
+      let userName = currentUser.name || currentUser.company || currentUser.email.split('@')[0];
+      let userRole = currentUser.role || 'commercant';
+
       if (client && currentUser.id) {
         try {
-          const { data: prof } = await client.from('profiles').select('avatar_url').eq('id', currentUser.id).single();
-          if (prof && prof.avatar_url) {
-            currentUser.avatar_url = prof.avatar_url;
+          const { data: prof } = await client.from('profiles').select('*').eq('id', currentUser.id).single();
+          if (prof) {
+            if (prof.full_name || prof.company_name) userName = prof.company_name || prof.full_name;
+            if (prof.role) userRole = prof.role;
+            if (prof.avatar_url) currentUser.avatar_url = prof.avatar_url;
+            currentUser.name = userName;
+            currentUser.role = userRole;
             localStorage.setItem('AfroBaza_user', JSON.stringify(currentUser));
           }
         } catch (e) {}
       }
+
+      const elGreet = document.getElementById('dash-greeting-name');
+      if (elGreet) elGreet.textContent = 'Bonjour, ' + userName;
+
+      const sideName = document.getElementById('dash-sidebar-name');
+      if (sideName) sideName.textContent = userName;
+
+      const sideRole = document.getElementById('dash-sidebar-role');
+      if (sideRole) sideRole.textContent = userRole;
+
       if (currentUser.avatar_url) {
         const img = document.getElementById('dash-user-avatar');
         if (img) img.src = currentUser.avatar_url;
       }
 
-      // DÃ©tecter si le profil est fournisseur
-      const roleStr = String(currentUser.role || '').toLowerCase().trim();
+      const isSupplier = String(userRole).toLowerCase().includes('fournisseur');
       const supplierSec = document.getElementById('supplier-section');
-      if (roleStr.includes('fournisseur') && supplierSec) {
+      if (isSupplier && supplierSec) {
         supplierSec.style.display = 'block';
       }
 
-      // Charger les stats dynamiques Supabase si disponible
-      const client = getSupabaseClient();
-      if (client && currentUser.id) {
-        try {
-          const { count: devisCount } = await client
-            .from('devis')
-            .select('*', { count: 'exact', head: true })
-            .eq('merchant_id', currentUser.id);
-
-          if (devisCount !== null) {
-            document.getElementById('stat-devis-val').textContent = devisCount;
-          }
-        } catch (e) {
-          console.warn('Erreur chargement stats Supabase:', e);
-        }
-      }
+      await loadDynamicDashboardStats(client, isSupplier);
+      await loadDynamicActivities(client, isSupplier);
+      await loadDynamicPopularSuppliers(client);
     });
+
+    async function loadDynamicDashboardStats(client, isSupplier) {
+      if (!client || !currentUser.id) return;
+      try {
+        if (isSupplier) {
+          const { count: prodCount } = await client.from('products').select('*', { count: 'exact', head: true }).eq('supplier_id', currentUser.id);
+          document.getElementById('stat-card1-title').textContent = 'Produits au catalogue';
+          document.getElementById('stat-card1-val').textContent = prodCount || 0;
+
+          const { data: devisList } = await client.from('devis').select('*').or('supplier_id.eq.' + currentUser.id + ',supplier_id.is.null');
+          const devisCount = devisList ? devisList.length : 0;
+          document.getElementById('stat-card2-title').textContent = 'Devis reçus';
+          document.getElementById('stat-card2-val').textContent = devisCount;
+
+          const accepted = (devisList || []).filter(d => d.status === 'accepted');
+          document.getElementById('stat-card3-title').textContent = 'Commandes validées';
+          document.getElementById('stat-card3-val').textContent = accepted.length;
+
+          const totalCA = accepted.reduce((sum, d) => sum + Number(d.total_amount_fcfa || 0), 0);
+          document.getElementById('stat-card4-title').textContent = "Chiffre d'affaires estimé";
+          document.getElementById('stat-card4-val').textContent = totalCA.toLocaleString('fr-FR') + ' FCFA';
+        } else {
+          const { data: devisList } = await client.from('devis').select('*').eq('merchant_id', currentUser.id);
+          const activeDevis = (devisList || []).filter(d => d.status === 'pending' || d.status === 'sent' || d.status === 'revision');
+          document.getElementById('stat-card1-title').textContent = 'Commandes & Demandes en cours';
+          document.getElementById('stat-card1-val').textContent = activeDevis.length;
+
+          document.getElementById('stat-card2-title').textContent = 'Total demandes de devis';
+          document.getElementById('stat-card2-val').textContent = devisList ? devisList.length : 0;
+
+          const suppliers = new Set((devisList || []).map(d => d.supplier_id || d.items?.[0]?.supplier).filter(Boolean));
+          document.getElementById('stat-card3-title').textContent = 'Fournisseurs contactés';
+          document.getElementById('stat-card3-val').textContent = suppliers.size;
+
+          const accepted = (devisList || []).filter(d => d.status === 'accepted');
+          const totalExp = accepted.reduce((sum, d) => sum + Number(d.total_amount_fcfa || 0), 0);
+          document.getElementById('stat-card4-title').textContent = 'Dépenses réalisées';
+          document.getElementById('stat-card4-val').textContent = totalExp.toLocaleString('fr-FR') + ' FCFA';
+        }
+      } catch (err) {
+        console.warn('Erreur chargement statistiques tableau de bord:', err);
+      }
+    }
+
+    async function loadDynamicActivities(client, isSupplier) {
+      const listEl = document.getElementById('dash-activities-list');
+      if (!listEl) return;
+      if (!client || !currentUser.id) {
+        listEl.innerHTML = '<div style="padding:24px;text-align:center;color:#888;font-size:14px;">Aucune activité récente enregistrée.</div>';
+        return;
+      }
+
+      try {
+        const query = isSupplier
+          ? client.from('devis').select('*').or('supplier_id.eq.' + currentUser.id + ',supplier_id.is.null').order('created_at', { ascending: false }).limit(6)
+          : client.from('devis').select('*').eq('merchant_id', currentUser.id).order('created_at', { ascending: false }).limit(6);
+
+        const { data: activities, error } = await query;
+
+        if (error || !activities || activities.length === 0) {
+          listEl.innerHTML = '<div style="padding:24px;text-align:center;color:#888;font-size:14px;">Aucune activité récente pour le moment.<br><small style="color:#aaa;">Vos prochaines demandes de devis et commandes s\'afficheront ici en direct.</small></div>';
+          return;
+        }
+
+        const statusMap = {
+          accepted: { text: 'Accepté ✅', class: 'badge-accepted' },
+          refused: { text: 'Refusé ❌', class: 'badge-confirmed' },
+          revision: { text: 'En révision 🔄', class: 'badge-sent' },
+          pending: { text: 'En attente ⏳', class: 'badge-sent' },
+          sent: { text: 'Envoyé 📩', class: 'badge-sent' }
+        };
+
+        listEl.innerHTML = activities.map(act => {
+          const ref = act.reference || act.devis_number || ('DEV-' + act.id.slice(0,6));
+          const targetName = isSupplier
+            ? ('Commerçant')
+            : (act.items?.[0]?.supplier || 'Fournisseur AfroBaza');
+          const statusInfo = statusMap[act.status] || { text: act.status, class: 'badge-sent' };
+          const dateStr = act.created_at ? new Date(act.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Récemment';
+
+          return '<div class="activity-item" onclick="window.location.href=\'messagerie.html?devis=' + act.id + '\'" style="cursor:pointer;"><div><div class="act-title">' + ref + ' — ' + targetName + '</div><div class="act-date">' + dateStr + '</div></div><div class="act-badge ' + statusInfo.class + '">' + statusInfo.text + '</div></div>';
+        }).join('');
+      } catch (err) {
+        console.warn('Erreur chargement activités:', err);
+        listEl.innerHTML = '<div style="padding:24px;text-align:center;color:#888;font-size:14px;">Impossible de charger les activités récentes.</div>';
+      }
+    }
+
+    async function loadDynamicPopularSuppliers(client) {
+      const container = document.getElementById('dash-popular-suppliers');
+      if (!container || !client) return;
+
+      try {
+        const { data: suppliers } = await client.from('profiles').select('*').eq('role', 'fournisseur').limit(4);
+        if (!suppliers || suppliers.length === 0) {
+          container.innerHTML = '<div style="padding:20px;text-align:center;color:#888;font-size:13px;">Aucun partenaire pour le moment.</div>';
+          return;
+        }
+
+        container.innerHTML = suppliers.map(s => {
+          const name = s.company_name || s.full_name || 'Partenaire AfroBaza';
+          const avatar = s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80';
+          const category = s.category || 'Partenaire Vérifié AfroBaza';
+
+          return '<div class="popular-supplier-item" onclick="window.location.href=\'profil-fournisseur.html?id=' + s.id + '\'" style="cursor:pointer;"><img src="' + avatar + '" alt="' + name + '" class="popular-supplier-logo"><div class="popular-supplier-info"><div class="popular-supplier-name">' + name + '</div><div class="popular-supplier-cat">' + category + '</div></div><div class="popular-supplier-rating">★ 5,0</div></div>';
+        }).join('');
+      } catch (err) {
+        console.warn('Erreur chargement fournisseurs populaires:', err);
+      }
+    }
 
     async function handleAddProduct(e) {
       e.preventDefault();
