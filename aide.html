@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centre d'aide — AfroBaza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
   <style>
     body {
       background-color: #FAFAFA;
@@ -16,6 +18,7 @@
       color: #111111;
     }
 
+    /* HEADER CENTRE D'AIDE FIGMA */
     .help-header {
       background: #FFFFFF;
       padding: 48px 8% 40px;
@@ -31,24 +34,25 @@
       font-size: 38px;
       font-weight: 800;
       margin: 0 0 8px 0;
-      color: #000000;
+      color: #0F172A;
       letter-spacing: -0.5px;
     }
     .help-header p.subtitle {
       font-size: 20px;
       font-weight: 600;
-      color: #222222;
+      color: #334155;
       margin: 0 0 28px 0;
     }
 
+    /* BARRE DE RECHERCHE JAUNE BAZA */
     .help-search-box {
       display: flex;
-      background: #F4F5F7;
+      background: #F8FAFC;
       border-radius: 30px;
       padding: 6px 6px 6px 20px;
       align-items: center;
       max-width: 540px;
-      border: 1px solid #E5E7EB;
+      border: 1px solid #E2E8F0;
     }
     .help-search-box input {
       border: none;
@@ -56,16 +60,16 @@
       outline: none;
       font-size: 15px;
       flex: 1;
-      color: #111;
+      color: #0F172A;
     }
     .help-search-box button {
-      background: #F5A623;
+      background: #F59E0B; /* Jaune exact logo Baza */
       border: none;
       border-radius: 24px;
-      padding: 10px 24px;
+      padding: 12px 24px;
       font-size: 14px;
-      font-weight: 700;
-      color: #000;
+      font-weight: 800;
+      color: #000000;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -73,24 +77,26 @@
       transition: background 0.2s;
     }
     .help-search-box button:hover {
-      background: #E0961B;
+      background: #D97706;
     }
 
+    /* ILLUSTRATION CASQUE SUPPORT AVEC JAUNE BAZA */
     .help-illustration-badge {
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: #FFF7DF;
-      border: 4px solid #F7CB6B;
+      background: #FEF08A; /* Fond jaune doux Baza */
+      border: 4px solid #FDE047;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
     .help-illustration-badge svg {
-      width: 80px;
-      height: 80px;
-      stroke: #F5A623;
+      width: 76px;
+      height: 76px;
+      stroke: #EAB308; /* Stroke jaune Baza */
       fill: none;
     }
 
@@ -101,10 +107,10 @@
       padding: 0 24px;
     }
     .section-heading {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       margin: 0 0 24px 0;
-      color: #000000;
+      color: #0F172A;
     }
 
     .help-categories-grid {
@@ -113,27 +119,37 @@
       gap: 20px;
       margin-bottom: 48px;
     }
+    @media (max-width: 900px) {
+      .help-categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 500px) {
+      .help-categories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .help-cat-card {
-      background: #F7F8FA;
+      background: #FFFFFF;
       border-radius: 16px;
       padding: 24px 20px;
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      border: 1px solid #EFEFEF;
+      border: 1px solid #E2E8F0;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .help-cat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      background: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
     }
     .help-cat-icon {
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: #FCE8B3;
+      background: #FEF08A; /* Rond jaune Baza */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -142,19 +158,19 @@
     .help-cat-icon svg {
       width: 26px;
       height: 26px;
-      stroke: #8C5400;
+      stroke: #EAB308; /* Icône SVG jaune Baza */
       fill: none;
     }
     .help-cat-info h4 {
       font-size: 15px;
       font-weight: 800;
       margin: 0 0 4px 0;
-      color: #000000;
+      color: #0F172A;
     }
     .help-cat-info p {
       font-size: 13px;
       line-height: 1.4;
-      color: #555555;
+      color: #64748B;
       margin: 0;
     }
 
@@ -165,21 +181,27 @@
       gap: 28px;
       align-items: start;
     }
+    @media (max-width: 900px) {
+      .faq-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .faq-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
     .faq-item {
-      background: #F7F8FA;
-      border-radius: 12px;
+      background: #FFFFFF;
+      border-radius: 14px;
       padding: 18px 24px;
-      border: 1px solid #EFEFEF;
+      border: 1px solid #E2E8F0;
     }
     .faq-item summary {
       font-size: 15px;
-      font-weight: 700;
-      color: #000000;
+      font-weight: 800;
+      color: #0F172A;
       cursor: pointer;
       outline: none;
       display: flex;
@@ -189,67 +211,73 @@
     .faq-item p {
       font-size: 14px;
       line-height: 1.6;
-      color: #444444;
+      color: #475569;
       margin: 12px 0 0 0;
     }
 
+    /* CARTE DE SUPPORT JAUNE BAZA */
     .support-card {
-      background: #FFF7DF;
-      border-radius: 16px;
+      background: #FEF08A; /* Fond jaune Baza */
+      border-radius: 20px;
       padding: 32px 28px;
-      border: 1px solid #FFE7A3;
+      border: 1px solid #FDE047;
       text-align: center;
     }
     .support-card-icon {
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: #F7CB6B;
+      background: #FFFFFF; /* Rond blanc */
       display: inline-flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     }
     .support-card-icon svg {
       width: 28px;
       height: 28px;
-      stroke: #8C5400;
+      stroke: #EAB308;
       fill: none;
     }
     .support-card h3 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       margin: 0 0 8px 0;
-      color: #000;
+      color: #0F172A;
     }
     .support-card p {
       font-size: 14px;
       line-height: 1.5;
-      color: #444;
+      color: #334155;
       margin: 0 0 20px 0;
     }
     .support-btn {
       display: inline-block;
-      background: #F5A623;
-      color: #000;
-      font-weight: 700;
+      background: #0F172A; /* Bouton sombre de contraste */
+      color: #FFFFFF;
+      font-weight: 800;
       font-size: 14px;
-      padding: 12px 24px;
+      padding: 12px 28px;
       border-radius: 24px;
       text-decoration: none;
       transition: background 0.2s;
     }
     .support-btn:hover {
-      background: #E0961B;
+      background: #1E293B;
     }
   </style>
+
+  <!-- SDK SUPABASE JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
+  <!-- NAVBAR NAVBAR FIGMA -->
+  <nav class="navbar" id="navbar">
     <div class="nav-top">
-      <a href="index.html" class="logo">Afri<span>Mark</span></a>
+      <a href="index.html" class="logo">Afro<span>Baza</span></a>
       <div class="nav-actions">
         <a href="recherche.html" class="icon-btn" aria-label="Recherche" title="Recherche">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -283,148 +311,181 @@
       <p class="subtitle">Comment pouvons-nous vous aider ?</p>
       
       <div class="help-search-box">
-        <input type="text" placeholder="Rechercher une question, un sujet...">
-        <button type="button">
+        <input type="text" id="help-search-input" placeholder="Rechercher une question, un sujet...">
+        <button type="button" onclick="searchHelp()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Rechercher
         </button>
       </div>
     </div>
 
-    <!-- ILLUSTRATION CASQUE SUPPORT FIGMA -->
+    <!-- ILLUSTRATION CASQUE SUPPORT FIGMA AVEC SVG JAUNE BAZA -->
     <div class="help-illustration-badge">
-      <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/><path d="M18 19a3 3 0 0 1-3 3h-2"/></svg>
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/><path d="M18 19a3 3 0 0 1-3 3h-2"/></svg>
     </div>
   </header>
 
-  <!-- SECTION PARCOURIR PAR CATÉGORIE (8 CARDS FIGMA) -->
-  <div class="help-container">
+  <!-- SECTION PARCOURIR PAR CATÉGORIE (8 CARDS FIGMA MODERNISÉES) -->
+  <main class="help-container">
     <h2 class="section-heading">Parcourir par catégorie</h2>
 
     <div class="help-categories-grid">
       
-      <div class="help-cat-card">
+      <!-- CARD 1 -->
+      <div class="help-cat-card" onclick="location.href='#faq-devis'">
         <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
         <div class="help-cat-info">
-          <h4>Compte et inscription</h4>
-          <p>Tout sur la création et la gestion de votre compte</p>
+          <h4>Devis & Commandes</h4>
+          <p>Comment envoyer, négocier et valider un devis en gros.</p>
         </div>
       </div>
 
-      <div class="help-cat-card">
+      <!-- CARD 2 -->
+      <div class="help-cat-card" onclick="location.href='#faq-fournisseurs'">
         <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
         <div class="help-cat-info">
-          <h4>Commandes et paiements</h4>
-          <p>Aide sur les commandes, paiements et factures</p>
+          <h4>Fournisseurs vérifiés</h4>
+          <p>Critères de vérification et garanties de sécurité AfroBaza.</p>
         </div>
       </div>
 
-      <div class="help-cat-card">
+      <!-- CARD 3 -->
+      <div class="help-cat-card" onclick="location.href='#faq-vendeurs'">
         <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-        </div>
-        <div class="help-cat-info">
-          <h4>Livraison</h4>
-          <p>Informations sur les délais de livraison</p>
-        </div>
-      </div>
-
-      <div class="help-cat-card">
-        <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        </div>
-        <div class="help-cat-info">
-          <h4>Produits et fournisseurs</h4>
-          <p>Tout sur les produits et les fournisseurs</p>
-        </div>
-      </div>
-
-      <div class="help-cat-card">
-        <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-        </div>
-        <div class="help-cat-info">
-          <h4>Retours et remboursements</h4>
-          <p>Politique de retour et remboursement</p>
-        </div>
-      </div>
-
-      <div class="help-cat-card">
-        <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
         <div class="help-cat-info">
           <h4>Vendre sur AfroBaza</h4>
-          <p>Guide pour les vendeurs et partenaires</p>
+          <p>Créer sa boutique, ajouter ses produits et gérer ses ventes.</p>
         </div>
       </div>
 
-      <div class="help-cat-card">
+      <!-- CARD 4 -->
+      <div class="help-cat-card" onclick="location.href='#faq-compte'">
         <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div class="help-cat-info">
-          <h4>Sécurité et confidentialité</h4>
-          <p>Vos données et la sécurité sur la plateforme</p>
+          <h4>Compte & Profil</h4>
+          <p>Modifier ses données, son mot de passe et son avatar.</p>
         </div>
       </div>
 
-      <div class="help-cat-card">
+      <!-- CARD 5 -->
+      <div class="help-cat-card" onclick="location.href='#faq-messagerie'">
         <div class="help-cat-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <div class="help-cat-info">
-          <h4>Autres questions</h4>
-          <p>Autres questions fréquentes</p>
+          <h4>Messagerie & Échanges</h4>
+          <p>Discuter directement avec un fournisseur ou commerçant.</p>
+        </div>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="help-cat-card" onclick="location.href='#faq-paiements'">
+        <div class="help-cat-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="help-cat-info">
+          <h4>Paiements & Tarifs</h4>
+          <p>Devises en FCFA, modalités de règlement et factures.</p>
+        </div>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="help-cat-card" onclick="location.href='#faq-livraison'">
+        <div class="help-cat-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="help-cat-info">
+          <h4>Livraison & Transport</h4>
+          <p>Modalités d'expédition sur Dakar et dans les régions.</p>
+        </div>
+      </div>
+
+      <!-- CARD 8 -->
+      <div class="help-cat-card" onclick="location.href='#faq-support'">
+        <div class="help-cat-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="help-cat-info">
+          <h4>Assistance & Support</h4>
+          <p>Contacter l'équipe AfroBaza en cas de besoin.</p>
         </div>
       </div>
 
     </div>
 
-    <!-- SECTION QUESTIONS FRÉQUENTES & SUPPORT FIGMA -->
-    <h2 class="section-heading">Questions fréquentes</h2>
-
+    <!-- LAYOUT FAQ & CARTE DE CONTACT FIGMA -->
+    <h2 class="section-heading">Questions fréquemment posées</h2>
+    
     <div class="faq-layout">
+      
+      <!-- LISTE DES FAQ -->
       <div class="faq-list">
         
-        <details class="faq-item" open>
-          <summary>Comment créer un compte sur AfroBaza ?</summary>
-          <p>Cliquez sur "S'inscrire" en haut de la page, choisissez votre profil (Commerçant ou Fournisseur) et remplissez vos informations de contact.</p>
+        <details class="faq-item" id="faq-devis">
+          <summary>Comment envoyer une demande de devis à un fournisseur ?</summary>
+          <p>Rendez-vous sur la fiche du produit souhaité ou sur la page du fournisseur, sélectionnez vos quantités puis cliquez sur "Demander un devis". Votre demande apparaîtra directement dans votre espace Messagerie.</p>
         </details>
 
-        <details class="faq-item">
-          <summary>Comment demander un devis à un fournisseur ?</summary>
-          <p>Consultez la fiche produit du fournisseur, ajustez la quantité souhaitée puis cliquez sur le bouton "Demander un devis".</p>
+        <details class="faq-item" id="faq-fournisseurs">
+          <summary>Que garantit le badge "Fournisseur Vérifié" ?</summary>
+          <p>Le badge atteste que les pièces d'identité, le registre de commerce et la localisation du fournisseur ont été rigoureusement audités et validés par l'équipe AfroBaza.</p>
         </details>
 
-        <details class="faq-item">
-          <summary>Quels sont les moyens de paiement acceptés ?</summary>
-          <p>Nous acceptons les règlements par Mobile Money (Wave, Orange Money) ainsi que par virement bancaire et acompte sécurisé.</p>
+        <details class="faq-item" id="faq-vendeurs">
+          <summary>Comment devenir fournisseur et ajouter mes produits ?</summary>
+          <p>Inscrivez-vous en choisissant le rôle "Fournisseur". Une fois connecté, accédez à votre Tableau de bord puis utilisez le formulaire "Ajouter un nouveau produit" pour publier vos articles.</p>
         </details>
 
-        <details class="faq-item">
-          <summary>Comment fonctionne la vérification des fournisseurs ?</summary>
-          <p>Tous les fournisseurs enregistrés soumis au statut "Vérifié" font l'objet d'un contrôle rigoureux de leurs documents administratifs et commerciaux.</p>
+        <details class="faq-item" id="faq-messagerie">
+          <summary>Où puis-je suivre l'avancement de mes négociations ?</summary>
+          <p>Toutes vos conversations et propositions de prix sont centralisées dans la rubrique "Messagerie" accessible depuis l'icône de message en haut à droite.</p>
+        </details>
+
+        <details class="faq-item" id="faq-paiements">
+          <summary>Quelles sont les devises utilisées sur AfroBaza ?</summary>
+          <p>Toutes les transactions et tarifs indiqués sur AfroBaza sont exprimés en Franc CFA (FCFA) pour simplifier les échanges dans toute l'Afrique de l'Ouest.</p>
         </details>
 
       </div>
 
-      <!-- CARTE SUPPORT FIGMA DROITE -->
+      <!-- CARTE DE SUPPORT DIRECT JAUNE BAZA FIGMA -->
       <div class="support-card">
         <div class="support-card-icon">
-          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         </div>
-        <h3>Vous ne trouvez pas votre réponse ?</h3>
-        <p>Notre équipe support est là pour vous aider du lundi au samedi.</p>
-        <a href="mailto:support@afrobaza.com" class="support-btn">Contacter le support</a>
+        <h3>Besoin d’aide supplémentaire ?</h3>
+        <p>Notre équipe support est à votre disposition 7j/7 pour vous accompagner dans vos achats et ventes.</p>
+        <a href="messagerie.html" class="support-btn">Contacter le support</a>
       </div>
+
     </div>
-  </div>
+
+  </main>
 
   <script src="app.js"></script>
+  <script>
+    function searchHelp() {
+      const query = document.getElementById('help-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-item');
+      
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          item.style.display = 'block';
+          if (query) item.open = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
