@@ -10,120 +10,136 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* STYLES MAQUETTE FIGMA À PROPOS DE AFROBAZA */
-    .about-container {
+    /* CLONE EXACT DE LA MAQUETTE FIGMA À PROPOS DE AFROBAZA */
+    .apropos-page-container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px 60px 24px;
       font-family: 'Inter', sans-serif;
     }
 
-    /* HERO BANNER FIGMA */
-    .about-hero-figma {
+    /* HERO SECTION FIGMA */
+    .apropos-hero-figma {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 36px;
       align-items: center;
-      padding: 48px 0;
+      padding: 40px 0;
     }
     @media (max-width: 900px) {
-      .about-hero-figma {
+      .apropos-hero-figma {
         grid-template-columns: 1fr;
       }
     }
 
-    .about-hero-title {
-      font-size: 36px;
+    .apropos-hero-title {
+      font-size: 38px;
       font-weight: 800;
       color: #0F172A;
       margin-bottom: 16px;
       line-height: 1.2;
     }
-    .about-hero-title span.brand-handwritten {
+    .apropos-hero-title span.brand-baza {
       font-family: 'Kaushan Script', cursive;
       color: #EAB308;
       font-weight: 400;
-      font-size: 40px;
+      font-size: 42px;
     }
 
-    .about-hero-subtitle {
-      font-size: 20px;
-      font-weight: 700;
-      color: #334155;
+    .apropos-hero-mission-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0F172A;
       margin-bottom: 16px;
       line-height: 1.35;
     }
 
-    .about-hero-text {
+    .apropos-hero-desc {
       font-size: 15px;
-      color: #64748B;
+      color: #334155;
       line-height: 1.6;
       margin: 0;
     }
-
-    .about-hero-img-wrap {
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      height: 380px;
+    .apropos-hero-desc p {
+      margin: 0 0 12px 0;
     }
-    .about-hero-img-wrap img {
+
+    .apropos-hero-img-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .apropos-hero-img-wrap img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      max-height: 420px;
+      object-fit: contain;
+      border-radius: 20px;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.06));
     }
 
-    /* 2 GRANDES CARTES FIGMA (MISSION & VISION) */
-    .about-two-cards {
+    /* 2 GRANDES CARTES JAUNES FIGMA */
+    .apropos-two-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 28px;
       margin: 40px 0;
     }
-    @media (max-width: 800px) {
-      .about-two-cards {
+    @media (max-width: 850px) {
+      .apropos-two-cards {
         grid-template-columns: 1fr;
       }
     }
 
-    .about-card-yellow {
-      background: #FFF7DF;
-      border: 1px solid #FFE7A3;
+    .apropos-yellow-card {
+      background: #FDE68A; /* Jaune doux exact Figma */
       border-radius: 20px;
-      padding: 32px;
+      padding: 32px 36px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      gap: 24px;
+      align-items: flex-start;
     }
-    .about-card-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .about-card-icon-badge {
-      width: 52px;
-      height: 52px;
+
+    .card-circle-icon {
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
-      background: #FDE68A;
-      color: #D97706;
+      background: #F59E0B; /* Cercle d'icône jaune vif */
+      color: #0F172A;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
       flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
     }
-    .about-card-title {
-      font-size: 22px;
+
+    .card-body-content {
+      flex: 1;
+    }
+    .card-title-centered {
+      font-size: 20px;
       font-weight: 800;
       color: #0F172A;
-      margin: 0;
+      margin: 0 0 14px 0;
     }
-    .about-card-content {
+
+    .card-text-p {
       font-size: 14.5px;
-      color: #334155;
+      color: #1E293B;
       line-height: 1.6;
+      margin: 0 0 12px 0;
     }
-    .about-card-list {
+
+    .card-bold-conclusion {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    .apropos-checklist {
       list-style: none;
       padding: 0;
       margin: 12px 0 0 0;
@@ -131,7 +147,7 @@
       flex-direction: column;
       gap: 10px;
     }
-    .about-card-list li {
+    .apropos-checklist li {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -139,21 +155,22 @@
       font-weight: 700;
       color: #0F172A;
     }
-    .check-bullet {
+    .check-bullet-yellow {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      border: 2px solid #EAB308;
-      color: #EAB308;
+      border: 2px solid #D97706;
+      color: #D97706;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
       font-weight: 900;
+      flex-shrink: 0;
     }
 
     /* SECTION NOS VALEURS FIGMA */
-    .about-values-section {
+    .apropos-values-section {
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
       border-radius: 24px;
@@ -161,30 +178,48 @@
       text-align: center;
       margin-top: 40px;
     }
-    .values-title-main {
+    .values-header-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .values-heart-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FDE68A;
+      color: #D97706;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .values-title-text {
       font-size: 26px;
       font-weight: 800;
       color: #0F172A;
-      margin-bottom: 32px;
+      margin: 0;
     }
 
-    .values-grid-figma {
+    .values-grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
     }
     @media (max-width: 900px) {
-      .values-grid-figma {
+      .values-grid-4 {
         grid-template-columns: repeat(2, 1fr);
       }
     }
     @media (max-width: 500px) {
-      .values-grid-figma {
+      .values-grid-4 {
         grid-template-columns: 1fr;
       }
     }
 
-    .value-box-figma {
+    .value-box-card {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
       border-radius: 16px;
@@ -192,7 +227,7 @@
       text-align: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
-    .value-box-icon {
+    .value-icon-circle {
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -204,16 +239,17 @@
       margin-bottom: 14px;
       font-size: 20px;
     }
-    .value-box-title {
+    .value-box-card h4 {
       font-size: 16px;
       font-weight: 800;
       color: #0F172A;
-      margin-bottom: 6px;
+      margin: 0 0 6px 0;
     }
-    .value-box-desc {
+    .value-box-card p {
       font-size: 13px;
       color: #64748B;
       line-height: 1.4;
+      margin: 0;
     }
   </style>
 
@@ -223,7 +259,7 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR NAVBAR FIGMA -->
   <nav class="navbar" id="navbar">
     <div class="nav-top">
       <a href="index.html" class="logo">Afro<span>Baza</span></a>
@@ -253,93 +289,122 @@
     </div>
   </nav>
 
-  <!-- CONTENU À PROPOS DE AFROBAZA FIGMA -->
-  <main class="about-container">
+  <!-- REPRODUCTION PARFAITE DE LA MAQUETTE FIGMA "À PROPOS DE AFROBAZA" -->
+  <main class="apropos-page-container">
 
     <!-- HERO SECTION FIGMA -->
-    <section class="about-hero-figma">
+    <section class="apropos-hero-figma">
       <div>
-        <h1 class="about-hero-title">
-          À propos de <span class="brand-handwritten">AfroBaza</span>
+        <h1 class="apropos-hero-title">
+          À propos d' <span class="brand-baza">AfroBaza</span>
         </h1>
-        <h2 class="about-hero-subtitle">
-          La 1ère plateforme de mise en relation B2B dédiée aux commerçants et fournisseurs certifiés en Afrique.
+        
+        <h2 class="apropos-hero-mission-title">
+          Notre mission: connecter les commerçants aux meilleurs fournisseurs.
         </h2>
-        <p class="about-hero-text">
-          AfroBaza est né d'une ambition forte : simplifier, sécuriser et accélérer les approvisionnements en gros pour l'ensemble des acteurs du commerce en Afrique. Nous connectons directement les commerçants locaux aux grossistes et fabricants vérifiés.
-        </p>
+
+        <div class="apropos-hero-desc">
+          <p>
+            <strong>AfroBaza</strong> est une marketplace B2B sénégalaise qui aide les commerçants à trouver des produits de qualité au meilleur prix.
+          </p>
+          <p>
+            Nous simplifions la recherche de fournisseurs fiables et accélérons la croissance des entreprises locales.
+          </p>
+        </div>
       </div>
 
-      <div class="about-hero-img-wrap" style="position:relative;display:flex;align-items:center;justify-content:center;">
-        <img src="images/apropos_hero.jpg" alt="Vendeuse dans l'entrepôt logistique AfroBaza" style="width:100%;max-height:440px;object-fit:contain;border-radius:20px;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.06));">
+      <div class="apropos-hero-img-wrap">
+        <img src="images/apropos_hero.jpg" alt="Vendeuse dans l'entrepôt logistique AfroBaza avec cartons">
       </div>
     </section>
 
-    <!-- 2 GRANDES CARTES FIGMA (NOTRE HISTOIRE & POURQUOI NOUS EXISTONS) -->
-    <section class="about-two-cards">
+    <!-- 2 GRANDES CARTES JAUNES FIGMA (NOTRE HISTOIRE & POURQUOI NOUS EXISTONS ?) -->
+    <section class="apropos-two-cards">
       
       <!-- CARTE 1: NOTRE HISTOIRE -->
-      <div class="about-card-yellow" style="background:#FDE68A;border:1px solid #F59E0B;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
-        <div class="about-card-header">
-          <div class="about-card-icon-badge" style="background:#FFFFFF;color:#D97706;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 6px rgba(0,0,0,0.06);">📖</div>
-          <h3 class="about-card-title" style="font-size:22px;font-weight:800;color:#0F172A;margin:0;">Notre histoire</h3>
+      <div class="apropos-yellow-card">
+        <div class="card-circle-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
-        <div class="about-card-content" style="font-size:14.5px;color:#1E293B;line-height:1.6;">
-          AfroBaza est né d'un constat simple sur le terrain : les commerçants africains perdaient un temps précieux et faisaient face à des risques élevés pour trouver des grossistes de confiance. Nous avons créé la première plateforme B2B qui digitalise et sécurise cette relation.
+        <div class="card-body-content">
+          <h3 class="card-title-centered">Notre histoire</h3>
+          <p class="card-text-p">
+            AfroBaza est né d'un constat simple : les commerçants sénégalais passent trop de temps à chercher des fournisseurs fiables et à comparer les prix.
+          </p>
+          <p class="card-text-p">
+            Nous avons créé AfroBaza pour résoudre ce problème en rassemblant des milliers de fournisseurs et de produits sur une seule plateforme facile à utiliser.
+          </p>
+          <div class="card-bold-conclusion">
+            Notre objectif est de devenir la référence du commerce B2B en Afrique de l'Ouest.
+          </div>
         </div>
-        <ul class="about-card-list">
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Créé pour répondre aux défis des commerçants africains</li>
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Transparence totale sur les prix de gros et la disponibilité</li>
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Audit et vérification rigoureuse des fournisseurs partenaires</li>
-        </ul>
       </div>
 
-      <!-- CARTE 2: POURQUOI NOUS EXISTONS -->
-      <div class="about-card-yellow" style="background:#FDE68A;border:1px solid #F59E0B;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;">
-        <div class="about-card-header">
-          <div class="about-card-icon-badge" style="background:#FFFFFF;color:#D97706;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 2px 6px rgba(0,0,0,0.06);">💡</div>
-          <h3 class="about-card-title" style="font-size:22px;font-weight:800;color:#0F172A;margin:0;">Pourquoi nous existons</h3>
+      <!-- CARTE 2: POURQUOI NOUS EXISTONS ? -->
+      <div class="apropos-yellow-card">
+        <div class="card-circle-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         </div>
-        <div class="about-card-content" style="font-size:14.5px;color:#1E293B;line-height:1.6;">
-          Nous existons pour éliminer les barrières de la négociation et de l'approvisionnement en gros, en offrant une plateforme moderne et intuitive où chaque commerçant et fournisseur interagit en toute confiance.
+        <div class="card-body-content">
+          <h3 class="card-title-centered">Pourquoi nous existons ?</h3>
+          <p class="card-text-p">
+            Nous croyons en un commerce africain plus fort, plus transparent et plus accessible à tous.
+          </p>
+
+          <ul class="apropos-checklist">
+            <li>
+              <div class="check-bullet-yellow">✓</div>
+              <span>Soutenir les commerçants locaux</span>
+            </li>
+            <li>
+              <div class="check-bullet-yellow">✓</div>
+              <span>Valoriser les fournisseurs africains</span>
+            </li>
+            <li>
+              <div class="check-bullet-yellow">✓</div>
+              <span>Simplifier l'accès aux produits de qualité</span>
+            </li>
+            <li>
+              <div class="check-bullet-yellow">✓</div>
+              <span>Créer un écosystème de confiance et de croissance</span>
+            </li>
+          </ul>
         </div>
-        <ul class="about-card-list">
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Digitaliser les demandes de devis et la négociation</li>
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Sécuriser la relation entre acheteurs et vendeurs</li>
-          <li><span class="check-bullet" style="border-color:#0F172A;color:#0F172A;">✓</span> Propulser la croissance de l'écosystème commercial africain</li>
-        </ul>
       </div>
 
     </section>
 
     <!-- SECTION NOS VALEURS FIGMA -->
-    <section class="about-values-section">
-      <h2 class="values-title-main">Nos Valeurs Fondamentales</h2>
+    <section class="apropos-values-section">
+      <div class="values-header-wrap">
+        <div class="values-heart-badge">💛</div>
+        <h2 class="values-title-text">Nos valeurs</h2>
+      </div>
 
-      <div class="values-grid-figma">
+      <div class="values-grid-4">
         
-        <div class="value-box-figma">
-          <div class="value-box-icon">🤝</div>
-          <div class="value-box-title">Confiance</div>
-          <div class="value-box-desc">Audits stricts et badges "Fournisseur Vérifié" pour des échanges en toute sérénité.</div>
+        <div class="value-box-card">
+          <div class="value-icon-circle">🛡️</div>
+          <h4>Confiance</h4>
+          <p>Fournisseurs vérifiés et transactions sécurisées pour commercer sereinement.</p>
         </div>
 
-        <div class="value-box-figma">
-          <div class="value-box-icon">⚡</div>
-          <div class="value-box-title">Simplicité</div>
-          <div class="value-box-desc">Demandes de devis fluides et messagerie directe en quelques clics.</div>
+        <div class="value-box-card">
+          <div class="value-icon-circle">⚡</div>
+          <h4>Simplicité</h4>
+          <p>Recherche rapide et gestion fluide des devis en quelques clics.</p>
         </div>
 
-        <div class="value-box-figma">
-          <div class="value-box-icon">💡</div>
-          <div class="value-box-title">Innovation</div>
-          <div class="value-box-desc">Digitalisation efficace de la négociation et du suivi de commande.</div>
+        <div class="value-box-card">
+          <div class="value-icon-circle">💡</div>
+          <h4>Transparence</h4>
+          <p>Prix clairs, catalogues en direct et communication sans intermédiaire.</p>
         </div>
 
-        <div class="value-box-figma">
-          <div class="value-box-icon">🌍</div>
-          <div class="value-box-title">Proximité</div>
-          <div class="value-box-desc">Un service conçu et pensé pour les réalités des commerçants africains.</div>
+        <div class="value-box-card">
+          <div class="value-icon-circle">🌍</div>
+          <h4>Engagement</h4>
+          <p>Développer l'économie locale et propulser les commerçants africains.</p>
         </div>
 
       </div>
