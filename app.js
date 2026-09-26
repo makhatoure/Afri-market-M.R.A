@@ -312,6 +312,9 @@ async function updateMessageBadge() {
   const navActions = document.querySelector('.nav-actions');
   if (!navActions) return;
 
+  // Enlever l'icône panier et favoris si présente dans la barre d'icônes
+  navActions.querySelectorAll('a[href="panier.html"], a[href="favoris.html"], .icon-btn[aria-label="Panier"], .icon-btn[aria-label="Favoris"]').forEach(el => el.remove());
+
   // Créer le bouton icône messagerie s'il n'existe pas encore
   let msgBtn = document.getElementById('nav-msg-btn');
   if (!msgBtn) {
