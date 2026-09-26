@@ -3,245 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fournisseurs Vérifiés — AfroBaza</title>
+  <title>Fournisseurs vérifiés — AfroBaza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* STYLES SPÉCIFIQUES MAQUETTE FIGMA FOURNISSEURS VÉRIFIÉS */
-    .suppliers-hero {
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      color: #FFFFFF;
-      padding: 48px 24px;
-      text-align: center;
-      border-radius: 0 0 24px 24px;
-      margin-bottom: 36px;
-    }
-    .suppliers-hero h1 {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-    .suppliers-hero h1 span {
-      color: #EAB308;
-    }
-    .suppliers-hero p {
-      font-size: 16px;
-      color: #94A3B8;
-      max-width: 640px;
-      margin: 0 auto 28px auto;
-      line-height: 1.5;
+    /* STYLE EXACT DE LA MAQUETTE FIGMA FOURNISSEURS VÉRIFIÉS */
+    .figma-suppliers-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 60px 24px;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* BARRE DE RECHERCHE & FILTRES FIGMA */
-    .filter-search-box {
-      max-width: 860px;
-      margin: 0 auto;
-      background: #FFFFFF;
-      padding: 12px;
+    .figma-page-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #000000;
+      margin-bottom: 28px;
+    }
+
+    /* 3 CARRÉS JAUNES FIGMA */
+    .figma-three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 768px) {
+      .figma-three-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .figma-yellow-card {
+      background: #FDE68A; /* Jaune doux Figma */
       border-radius: 16px;
+      padding: 20px 24px;
       display: flex;
-      gap: 12px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      align-items: center;
+      gap: 16px;
+    }
+    .figma-card-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .figma-card-text h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #000000;
+      margin: 0 0 2px 0;
+    }
+    .figma-card-text p {
+      font-size: 13.5px;
+      color: #4B5563;
+      margin: 0;
+    }
+
+    /* BARRE DE RECHERCHE FIGMA */
+    .figma-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
       flex-wrap: wrap;
     }
-    .filter-search-box input {
+    .figma-input-wrap {
       flex: 1;
-      min-width: 200px;
-      border: 1px solid #E2E8F0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 14px;
-      outline: none;
-      color: #0F172A;
+      min-width: 280px;
+      position: relative;
+      display: flex;
+      background: #F3F4F6;
+      border-radius: 14px;
+      padding: 6px;
     }
-    .filter-search-box select {
-      border: 1px solid #E2E8F0;
-      border-radius: 10px;
+    .figma-input-wrap input {
+      flex: 1;
+      border: none;
+      background: transparent;
       padding: 12px 16px;
-      font-size: 14px;
+      font-size: 15px;
       outline: none;
-      background: #F8FAFC;
-      color: #334155;
-      font-weight: 600;
-      cursor: pointer;
+      color: #111827;
     }
-    .filter-search-box button {
-      background: #EAB308;
-      color: #0F172A;
+    .figma-btn-search {
+      background: #F59E0B; /* Jaune/Orange bouton Figma */
+      color: #000000;
       font-weight: 700;
+      font-size: 15px;
       border: none;
       border-radius: 10px;
       padding: 12px 24px;
       cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    .filter-search-box button:hover {
-      background: #CA8A04;
-    }
-
-    /* GRILLE FOURNISSEURS VÉRIFIÉS FIGMA */
-    .suppliers-container {
-      max-width: 1200px;
-      margin: 0 auto 60px auto;
-      padding: 0 20px;
-    }
-    .suppliers-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 24px;
-    }
-
-    /* CARTE FOURNISSEUR VÉRIFIÉ FIGMA */
-    .supplier-card-figma {
-      background: #FFFFFF;
-      border-radius: 18px;
-      border: 1px solid #E2E8F0;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-    }
-    .supplier-card-figma:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-    }
-    .supplier-card-banner {
-      height: 90px;
-      background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
-      position: relative;
-    }
-    .supplier-card-header {
-      padding: 0 20px;
-      position: relative;
-      margin-top: -36px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-    }
-    .supplier-avatar-img {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 3px solid #FFFFFF;
-      object-fit: cover;
-      background: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .badge-certified-figma {
-      background: #DCFCE7;
-      color: #166534;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid #BBF7D0;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 8px;
+      transition: background 0.2s;
     }
-    .supplier-card-body {
-      padding: 16px 20px 20px 20px;
-      flex: 1;
+    .figma-btn-search:hover {
+      background: #D97706;
+    }
+
+    .figma-select-btn {
+      background: #F3F4F6;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 20px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #111827;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* GRILLE ET CARTES FOURNISSEURS FIGMA */
+    .figma-suppliers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 1024px) {
+      .figma-suppliers-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .figma-suppliers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .figma-supplier-card {
+      background: #F9FAFB;
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
     }
-    .supplier-name-title {
-      font-size: 19px;
-      font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 4px;
+    .figma-supplier-card:hover {
+      transform: translateY(-2px);
     }
-    .supplier-category-tag {
-      font-size: 13px;
-      color: #64748B;
-      font-weight: 600;
-      margin-bottom: 12px;
+
+    .figma-badge-verified {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
     }
-    .supplier-meta-row {
+
+    .figma-card-head {
       display: flex;
       align-items: center;
       gap: 16px;
-      font-size: 13px;
-      color: #475569;
       margin-bottom: 16px;
     }
-    .supplier-meta-row span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
+    .figma-supplier-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    .supplier-description-text {
+    .figma-supplier-info h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #000000;
+      margin: 0 0 4px 0;
+    }
+    .figma-supplier-info p {
       font-size: 13.5px;
-      color: #64748B;
-      line-height: 1.5;
-      margin-bottom: 20px;
-      flex: 1;
-    }
-    .supplier-card-footer {
-      border-top: 1px solid #F1F5F9;
-      padding-top: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .btn-view-shop {
-      background: #0F172A;
-      color: #FFFFFF;
-      font-size: 14px;
-      font-weight: 700;
-      padding: 10px 18px;
-      border-radius: 10px;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.2s;
-      width: 100%;
-      text-align: center;
-    }
-    .btn-view-shop:hover {
-      background: #1E293B;
+      color: #6B7280;
+      margin: 0;
     }
 
-    /* SECTION RÉASSURANCE FIGMA */
-    .trust-section-figma {
-      background: #F8FAFC;
-      border-radius: 24px;
-      padding: 40px 24px;
-      margin-top: 40px;
-      border: 1px solid #E2E8F0;
+    .figma-card-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14px;
+      color: #1F2937;
+      margin-bottom: 24px;
     }
-    .trust-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      margin-top: 24px;
+    .figma-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .trust-card {
-      background: #FFFFFF;
-      padding: 24px;
-      border-radius: 16px;
-      border: 1px solid #E2E8F0;
-      text-align: center;
-    }
-    .trust-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-    .trust-card h3 {
-      font-size: 16px;
+    .figma-detail-row span.star {
+      color: #F59E0B;
       font-weight: 700;
-      color: #0F172A;
-      margin-bottom: 6px;
     }
-    .trust-card p {
-      font-size: 13px;
-      color: #64748B;
-      line-height: 1.4;
+
+    .figma-btn-view-shop {
+      background: #F59E0B; /* Bouton jaune vif de la maquette */
+      color: #000000;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      padding: 12px;
+      border-radius: 24px; /* Bouton pillule arrondi */
+      text-decoration: none;
+      display: block;
+      margin-top: auto;
+      transition: background 0.2s;
+    }
+    .figma-btn-view-shop:hover {
+      background: #D97706;
     }
   </style>
 
@@ -251,7 +235,7 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR NAVBAR FIGMA ORIGINALE -->
   <nav class="navbar" id="navbar">
     <div class="nav-top">
       <a href="index.html" class="logo">Afro<span>Baza</span></a>
@@ -281,66 +265,73 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION FIGMA -->
-  <section class="suppliers-hero">
-    <h1>Fournisseurs <span>Vérifiés</span> AfroBaza</h1>
-    <p>Achetez en toute sérénité auprès des fabricants, grossistes et distributeurs certifiés par l'équipe AfroBaza sur tout le continent.</p>
-    
-    <!-- BARRE DE FILTRES ET RECHERCHE -->
-    <div class="filter-search-box">
-      <input type="text" id="search-supplier-input" placeholder="Rechercher par nom de société ou mot-clé...">
-      <select id="filter-location">
-        <option value="">Tous les pays / villes</option>
-        <option value="Dakar">Dakar (Sénégal)</option>
-        <option value="Abidjan">Abidjan (Côte d'Ivoire)</option>
-        <option value="Bamako">Bamako (Mali)</option>
-        <option value="Cotonou">Cotonou (Bénin)</option>
+  <!-- PAGE CONTENT FIGMA -->
+  <main class="figma-suppliers-page">
+    <h1 class="figma-page-title">Fournisseurs vérifiés</h1>
+
+    <!-- 3 CARRÉS JAUNES MAQUETTE FIGMA -->
+    <div class="figma-three-cards">
+      <div class="figma-yellow-card">
+        <div class="figma-card-icon">👤</div>
+        <div class="figma-card-text">
+          <h3>Vérification d’identité</h3>
+          <p>Fournisseurs authentifiés</p>
+        </div>
+      </div>
+
+      <div class="figma-yellow-card">
+        <div class="figma-card-icon">📄</div>
+        <div class="figma-card-text">
+          <h3>Documents vérifiés</h3>
+          <p>Infos légales contrôlées</p>
+        </div>
+      </div>
+
+      <div class="figma-yellow-card">
+        <div class="figma-card-icon">⭐</div>
+        <div class="figma-card-text">
+          <h3>Avis clients</h3>
+          <p>Noté par les Commerçants</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRE DE RECHERCHE & FILTRES FIGMA -->
+    <div class="figma-search-bar">
+      <div class="figma-input-wrap">
+        <input type="text" id="figma-search-input" placeholder="Rechercher un fournisseur">
+        <button class="figma-btn-search" onclick="filterSuppliers()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Rechercher
+        </button>
+      </div>
+
+      <select class="figma-select-btn" id="figma-cat-filter" onchange="filterSuppliers()">
+        <option value="">Toutes les catégories ∨</option>
+        <option value="cosmétiques">Cosmétiques et beauté</option>
+        <option value="électroniques">Électroniques</option>
+        <option value="maison">Maison et décoration</option>
+        <option value="textiles">Textiles et prêt-à-porter</option>
       </select>
-      <button onclick="filterSuppliers()">Rechercher</button>
-    </div>
-  </section>
 
-  <!-- LISTE DES FOURNISSEURS VÉRIFIÉS FIGMA -->
-  <main class="suppliers-container">
-    <div class="suppliers-grid" id="suppliers-list">
-      <div style="grid-column: 1/-1; text-align:center; padding:50px; color:#64748B;">
-        Chargement des fournisseurs certifiés...
-      </div>
+      <button class="figma-select-btn" onclick="filterSuppliers()">Filtre ∨</button>
     </div>
 
-    <!-- REASSURANCE FIGMA -->
-    <section class="trust-section-figma">
-      <h2 style="text-align:center; font-size:22px; font-weight:800; color:#0F172A; margin:0;">Pourquoi faire confiance aux Fournisseurs Vérifiés ?</h2>
-      <div class="trust-grid">
-        <div class="trust-card">
-          <div class="trust-icon">🛡️</div>
-          <h3>Identité & Registre Vérifiés</h3>
-          <p>Leur registre de commerce, identité et locaux ont été audités par l'équipe AfroBaza.</p>
-        </div>
-        <div class="trust-card">
-          <div class="trust-icon">⚡</div>
-          <h3>Direct Usine & Grossistes</h3>
-          <p>Profitez des meilleurs prix de gros sans intermédiaires inutiles.</p>
-        </div>
-        <div class="trust-card">
-          <div class="trust-icon">🤝</div>
-          <h3>Commandes Accompagnées</h3>
-          <p>Demandes de devis claires et suivi de négociation en direct sur la messagerie.</p>
-        </div>
+    <!-- GRILLE DE CARTES FOURNISSEURS FIGMA -->
+    <div class="figma-suppliers-grid" id="suppliers-list">
+      <div style="grid-column: 1/-1; text-align:center; padding:50px; color:#6B7280;">
+        Chargement des fournisseurs vérifiés...
       </div>
-    </section>
+    </div>
   </main>
 
   <script src="app.js"></script>
   <script>
-    let allSuppliersData = [];
+    let suppliersData = [];
 
     document.addEventListener('DOMContentLoaded', async () => {
       await loadSuppliers();
-
-      // Filtre en temps réel sur la saisie
-      document.getElementById('search-supplier-input').addEventListener('input', filterSuppliers);
-      document.getElementById('filter-location').addEventListener('change', filterSuppliers);
+      document.getElementById('figma-search-input').addEventListener('input', filterSuppliers);
     });
 
     async function loadSuppliers() {
@@ -356,42 +347,45 @@
         const { data: profiles, error } = await client.from('profiles').select('*');
         if (error) throw error;
 
-        allSuppliersData = (profiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+        suppliersData = (profiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
 
-        // Si aucun fournisseur enregistré, injecter des exemples démo fidèles à la maquette Figma
-        if (allSuppliersData.length === 0) {
-          allSuppliersData = [
+        // Données d'exemple réelles et fidèles à la maquette Figma si BDD vide
+        if (suppliersData.length === 0) {
+          suppliersData = [
             {
               id: 'demo-1',
-              company_name: "Ryna's Home & Deco",
-              full_name: "Aminata Gueye",
-              category: "Maison & Décoration",
+              company_name: "Ryn's Home",
+              category: "Cosmétiques et beauté",
               location: "Dakar, Sénégal",
-              avatar_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80",
-              description: "Fabricant et grossiste d'articles de décoration africaine et linge de maison sur-mesure."
+              avatar_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80",
+              rating: "4,5",
+              reviews_count: 23,
+              products_count: 31
             },
             {
               id: 'demo-2',
-              company_name: "Afro Beauty Lab",
-              full_name: "Khadija Ba",
-              category: "Cosmétiques & Beauté",
-              location: "Abidjan, Côte d'Ivoire",
-              avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80",
-              description: "Laboratoire cosmétique spécialisé dans le beurre de karité pur et huiles naturelles certifiées."
+              company_name: "Ryn's Home",
+              category: "Cosmétiques et beauté",
+              location: "Dakar, Sénégal",
+              avatar_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80",
+              rating: "4,5",
+              reviews_count: 23,
+              products_count: 31
             },
             {
               id: 'demo-3',
-              company_name: "Senegal Textile Pro",
-              full_name: "Moussa Diop",
-              category: "Textiles & Prêt-à-porter",
+              company_name: "Ryn's Home",
+              category: "Cosmétiques et beauté",
               location: "Dakar, Sénégal",
-              avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80",
-              description: "Fournisseur de tissus wax authentiques, boubous traditionnels et tenues de travail de haute qualité."
+              avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+              rating: "4,5",
+              reviews_count: 23,
+              products_count: 31
             }
           ];
         }
 
-        renderSuppliers(allSuppliersData);
+        renderSuppliers(suppliersData);
       } catch (err) {
         console.error('Erreur chargement fournisseurs:', err);
         container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Impossible de charger les fournisseurs.</div>';
@@ -402,55 +396,59 @@
       const container = document.getElementById('suppliers-list');
 
       if (list.length === 0) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#64748B;">Aucun fournisseur ne correspond à votre recherche.</div>';
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#6B7280;">Aucun fournisseur trouvé.</div>';
         return;
       }
 
       container.innerHTML = list.map(s => {
-        const name = s.company_name || s.full_name || 'Fournisseur AfroBaza';
-        const category = s.category || 'Grossiste & Distributeur';
-        const location = s.location || 'Dakar, Sénégal';
-        const avatar = s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=300&q=80';
-        const desc = s.description || 'Partenaire certifié par l\'équipe AfroBaza pour des achats en gros fiables et sécurisés.';
+        const name = s.company_name || s.full_name || "Ryn's Home";
+        const cat = s.category || "Cosmétiques et beauté";
+        const loc = s.location || "Dakar, Sénégal";
+        const avatar = s.avatar_url || "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80";
+        const rating = s.rating || "4,5";
+        const reviews = s.reviews_count || 23;
+        const products = s.products_count || 31;
 
         return `
-          <div class="supplier-card-figma">
-            <div class="supplier-card-banner"></div>
-            <div class="supplier-card-header">
-              <img src="${avatar}" alt="${name}" class="supplier-avatar-img">
-              <span class="badge-certified-figma">✓ Vérifié AfroBaza</span>
-            </div>
-            <div class="supplier-card-body">
-              <div class="supplier-name-title">${name}</div>
-              <div class="supplier-category-tag">📦 ${category}</div>
-              <div class="supplier-meta-row">
-                <span>📍 ${location}</span>
-                <span>⭐ 5,0 (Certifié)</span>
-              </div>
-              <div class="supplier-description-text">${desc}</div>
-              <div class="supplier-card-footer">
-                <a href="profil-fournisseur.html?id=${s.id}" class="btn-view-shop">Voir la boutique</a>
+          <div class="figma-supplier-card">
+            <span class="figma-badge-verified">Vérifié</span>
+            <div class="figma-card-head">
+              <img src="${avatar}" alt="${name}" class="figma-supplier-logo">
+              <div class="figma-supplier-info">
+                <h2>${name}</h2>
+                <p>${cat}</p>
               </div>
             </div>
+            <div class="figma-card-details">
+              <div class="figma-detail-row">
+                <span class="star">★ ${rating}</span>
+                <span style="color:#6B7280;">(${reviews} avis)</span>
+              </div>
+              <div class="figma-detail-row">
+                <span>📍 ${loc}</span>
+              </div>
+              <div class="figma-detail-row">
+                <span>📦 ${products} produits</span>
+              </div>
+            </div>
+            <a href="profil-fournisseur.html?id=${s.id}" class="figma-btn-view-shop">Voir la boutique</a>
           </div>
         `;
       }).join('');
     }
 
     function filterSuppliers() {
-      const search = document.getElementById('search-supplier-input').value.toLowerCase().trim();
-      const locFilter = document.getElementById('filter-location').value.toLowerCase().trim();
+      const search = document.getElementById('figma-search-input').value.toLowerCase().trim();
+      const cat = document.getElementById('figma-cat-filter').value.toLowerCase().trim();
 
-      const filtered = allSuppliersData.filter(s => {
+      const filtered = suppliersData.filter(s => {
         const name = (s.company_name || s.full_name || '').toLowerCase();
-        const cat = (s.category || '').toLowerCase();
-        const loc = (s.location || '').toLowerCase();
-        const desc = (s.description || '').toLowerCase();
+        const category = (s.category || '').toLowerCase();
 
-        const matchSearch = !search || name.includes(search) || cat.includes(search) || desc.includes(search);
-        const matchLoc = !locFilter || loc.includes(locFilter);
+        const matchSearch = !search || name.includes(search) || category.includes(search);
+        const matchCat = !cat || category.includes(cat);
 
-        return matchSearch && matchLoc;
+        return matchSearch && matchCat;
       });
 
       renderSuppliers(filtered);
