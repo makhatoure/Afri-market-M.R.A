@@ -367,13 +367,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const navCta = document.getElementById('nav-cta');
   const navActions = document.querySelector('.nav-actions');
 
+  // Détecter si on est sur la page d'accueil
+  const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
+
   if (user) {
     if (navCta) {
       navCta.textContent = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
       navCta.href = 'dashboard.html';
     }
 
-    if (navActions && !document.getElementById('logout-btn-nav')) {
+    // Sur la homepage, le dropdown natif gère déjà la déconnexion — pas de bouton rouge en double
+    if (!isHomePage && navActions && !document.getElementById('logout-btn-nav')) {
       const logoutBtn = document.createElement('button');
       logoutBtn.id = 'logout-btn-nav';
       logoutBtn.className = 'btn-outline';
@@ -390,7 +394,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   loadProducts();
   updateCartBadge();
-  updateMessageBadge();
+  // N'injecte pas l'icône message sur la homepage (navbar déjà complète avec dropdown)
+  if (!isHomePage) {
+    updateMessageBadge();
+  }
 });
 
 
