@@ -231,11 +231,19 @@
       pollInterval = setInterval(loadMessages, 4000);
     }
 
+    const isUUID = (str) => typeof str === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+
     async function loadMessages() {
       if (!activeConvId) return;
       const client = getSupabaseClient();
       const container = document.getElementById("chat-messages");
-      if (!client || !container) return;
+      if (!container) return;
+
+      if (!client || !isUUID(activeConvId)) {
+        container.innerHTML = "<div class='chat-system-msg'>Conversation démo</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Ceci est une conversation d'exemple.</div>";
+        return;
+      }
+
       try {
         const { data: devisData } = await client.from("devis").select("message,created_at,merchant_id").eq("id", activeConvId).single();
         const { data: msgs } = await client.from("messages").select("*").eq("devis_id", activeConvId).order("created_at", { ascending: true });
@@ -272,8 +280,16 @@
       if (!input) return;
       const text = input.value.trim();
       if (!text || !activeConvId) return;
+
       const client = getSupabaseClient();
       if (!client) { showToast("Erreur de connexion", "error"); return; }
+
+      if (!isUUID(activeConvId)) {
+        showToast("✓ Message de démo envoyé !", "success");
+        input.value = "";
+        return;
+      }
+
       input.disabled = true;
       try {
         const { error } = await client.from("messages").insert([{ devis_id: activeConvId, sender_id: currentUser.id, message: text }]);
