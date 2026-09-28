@@ -247,29 +247,54 @@ async function handleSendSupplierMessage(e, options) {
   const client = getSupabaseClient();
   const devisNumber = '#DMD-' + Math.floor(100000 + Math.random() * 900000);
 
+  const devisRecord = {
+    id: 'dmd-' + Date.now(),
+    merchant_id: user.id,
+    supplier_id: options.supplierId || null,
+    devis_number: devisNumber,
+    reference: devisNumber,
+    status: 'pending',
+    total_amount_fcfa: (options.productPrice || 0) * qty,
+    items: [{
+      name: options.productName || 'Prise de contact générale',
+      price: options.productPrice || 0,
+      qty: qty,
+      unit: options.productUnit || 'unité',
+      img: options.productImg || null,
+      supplier: options.supplierName || 'Fournisseur AfroBaza'
+    }],
+    message: msg,
+    delivery_option: delivery,
+    created_at: new Date().toISOString()
+  };
+
   if (client) {
     try {
-      await client.from('devis').insert([{
+      const { data, error } = await client.from('devis').insert([{
         merchant_id: user.id,
         supplier_id: options.supplierId || null,
+        devis_number: devisNumber,
         status: 'pending',
         total_amount_fcfa: (options.productPrice || 0) * qty,
-        items: [{
-          name: options.productName || 'Prise de contact générale',
-          price: options.productPrice || 0,
-          qty: qty,
-          unit: options.productUnit || 'unité',
-          img: options.productImg || null,
-          supplier: options.supplierName || 'Fournisseur AfroBaza'
-        }],
+        items: devisRecord.items,
         message: msg,
         delivery_option: delivery,
         reference: devisNumber
-      }]);
+      }]).select();
+      if (!error && data && data[0]) {
+        devisRecord.id = data[0].id;
+      }
     } catch (err) {
       console.warn('Erreur insertion Supabase devis:', err);
     }
   }
+
+  // Stocker dans le fallback local pour affichage instantané
+  try {
+    const localDevis = JSON.parse(localStorage.getItem('AfroBaza_local_devis') || '[]');
+    localDevis.unshift(devisRecord);
+    localStorage.setItem('AfroBaza_local_devis', JSON.stringify(localDevis));
+  } catch (e) {}
 
   // Show Confirmation UI (matching Confirmation_demande.png)
   const modalContainer = document.querySelector('#contact-supplier-modal > div');
@@ -297,7 +322,7 @@ async function handleSendSupplierMessage(e, options) {
 
         <div style="display:flex;gap:12px;justify-content:center;">
           <button class="btn-outline" onclick="closeContactSupplierModal()" style="padding:12px 20px;">Fermer</button>
-          <a href="messagerie.html" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir la conversation 💬</a>
+          <a href="messagerie.html?devis=${devisRecord.id}" class="btn-primary" style="padding:12px 24px;text-decoration:none;">Voir la conversation 💬</a>
         </div>
       </div>
     `;

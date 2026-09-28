@@ -122,23 +122,43 @@
     async function loadConversations(autoOpenId) {
       const client = getSupabaseClient();
       const convList = document.getElementById("conv-list");
-      if (!client) { convList.innerHTML = "<div class='conv-empty'>Erreur de connexion.</div>"; return; }
-      try {
-        const { data: d1 } = await client.from("devis").select("*").eq("merchant_id", currentUser.id);
-        const { data: d2 } = await client.from("devis").select("*").eq("supplier_id", currentUser.id);
-        const all = [...(d1 || []), ...(d2 || [])];
-        const seen = new Set();
-        allConversations = all.filter(d => { if (seen.has(d.id)) return false; seen.add(d.id); return true; });
-        allConversations.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        renderConvList(allConversations);
-        if (autoOpenId) {
-          const t = allConversations.find(d => d.id === autoOpenId);
-          if (t) openConversation(t);
-        } else if (allConversations.length > 0) {
-          openConversation(allConversations[0]);
+      let all = [];
+
+      // 1. Lire depuis Supabase
+      if (client) {
+        try {
+          const { data: d1 } = await client.from("devis").select("*").eq("merchant_id", currentUser.id);
+          const { data: d2 } = await client.from("devis").select("*").eq("supplier_id", currentUser.id);
+          all = [...(d1 || []), ...(d2 || [])];
+        } catch (err) {
+          console.warn("Chargement conversations Supabase:", err);
         }
-      } catch (err) {
-        convList.innerHTML = "<div class='conv-empty'>Impossible de charger les conversations.</div>";
+      }
+
+      // 2. Fusionner avec le stockage local (demandes envoyées en mode démo ou sans connexion BDD)
+      try {
+        const localDevis = JSON.parse(localStorage.getItem('AfroBaza_local_devis') || '[]');
+        const userLocals = localDevis.filter(d => d.merchant_id === currentUser.id || d.supplier_id === currentUser.id);
+        all = [...all, ...userLocals];
+      } catch (e) {}
+
+      const seen = new Set();
+      allConversations = all.filter(d => { 
+        const key = d.id || d.devis_number;
+        if (seen.has(key)) return false; 
+        seen.add(key); 
+        return true; 
+      });
+      allConversations.sort((a, b) => new Date(b.created_at || Date.now()) - new Date(a.created_at || Date.now()));
+
+      renderConvList(allConversations);
+
+      if (autoOpenId) {
+        const t = allConversations.find(d => d.id === autoOpenId || d.devis_number === autoOpenId);
+        if (t) openConversation(t);
+        else if (allConversations.length > 0) openConversation(allConversations[0]);
+      } else if (allConversations.length > 0) {
+        openConversation(allConversations[0]);
       }
     }
 
