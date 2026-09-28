@@ -376,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
       navCta.href = 'dashboard.html';
     }
 
-    // Sur la homepage, le dropdown natif gère déjà la déconnexion — pas de bouton rouge en double
     if (!isHomePage && navActions && !document.getElementById('logout-btn-nav')) {
       const logoutBtn = document.createElement('button');
       logoutBtn.id = 'logout-btn-nav';
@@ -390,12 +389,29 @@ document.addEventListener('DOMContentLoaded', () => {
       logoutBtn.onclick = logoutUser;
       navActions.appendChild(logoutBtn);
     }
+  } else {
+    // UTILISATEUR DÉCONNECTÉ : Masquer les icônes réservées au compte connecté
+    const msgBtn = document.getElementById('nav-msg-btn');
+    if (msgBtn) msgBtn.style.display = 'none';
+
+    const notifBtn = document.querySelector('.nav-actions a[href="notifications.html"], .nav-actions button[aria-label="Notifications"]');
+    if (notifBtn) notifBtn.style.display = 'none';
+
+    const userMenu = document.querySelector('.user-menu-wrapper, .nav-actions a[href="dashboard.html"]');
+    if (userMenu) userMenu.style.display = 'none';
+
+    const logoutNav = document.getElementById('logout-btn-nav');
+    if (logoutNav) logoutNav.remove();
+
+    if (navCta) {
+      navCta.textContent = "S'inscrire";
+      navCta.href = 'inscription.html';
+    }
   }
   
   loadProducts();
   updateCartBadge();
-  // N'injecte pas l'icône message sur la homepage (navbar déjà complète avec dropdown)
-  if (!isHomePage) {
+  if (!isHomePage && user) {
     updateMessageBadge();
   }
 });
