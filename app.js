@@ -248,7 +248,6 @@ async function handleSendSupplierMessage(e, options) {
   const devisNumber = '#DMD-' + Math.floor(100000 + Math.random() * 900000);
 
   const devisRecord = {
-    id: 'dmd-' + Date.now(),
     merchant_id: user.id,
     supplier_id: options.supplierId || null,
     devis_number: devisNumber,
