@@ -428,7 +428,8 @@
       } else if (activeTab === 'refuses') {
         filtered = userDevis.filter(d => d.status === 'refuses' || d.status === 'refused');
       } else {
-        filtered = userDevis.filter(d => d.status === 'recus' || d.status === 'received' || !d.status);
+        // Pour l'onglet Reçus, afficher tous les devis actifs / reçus par défaut
+        filtered = userDevis.filter(d => d.status === 'recus' || d.status === 'received' || d.status === 'pending' || !d.status);
       }
 
       if (filtered.length === 0) {
