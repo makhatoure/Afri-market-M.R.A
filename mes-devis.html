@@ -445,6 +445,7 @@
         return;
       }
 
+      container.innerHTML = filtered.map(d => {
         const isAccepted = d.status === 'acceptes' || d.status === 'accepted';
         const isRefused = d.status === 'refuses' || d.status === 'refused';
         const isPending = !isAccepted && !isRefused;
