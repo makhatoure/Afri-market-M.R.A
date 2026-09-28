@@ -419,6 +419,8 @@
 
     function renderDevisCards() {
       const container = document.getElementById('devis-cards-list');
+      const user = getCurrentUser();
+      const isSupplier = user && user.role === 'fournisseur';
       let filtered = userDevis;
 
       if (activeTab === 'envoyes') {
@@ -443,35 +445,58 @@
         return;
       }
 
-      container.innerHTML = filtered.map(d => `
-        <div class="devis-card">
-          <div class="devis-card-left">
-            <div class="devis-ref-box">
-              <div class="devis-ref-code">${d.devis_number}</div>
-              <div class="devis-ref-date">${d.date}</div>
-            </div>
-            <div class="devis-supplier-box">
-              <img src="${d.supplier_logo}" alt="Logo" class="devis-supplier-logo">
-              <div>
-                <div class="devis-supplier-name">${d.supplier_name}</div>
-                <div class="devis-supplier-cat">${d.supplier_cat}</div>
-                <div class="devis-supplier-loc">📍 ${d.supplier_loc}</div>
-              </div>
-            </div>
-          </div>
+      container.innerHTML = filtered.map(d => {
+        let statusBadgeHtml = '';
+        if (d.status === 'acceptes' || d.status === 'accepted') {
+          statusBadgeHtml = `<span style="background:#DCFCE7;color:#15803D;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;">✓ Devis Accepté</span>`;
+        } else if (d.status === 'refuses' || d.status === 'refused') {
+          statusBadgeHtml = `<span style="background:#FEE2E2;color:#B91C1C;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;">✕ Devis Refusé</span>`;
+        } else {
+          statusBadgeHtml = `<span style="background:#FEF3C7;color:#B45309;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;">⏳ En attente de décision</span>`;
+        }
 
-          <div class="devis-card-center">
-            <div class="devis-items-count">${d.items_count} Produits</div>
-            <div class="devis-total-price">${Number(d.total_amount).toLocaleString('fr-FR')} FCFA</div>
-          </div>
-
-          <div class="devis-card-actions">
+        const actionsHtml = isSupplier 
+          ? `
+            <div style="display:flex;align-items:center;gap:12px;">
+              ${statusBadgeHtml}
+              <button class="btn-action-yellow" onclick="openChatModal('${d.id}', '${d.devis_number}')">Voir le devis</button>
+            </div>
+          `
+          : `
+            ${d.status === 'acceptes' || d.status === 'accepted' || d.status === 'refuses' || d.status === 'refused' ? statusBadgeHtml : ''}
             <button class="btn-action-green" onclick="updateStatus('${d.id}', 'acceptes')">Accepter le devis</button>
             <button class="btn-action-red" onclick="updateStatus('${d.id}', 'refuses')">Refuser le devis</button>
             <button class="btn-action-yellow" onclick="openChatModal('${d.id}', '${d.devis_number}')">Voir le devis</button>
+          `;
+
+        return `
+          <div class="devis-card">
+            <div class="devis-card-left">
+              <div class="devis-ref-box">
+                <div class="devis-ref-code">${d.devis_number}</div>
+                <div class="devis-ref-date">${d.date}</div>
+              </div>
+              <div class="devis-supplier-box">
+                <img src="${d.supplier_logo}" alt="Logo" class="devis-supplier-logo">
+                <div>
+                  <div class="devis-supplier-name">${d.supplier_name}</div>
+                  <div class="devis-supplier-cat">${d.supplier_cat}</div>
+                  <div class="devis-supplier-loc">📍 ${d.supplier_loc}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="devis-card-center">
+              <div class="devis-items-count">${d.items_count} Produits</div>
+              <div class="devis-total-price">${Number(d.total_amount).toLocaleString('fr-FR')} FCFA</div>
+            </div>
+
+            <div class="devis-card-actions">
+              ${actionsHtml}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     async function updateStatus(devisId, newStatus) {
