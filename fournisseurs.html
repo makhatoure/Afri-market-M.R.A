@@ -355,58 +355,59 @@
       const container = document.getElementById('suppliers-list');
       const client = getSupabaseClient();
 
-      if (!client) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Erreur de connexion aux fournisseurs.</div>';
-        return;
-      }
+      let fetchedFromDb = false;
 
-      try {
-        const { data: profiles, error } = await client.from('profiles').select('*');
-        if (error) throw error;
-
-        suppliersData = (profiles || []).filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
-
-        // Données d'exemple réelles et fidèles à la maquette Figma si BDD vide
-        if (suppliersData.length === 0) {
-          suppliersData = [
-            {
-              id: 'demo-1',
-              company_name: "Ryn's Home",
-              category: "Cosmétiques et beauté",
-              location: "Dakar, Sénégal",
-              avatar_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80",
-              rating: "4,5",
-              reviews_count: 23,
-              products_count: 31
-            },
-            {
-              id: 'demo-2',
-              company_name: "Ryn's Home",
-              category: "Cosmétiques et beauté",
-              location: "Dakar, Sénégal",
-              avatar_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80",
-              rating: "4,5",
-              reviews_count: 23,
-              products_count: 31
-            },
-            {
-              id: 'demo-3',
-              company_name: "Ryn's Home",
-              category: "Cosmétiques et beauté",
-              location: "Dakar, Sénégal",
-              avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
-              rating: "4,5",
-              reviews_count: 23,
-              products_count: 31
+      if (client) {
+        try {
+          const { data: profiles, error } = await client.from('profiles').select('*');
+          if (!error && profiles && profiles.length > 0) {
+            const filtered = profiles.filter(p => p.role && String(p.role).toLowerCase() === 'fournisseur');
+            if (filtered.length > 0) {
+              suppliersData = filtered;
+              fetchedFromDb = true;
             }
-          ];
+          }
+        } catch (err) {
+          console.warn('Supabase query error, fallback to demo data:', err);
         }
-
-        renderSuppliers(suppliersData);
-      } catch (err) {
-        console.error('Erreur chargement fournisseurs:', err);
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">Impossible de charger les fournisseurs.</div>';
       }
+
+      if (!fetchedFromDb) {
+        suppliersData = [
+          {
+            id: 'demo-1',
+            company_name: "Ryn's Home",
+            category: "Cosmétiques et beauté",
+            location: "Dakar, Sénégal",
+            avatar_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80",
+            rating: "4,5",
+            reviews_count: 23,
+            products_count: 31
+          },
+          {
+            id: 'demo-2',
+            company_name: "Ryn's Home",
+            category: "Cosmétiques et beauté",
+            location: "Dakar, Sénégal",
+            avatar_url: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80",
+            rating: "4,5",
+            reviews_count: 23,
+            products_count: 31
+          },
+          {
+            id: 'demo-3',
+            company_name: "Ryn's Home",
+            category: "Cosmétiques et beauté",
+            location: "Dakar, Sénégal",
+            avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+            rating: "4,5",
+            reviews_count: 23,
+            products_count: 31
+          }
+        ];
+      }
+
+      renderSuppliers(suppliersData);
     }
 
     function renderSuppliers(list) {
