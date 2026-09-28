@@ -268,35 +268,59 @@
     </div>
   </nav>
 
-  <!-- PAGE PRINCIPALE PLEINE LARGEUR — COMME FIGMA (sans sidebar) -->
-  <main style="max-width:1100px;margin:0 auto;padding:40px 32px 80px;">
-    <h1 style="font-size:32px;font-weight:800;color:#0F172A;margin-bottom:6px;">Mes devis</h1>
-    <p style="font-size:16px;color:#64748B;margin-bottom:32px;">Retrouvez ici toutes vos demandes de devis</p>
+  <!-- LAYOUT AVEC BARRE GAUCHE (sidebar) + CONTENU PRINCIPAL -->
+  <div class="account-layout">
+    <aside class="account-sidebar">
+      <div class="user-avatar-wrap">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80" alt="Avatar" class="user-avatar">
+        <div style="font-weight:700;" id="sidebar-user-name">Chargement...</div>
+        <div style="font-size:12px;color:var(--gray);text-transform:capitalize;" id="sidebar-user-role">...</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tableau de bord
+        </a>
+        <a href="messagerie.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Messagerie
+        </a>
+        <a href="mes-devis.html" class="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Mes devis
+        </a>
+      </nav>
+    </aside>
 
-    <!-- BARRE DE TABS STYLE FIGMA — conteneur bordé arrondi, onglet actif en jaune -->
-    <div class="devis-tabs-pill-bar" id="devis-tabs">
-      <button class="devis-tab-pill active" onclick="switchTab('recus', this)">
-        Reçus <span id="count-recus">(1)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('envoyes', this)">
-        Envoyés <span id="count-envoyes">(1)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('revision', this)">
-        En révision <span id="count-revision">(0)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('acceptes', this)">
-        Acceptés <span id="count-acceptes">(0)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('refuses', this)">
-        Refusés <span id="count-refuses">(0)</span>
-      </button>
-    </div>
+    <main class="account-content">
+      <h1 style="font-size:28px;font-weight:800;color:#0F172A;margin-bottom:4px;">Mes devis</h1>
+      <p style="font-size:15px;color:#64748B;margin-bottom:28px;">Retrouvez ici toutes vos demandes de devis</p>
 
-    <!-- LISTE DES CARTES DE DEVIS -->
-    <div id="devis-cards-list">
-      <!-- Rendu dynamique par JS -->
-    </div>
-  </main>
+      <!-- BARRE DE TABS STYLE FIGMA — conteneur bordé arrondi, onglet actif en jaune -->
+      <div class="devis-tabs-pill-bar" id="devis-tabs">
+        <button class="devis-tab-pill active" onclick="switchTab('recus', this)">
+          Reçus <span id="count-recus">(1)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('envoyes', this)">
+          Envoyés <span id="count-envoyes">(1)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('revision', this)">
+          En révision <span id="count-revision">(0)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('acceptes', this)">
+          Acceptés <span id="count-acceptes">(0)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('refuses', this)">
+          Refusés <span id="count-refuses">(0)</span>
+        </button>
+      </div>
+
+      <!-- LISTE DES CARTES DE DEVIS -->
+      <div id="devis-cards-list">
+        <!-- Rendu dynamique par JS -->
+      </div>
+    </main>
+  </div>
 
   <!-- MODAL DE DISCUSSION / NÉGOCIATION DEVIS -->
   <div id="chat-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
