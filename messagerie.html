@@ -239,40 +239,58 @@
       const container = document.getElementById("chat-messages");
       if (!container) return;
 
-      if (!client || !isUUID(activeConvId)) {
-        container.innerHTML = "<div class='chat-system-msg'>Conversation démo</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Ceci est une conversation d'exemple.</div>";
+      let allMsgs = [];
+      const currentConv = allConversations.find(c => c.id === activeConvId || c.devis_number === activeConvId);
+
+      if (client && isUUID(activeConvId)) {
+        try {
+          const { data: devisData } = await client.from("devis").select("message,created_at,merchant_id").eq("id", activeConvId).single();
+          const { data: msgs } = await client.from("messages").select("*").eq("devis_id", activeConvId).order("created_at", { ascending: true });
+          if (devisData && devisData.message) {
+            allMsgs.push({ sender_id: devisData.merchant_id, message: devisData.message, created_at: devisData.created_at, isInitial: true });
+          }
+          (msgs || []).forEach(m => allMsgs.push(m));
+        } catch (err) {
+          console.warn("Erreur chargement Supabase messages:", err);
+        }
+      }
+
+      // Si pas de messages Supabase (ou mode démo / ID local), charger le message initial + messages enregistrés localement
+      if (allMsgs.length === 0 && currentConv) {
+        if (currentConv.message) {
+          allMsgs.push({
+            sender_id: currentConv.merchant_id || currentUser.id,
+            message: currentConv.message,
+            created_at: currentConv.created_at || new Date().toISOString(),
+            isInitial: true
+          });
+        }
+        try {
+          const localMsgs = JSON.parse(localStorage.getItem('AfroBaza_local_msgs_' + activeConvId) || '[]');
+          localMsgs.forEach(m => allMsgs.push(m));
+        } catch (e) {}
+      }
+
+      if (!allMsgs.length) {
+        container.innerHTML = "<div class='chat-system-msg'>Conversation démarrée</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Aucun message pour l'instant.<br>Commencez la discussion ci-dessous.</div>";
         return;
       }
 
-      try {
-        const { data: devisData } = await client.from("devis").select("message,created_at,merchant_id").eq("id", activeConvId).single();
-        const { data: msgs } = await client.from("messages").select("*").eq("devis_id", activeConvId).order("created_at", { ascending: true });
-        const allMsgs = [];
-        if (devisData && devisData.message) {
-          allMsgs.push({ sender_id: devisData.merchant_id, message: devisData.message, created_at: devisData.created_at, isInitial: true });
-        }
-        (msgs || []).forEach(m => allMsgs.push(m));
-
-        if (!allMsgs.length) {
-          container.innerHTML = "<div class='chat-system-msg'>Conversation démarrée</div><div style='text-align:center;color:#94a3b8;font-size:13px;padding:30px;'>Aucun message pour l'instant.<br>Commencez la discussion ci-dessous.</div>";
-          return;
-        }
-        const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 10;
-        container.innerHTML = "<div class='chat-system-msg'>Début de la conversation</div>" +
-          allMsgs.map(m => {
-            const isMe = m.sender_id === currentUser.id;
-            const timeStr = new Date(m.created_at).toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
-            const dateStr = new Date(m.created_at).toLocaleDateString("fr-FR", { day:"numeric", month:"short" });
-            return "<div class='msg-bubble-wrap " + (isMe ? "me" : "them") + "'><div>" +
-              (!isMe ? "<div class='msg-sender-name'>" + (m.isInitial ? "Message initial" : "Interlocuteur") + "</div>" : "") +
-              "<div class='msg-bubble'>" +
-              (m.isInitial ? "<em style='font-size:11px;opacity:0.8;'>Message initial :</em><br>" : "") +
-              m.message +
-              "<div class='msg-time'>" + dateStr + " " + timeStr + "</div>" +
-              "</div></div></div>";
-          }).join("");
-        if (wasAtBottom) container.scrollTop = container.scrollHeight;
-      } catch (err) { console.error("Erreur chargement messages:", err); }
+      const wasAtBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 10;
+      container.innerHTML = "<div class='chat-system-msg'>Début de la conversation</div>" +
+        allMsgs.map(m => {
+          const isMe = m.sender_id === currentUser.id;
+          const timeStr = new Date(m.created_at || Date.now()).toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
+          const dateStr = new Date(m.created_at || Date.now()).toLocaleDateString("fr-FR", { day:"numeric", month:"short" });
+          return "<div class='msg-bubble-wrap " + (isMe ? "me" : "them") + "'><div>" +
+            (!isMe ? "<div class='msg-sender-name'>" + (m.isInitial ? "Message initial" : "Interlocuteur") + "</div>" : "") +
+            "<div class='msg-bubble'>" +
+            (m.isInitial ? "<em style='font-size:11px;opacity:0.8;'>Message initial :</em><br>" : "") +
+            m.message +
+            "<div class='msg-time'>" + dateStr + " " + timeStr + "</div>" +
+            "</div></div></div>";
+        }).join("");
+      if (wasAtBottom) container.scrollTop = container.scrollHeight;
     }
 
     async function sendMessage() {
@@ -285,8 +303,18 @@
       if (!client) { showToast("Erreur de connexion", "error"); return; }
 
       if (!isUUID(activeConvId)) {
-        showToast("✓ Message de démo envoyé !", "success");
+        try {
+          const localMsgs = JSON.parse(localStorage.getItem('AfroBaza_local_msgs_' + activeConvId) || '[]');
+          localMsgs.push({
+            sender_id: currentUser.id,
+            message: text,
+            created_at: new Date().toISOString()
+          });
+          localStorage.setItem('AfroBaza_local_msgs_' + activeConvId, JSON.stringify(localMsgs));
+        } catch (e) {}
         input.value = "";
+        input.style.height = "auto";
+        await loadMessages();
         return;
       }
 
