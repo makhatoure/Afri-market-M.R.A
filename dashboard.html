@@ -72,7 +72,7 @@
       background: #EFEFEF;
     }
     .dash-nav-item.active {
-      color: #F5A623;
+      color: #EAB308;
       font-weight: 700;
       background: #FFF8E7;
     }
@@ -84,7 +84,7 @@
       stroke-width: 2;
     }
     .dash-nav-item.active svg {
-      stroke: #F5A623;
+      stroke: #EAB308;
     }
 
     /* CONTENU PRINCIPAL FIGMA */
@@ -142,7 +142,7 @@
       transition: color 0.2s;
     }
     .stat-link:hover {
-      color: #F5A623;
+      color: #EAB308;
     }
 
     /* COLONNES ACTIVITÉ ET FOURNISSEURS FIGMA */
@@ -196,7 +196,7 @@
     }
     .act-badge.badge-confirmed { color: #2E7D32; }
     .act-badge.badge-accepted { color: #2E7D32; }
-    .act-badge.badge-sent { color: #F5A623; }
+    .act-badge.badge-sent { color: #EAB308; }
 
     /* PANNEAU FOURNISSEURS POPULAIRES FIGMA */
     .popular-panel {
@@ -238,7 +238,7 @@
       gap: 4px;
       font-size: 13px;
       font-weight: 700;
-      color: #F5A623;
+      color: #EAB308;
     }
   </style>
 </head>
@@ -282,7 +282,7 @@
       <div class="user-profile-wrap">
         <div style="position:relative;display:inline-block;cursor:pointer;" title="Cliquer pour changer la photo de profil" onclick="document.getElementById('avatar-file-input').click()">
           <img src="figma_images_raw/Ellipse_18_4c775b61.png" alt="Avatar Utilisateur" class="user-avatar-img" id="dash-user-avatar">
-          <div style="position:absolute;bottom:6px;right:0;background:#F5A623;color:#000;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.2);border:2px solid #fff;">
+          <div style="position:absolute;bottom:6px;right:0;background:#EAB308;color:#000;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.2);border:2px solid #fff;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </div>
           <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarChange(event)">
@@ -465,7 +465,7 @@
             <!-- ZONE IMAGE PRODUIT SOIGNÉE FIGMA -->
             <div style="margin-bottom:20px;">
               <label style="display:block;font-size:14px;font-weight:700;color:#111;margin-bottom:8px;">Photo officielle du produit *</label>
-              <div onclick="document.getElementById('prod-img').click()" style="border:2px dashed #F5A623;border-radius:12px;padding:28px;text-align:center;background:#FFFDF7;cursor:pointer;transition:background 0.2s;" id="img-drop-zone">
+              <div onclick="document.getElementById('prod-img').click()" style="border:2px dashed #EAB308;border-radius:12px;padding:28px;text-align:center;background:#FFFDF7;cursor:pointer;transition:background 0.2s;" id="img-drop-zone">
                 <input type="file" id="prod-img" accept="image/*" style="display:none;" onchange="previewImage(event)">
                 <img id="img-preview" src="" alt="Aperçu produit" style="display:none;max-height:180px;max-width:100%;border-radius:10px;margin:0 auto 12px auto;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
                 <div id="img-placeholder">
@@ -484,7 +484,7 @@
             </div>
 
             <div style="display:flex;justify-content:flex-end;gap:14px;">
-              <button type="submit" id="add-prod-btn" style="background:#F5A623;color:#000000;border:none;padding:14px 32px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 3px 10px rgba(245,166,35,0.3);">
+              <button type="submit" id="add-prod-btn" style="background:#EAB308;color:#000000;border:none;padding:14px 32px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 3px 10px rgba(245,166,35,0.3);">
                 Publier le produit dans le catalogue
               </button>
             </div>
