@@ -347,8 +347,10 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const user = getCurrentUser();
       if (user) {
-        document.getElementById('sidebar-user-name').textContent = user.name || user.email.split('@')[0];
-        document.getElementById('sidebar-user-role').textContent = user.role || 'Commerçant';
+        const nameEl = document.getElementById('sidebar-user-name');
+        if (nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
+        const roleEl = document.getElementById('sidebar-user-role');
+        if (roleEl) roleEl.textContent = user.role || 'Commerçant';
       }
 
       // Supabase dynamic load if available
@@ -368,7 +370,7 @@
               supplier_logo: d.supplier_logo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80",
               items_count: d.items_count || 3,
               total_amount: d.total_amount_fcfa || 70000,
-              status: d.status || "recus",
+              status: (d.status === 'sent' || d.status === 'pending' || !d.status) ? "recus" : d.status,
               created_at: d.created_at
             }));
           }
