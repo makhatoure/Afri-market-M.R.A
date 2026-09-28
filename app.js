@@ -390,12 +390,21 @@ document.addEventListener('DOMContentLoaded', () => {
       navActions.appendChild(logoutBtn);
     }
   } else {
-    // UTILISATEUR DÉCONNECTÉ : Masquer les icônes réservées au compte connecté
+    // UTILISATEUR DÉCONNECTÉ : Masquer les icônes (loupe, messagerie, panier, notifs, cœur, menu compte)
+    const searchBtn = document.getElementById('search-toggle-btn') || document.querySelector('.nav-actions a[href="recherche.html"]');
+    if (searchBtn) searchBtn.style.display = 'none';
+
     const msgBtn = document.getElementById('nav-msg-btn');
     if (msgBtn) msgBtn.style.display = 'none';
 
+    const panierBtn = document.querySelector('.nav-actions a[href="panier.html"]');
+    if (panierBtn) panierBtn.style.display = 'none';
+
     const notifBtn = document.querySelector('.nav-actions a[href="notifications.html"], .nav-actions button[aria-label="Notifications"]');
     if (notifBtn) notifBtn.style.display = 'none';
+
+    const favorisBtn = document.querySelector('.nav-actions a[href="favoris.html"], .nav-actions button[aria-label="Favoris"]');
+    if (favorisBtn) favorisBtn.style.display = 'none';
 
     const userMenu = document.querySelector('.user-menu-wrapper, .nav-actions a[href="dashboard.html"]');
     if (userMenu) userMenu.style.display = 'none';
