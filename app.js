@@ -397,23 +397,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
 
   if (user) {
+    // UTILISATEUR CONNECTÉ : Masquer le bouton "Mon espace" / "S'inscrire"
     if (navCta) {
-      navCta.textContent = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
-      navCta.href = 'dashboard.html';
+      navCta.style.display = 'none';
     }
 
-    if (!isHomePage && navActions && !document.getElementById('logout-btn-nav')) {
-      const logoutBtn = document.createElement('button');
-      logoutBtn.id = 'logout-btn-nav';
-      logoutBtn.className = 'btn-outline';
-      logoutBtn.style.borderColor = '#ef4444';
-      logoutBtn.style.color = '#ef4444';
-      logoutBtn.style.padding = '8px 14px';
-      logoutBtn.style.fontSize = '13px';
-      logoutBtn.style.cursor = 'pointer';
-      logoutBtn.textContent = 'Déconnexion 🚪';
-      logoutBtn.onclick = logoutUser;
-      navActions.appendChild(logoutBtn);
+    // Rendre l'icône de profil (tête) cliquable pour aller vers dashboard.html
+    const userMenuBtn = document.getElementById('user-menu-btn');
+    if (userMenuBtn) {
+      userMenuBtn.title = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
+      userMenuBtn.onclick = (e) => {
+        // Redirection directe vers le tableau de bord
+        window.location.href = 'dashboard.html';
+      };
     }
   } else {
     // UTILISATEUR DÉCONNECTÉ : Masquer les icônes (loupe, messagerie, panier, notifs, cœur, menu compte)
