@@ -660,25 +660,38 @@
 
     async function loadDynamicPopularSuppliers(client) {
       const container = document.getElementById('dash-popular-suppliers');
-      if (!container || !client) return;
+      if (!container) return;
 
-      try {
-        const { data: suppliers } = await client.from('profiles').select('*').eq('role', 'fournisseur').limit(4);
-        if (!suppliers || suppliers.length === 0) {
-          container.innerHTML = '<div style="padding:20px;text-align:center;color:#888;font-size:13px;">Aucun partenaire pour le moment.</div>';
-          return;
+      let list = [];
+
+      if (client) {
+        try {
+          const { data: suppliers } = await client.from('profiles').select('*').eq('role', 'fournisseur').limit(4);
+          if (suppliers && suppliers.length > 0) {
+            list = suppliers;
+          }
+        } catch (err) {
+          console.warn('Erreur chargement fournisseurs populaires:', err);
         }
-
-        container.innerHTML = suppliers.map(s => {
-          const name = s.company_name || s.full_name || 'Partenaire AfroBaza';
-          const avatar = s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80';
-          const category = s.category || 'Partenaire Vérifié AfroBaza';
-
-          return '<div class="popular-supplier-item" onclick="window.location.href=\'profil-fournisseur.html?id=' + s.id + '\'" style="cursor:pointer;"><img src="' + avatar + '" alt="' + name + '" class="popular-supplier-logo"><div class="popular-supplier-info"><div class="popular-supplier-name">' + name + '</div><div class="popular-supplier-cat">' + category + '</div></div><div class="popular-supplier-rating">★ 5,0</div></div>';
-        }).join('');
-      } catch (err) {
-        console.warn('Erreur chargement fournisseurs populaires:', err);
       }
+
+      if (list.length === 0) {
+        list = [
+          { id: 'demo-1', company_name: "Ryn's Home SARL", category: "Cosmétiques et beauté", avatar_url: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80", rating: "4,8" },
+          { id: 'demo-2', company_name: "Sahel Électroniques", category: "Électroniques", avatar_url: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&q=80", rating: "4,6" },
+          { id: 'demo-3', company_name: "Dakar Textile Import", category: "Textiles et prêt-à-porter", avatar_url: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=200&q=80", rating: "4,9" },
+          { id: 'demo-4', company_name: "AfroDéco & Maison", category: "Maison et décoration", avatar_url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&q=80", rating: "4,7" }
+        ];
+      }
+
+      container.innerHTML = list.map(s => {
+        const name = s.company_name || s.full_name || 'Partenaire AfroBaza';
+        const avatar = s.avatar_url || 'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&q=80';
+        const category = s.category || 'Partenaire Vérifié AfroBaza';
+        const rating = s.rating || '4,8';
+
+        return '<div class="popular-supplier-item" onclick="window.location.href=\'profil-fournisseur.html?id=' + s.id + '\'" style="cursor:pointer;"><img src="' + avatar + '" alt="' + name + '" class="popular-supplier-logo"><div class="popular-supplier-info"><div class="popular-supplier-name">' + name + '</div><div class="popular-supplier-cat">' + category + '</div></div><div class="popular-supplier-rating">★ ' + rating + '</div></div>';
+      }).join('');
     }
 
     async function handleAddProduct(e) {
