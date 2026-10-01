@@ -397,19 +397,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
 
   if (user) {
-    // UTILISATEUR CONNECTÉ : Masquer le bouton "Mon espace" / "S'inscrire"
+    // UTILISATEUR CONNECTÉ : Masquer le bouton textuel "s'inscrire / mon espace"
     if (navCta) {
       navCta.style.display = 'none';
     }
 
-    // Rendre l'icône de profil (tête) cliquable pour aller vers dashboard.html
+    // Masquer les autres icônes répétitives à côté (recherche, notifications, favoris) si souhaité sur la navbar d'accueil
+    const notifBtn = document.querySelector('.nav-actions button[aria-label="Notifications"]');
+    if (notifBtn) notifBtn.style.display = 'none';
+
+    const favorisBtn = document.querySelector('.nav-actions button[aria-label="Favoris"]');
+    if (favorisBtn) favorisBtn.style.display = 'none';
+
+    // Configurer le menu déroulant sur l'icône de profil (tête)
     const userMenuBtn = document.getElementById('user-menu-btn');
-    if (userMenuBtn) {
-      userMenuBtn.title = 'Mon espace (' + (user.name || user.email.split('@')[0]) + ')';
+    const userDropdown = document.getElementById('user-dropdown');
+    const userDropdownName = document.getElementById('user-dropdown-name');
+
+    if (userDropdownName) {
+      userDropdownName.textContent = user.name || user.email;
+    }
+
+    if (userMenuBtn && userDropdown) {
       userMenuBtn.onclick = (e) => {
-        // Redirection directe vers le tableau de bord
-        window.location.href = 'dashboard.html';
+        e.stopPropagation();
+        userDropdown.classList.toggle('open');
       };
+
+      document.addEventListener('click', (e) => {
+        if (!userDropdown.contains(e.target) && !userMenuBtn.contains(e.target)) {
+          userDropdown.classList.remove('open');
+        }
+      });
     }
   } else {
     // UTILISATEUR DÉCONNECTÉ : Masquer les icônes (loupe, messagerie, panier, notifs, cœur, menu compte)
