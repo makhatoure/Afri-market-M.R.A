@@ -8,6 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kaushan+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    body{background:#FAFAFA;margin:0;font-family:'Inter',sans-serif;color:#111}
+    .dash-layout{display:flex;min-height:calc(100vh - 70px);max-width:1440px;margin:0 auto;background:#FFF}
+    .dash-sidebar{width:240px;background:#F8F9FA;border-right:1px solid #EFEFEF;padding:32px 20px;flex-shrink:0}
+    .user-profile-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:36px;text-align:center}
+    .user-avatar-img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:2px solid #EFEFEF}
+    .dash-nav{display:flex;flex-direction:column;gap:6px}
+    .dash-nav-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;color:#222}
+    .dash-nav-item:hover{background:#EFEFEF}
+    .dash-nav-item.active{color:#CA8A04;font-weight:700;background:#FEF9C3}
+    .dash-nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+    .dash-nav-item.active svg{stroke:#EAB308}
+
+    .dash-content{flex:1;padding:36px 40px}
+    .dash-header h1{font-size:26px;font-weight:800;margin:0 0 6px 0;color:#000}
+    .dash-header p{font-size:15px;color:#555;margin:0 0 28px 0}
+
     /* Custom Styling for Figma-matched Mes Devis */
     .devis-tabs-container {
       display: flex;
