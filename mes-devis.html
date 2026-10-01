@@ -272,35 +272,61 @@
     </div>
   </nav>
 
-  <!-- PAGE PRINCIPALE PLEINE LARGEUR — DESIGN EXACT MAQUETTE FIGMA -->
-  <main style="max-width:1140px;margin:0 auto;padding:40px 24px 80px;">
-    <h1 style="font-size:36px;font-weight:800;color:#0F172A;margin-bottom:6px;letter-spacing:-0.5px;">Mes devis</h1>
-    <p style="font-size:18px;color:#475569;margin-bottom:32px;font-weight:500;">Retrouvez ici toutes vos demandes de devis</p>
+  <div class="dash-layout">
+    <aside class="dash-sidebar">
+      <div class="user-profile-wrap">
+        <div style="position:relative;display:inline-block;cursor:pointer;" onclick="document.getElementById('avatar-file-input').click()">
+          <img src="figma_images_raw/Ellipse_18_4c775b61.png" alt="Avatar" class="user-avatar-img" id="dash-user-avatar">
+          <div style="position:absolute;bottom:6px;right:0;background:#EAB308;color:#000;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" onchange="handleAvatarChange(event)">
+        </div>
+        <div style="font-weight:700;font-size:15px;color:#111;margin-top:4px;" id="dash-sidebar-name">...</div>
+        <div style="font-size:12px;color:#777;text-transform:capitalize;" id="dash-sidebar-role">...</div>
+      </div>
 
-    <!-- BARRE DE TABS ARRONDIE DANS UN CONTENEUR BORDE FIGMA -->
-    <div class="devis-tabs-pill-bar" id="devis-tabs">
-      <button class="devis-tab-pill active" onclick="switchTab('recus', this)">
-        Reçus <span id="count-recus">(1)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('envoyes', this)">
-        Envoyés <span id="count-envoyes">(1)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('revision', this)">
-        En révision <span id="count-revision">(0)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('acceptes', this)">
-        Acceptés <span id="count-acceptes">(0)</span>
-      </button>
-      <button class="devis-tab-pill" onclick="switchTab('refuses', this)">
-        Refusés <span id="count-refuses">(0)</span>
-      </button>
-    </div>
+      <nav class="dash-nav">
+        <a href="dashboard.html" class="dash-nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Tableau de bord</a>
+        <a href="mes-commandes.html" class="dash-nav-item"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>Mes commandes</a>
+        <a href="notifications.html" class="dash-nav-item"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Mes notifications</a>
+        <a href="mes-devis.html" class="dash-nav-item active"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Mes devis</a>
+        <a href="favoris.html" class="dash-nav-item"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Mes favoris</a>
+        <a href="mon-compte.html" class="dash-nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Paramètres du compte</a>
+      </nav>
+    </aside>
 
-    <!-- LISTE DES CARTES DE DEVIS -->
-    <div id="devis-cards-list">
-      <!-- Rendu dynamique par JS -->
-    </div>
-  </main>
+    <main class="dash-content">
+      <div class="dash-header">
+        <h1>Mes devis</h1>
+        <p>Retrouvez ici toutes vos demandes de devis</p>
+      </div>
+
+      <!-- BARRE DE TABS ARRONDIE DANS UN CONTENEUR BORDE FIGMA -->
+      <div class="devis-tabs-pill-bar" id="devis-tabs">
+        <button class="devis-tab-pill active" onclick="switchTab('recus', this)">
+          Reçus <span id="count-recus">(1)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('envoyes', this)">
+          Envoyés <span id="count-envoyes">(1)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('revision', this)">
+          En révision <span id="count-revision">(0)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('acceptes', this)">
+          Acceptés <span id="count-acceptes">(0)</span>
+        </button>
+        <button class="devis-tab-pill" onclick="switchTab('refuses', this)">
+          Refusés <span id="count-refuses">(0)</span>
+        </button>
+      </div>
+
+      <!-- LISTE DES CARTES DE DEVIS -->
+      <div id="devis-cards-list">
+        <!-- Rendu dynamique par JS -->
+      </div>
+    </main>
+  </div>
 
   <!-- MODAL DE DISCUSSION / NÉGOCIATION DEVIS -->
   <div id="chat-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
@@ -347,10 +373,16 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const user = getCurrentUser();
       if (user) {
-        const nameEl = document.getElementById('sidebar-user-name');
-        if (nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
-        const roleEl = document.getElementById('sidebar-user-role');
-        if (roleEl) roleEl.textContent = user.role || 'Commerçant';
+        const name = user.name || user.email.split('@')[0];
+        const role = user.role || 'Commerçant';
+        const nameEl = document.getElementById('dash-sidebar-name');
+        if (nameEl) nameEl.textContent = name;
+        const roleEl = document.getElementById('dash-sidebar-role');
+        if (roleEl) roleEl.textContent = role;
+        if (user.avatar_url) {
+          const img = document.getElementById('dash-user-avatar');
+          if (img) img.src = user.avatar_url;
+        }
       }
 
       // Supabase dynamic load if available
