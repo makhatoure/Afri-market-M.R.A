@@ -249,7 +249,9 @@ async function handleSendSupplierMessage(e, options) {
 
   const devisRecord = {
     merchant_id: user.id,
+    merchant_name: user.name || user.email.split('@')[0],
     supplier_id: options.supplierId || null,
+    supplier_name: options.supplierName || 'Fournisseur AfroBaza',
     devis_number: devisNumber,
     reference: devisNumber,
     status: 'pending',

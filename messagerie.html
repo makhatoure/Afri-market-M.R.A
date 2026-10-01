@@ -170,7 +170,9 @@
       }
       convList.innerHTML = conversations.map(d => {
         const isMerchant = d.merchant_id === currentUser.id;
-        const otherLabel = isMerchant ? (d.items && d.items[0] && d.items[0].supplier ? d.items[0].supplier : "Fournisseur AfroBaza") : "Commerçant";
+        const otherLabel = isMerchant 
+          ? (d.items && d.items[0] && d.items[0].supplier ? d.items[0].supplier : d.supplier_name || "Fournisseur AfroBaza") 
+          : (d.merchant_name || "Commerçant");
         const ref = d.reference || d.devis_number || ("DEV-" + d.id.slice(0,6));
         const preview = d.message ? d.message.slice(0,55) + (d.message.length > 55 ? "..." : "") : "Demande de devis";
         const timeStr = d.created_at ? new Date(d.created_at).toLocaleDateString("fr-FR") : "";
@@ -200,7 +202,9 @@
     function openConversation(devis) {
       activeConvId = devis.id;
       const isMerchant = devis.merchant_id === currentUser.id;
-      const otherLabel = isMerchant ? (devis.items && devis.items[0] && devis.items[0].supplier ? devis.items[0].supplier : "Fournisseur AfroBaza") : "Commerçant";
+      const otherLabel = isMerchant 
+        ? (devis.items && devis.items[0] && devis.items[0].supplier ? devis.items[0].supplier : devis.supplier_name || "Fournisseur AfroBaza") 
+        : (devis.merchant_name || "Commerçant");
       const ref = devis.reference || devis.devis_number || ("DEV-" + devis.id.slice(0,6));
 
       document.querySelectorAll(".conv-item").forEach(el => el.classList.remove("active"));
@@ -282,8 +286,13 @@
           const isMe = m.sender_id === currentUser.id;
           const timeStr = new Date(m.created_at || Date.now()).toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
           const dateStr = new Date(m.created_at || Date.now()).toLocaleDateString("fr-FR", { day:"numeric", month:"short" });
+          // Nom de l'interlocuteur selon le rôle
+          const isMerchantConv = currentConv && currentConv.merchant_id === currentUser.id;
+          const interlocuteurName = isMerchantConv
+            ? (currentConv?.items?.[0]?.supplier || currentConv?.supplier_name || "Fournisseur AfroBaza")
+            : (currentConv?.merchant_name || "Commerçant");
           return "<div class='msg-bubble-wrap " + (isMe ? "me" : "them") + "'><div>" +
-            (!isMe ? "<div class='msg-sender-name'>" + (m.isInitial ? "Message initial" : "Interlocuteur") + "</div>" : "") +
+            (!isMe ? "<div class='msg-sender-name'>" + (m.isInitial ? interlocuteurName : interlocuteurName) + "</div>" : "") +
             "<div class='msg-bubble'>" +
             (m.isInitial ? "<em style='font-size:11px;opacity:0.8;'>Message initial :</em><br>" : "") +
             m.message +
